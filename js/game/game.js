@@ -1,0 +1,41 @@
+const bg_color = 220;
+
+class Game {
+  constructor() {
+    this.items = [];
+  }
+
+  on_resize() {
+
+  }
+
+  on_mouse_drag() {
+    return false;
+  }
+
+  on_mouse_wheel(event) {
+    return false;
+  }
+
+  on_mouse_press() {
+    return false;
+  }
+
+  on_key_press() {
+    return false;
+  }
+  
+  update() {
+    for (const item of this.items) {
+      item.update();
+    }
+  }
+
+  draw() {
+    background(bg_color);
+    
+    for (const item of this.items) {
+      item.draw();
+    }
+  }
+}
