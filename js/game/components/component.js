@@ -12,10 +12,44 @@ class Component {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.mouse_pressed = false;
   }
 
-  update() {
+  mouse_overlapping() {
+    return collidePointRect(mouseX, mouseY, 
+                            this.x, this.y, 
+                            component_width, component_height);
+  }
+
+  on_left_mouse_click() {
     
+  }
+
+  on_right_mouse_click() {
+    
+  }
+
+  handle_mouse() {
+    if (mouseIsPressed) {
+      if (this.mouse_overlapping()) {
+        if (!this.mouse_pressed) {
+          this.mouse_pressed = true;
+          if (mouseButton === LEFT) {
+            this.on_left_mouse_click();
+          } else if (mouseButton === RIGHT) {
+            this.on_right_mouse_click();
+          }
+        }
+      } else {
+        this.mouse_pressed = false;
+      }
+    } else {
+      this.mouse_pressed = false;
+    }
+  }
+  
+  update() {
+    this.handle_mouse();
   }
 
   draw() {

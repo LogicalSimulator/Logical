@@ -2,6 +2,8 @@
 
 const bg_color = 220;
 
+const show_mouse_coords = true;
+
 class Game {
   constructor() {
     this.items = [
@@ -40,6 +42,13 @@ class Game {
     
     for (const item of this.items) {
       item.draw();
+    }
+
+    if (show_mouse_coords) {
+      push();
+      fill(0);
+      text(mouseX + ", " + mouseY, mouseX, mouseY);
+      pop();
     }
   }
 }

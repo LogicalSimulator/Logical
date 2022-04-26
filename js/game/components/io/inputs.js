@@ -10,18 +10,40 @@ const switch_powered_fill = component_powered_fill;
 class Switch extends Component {
   constructor(x, y) {
     super(x, y);
-    this.output1 = new ConnectionPoint();
-    this.powered = false;
+    this.output1 = new ConnectionPoint(this, component_width / 2, 0);
+    this._powered = false;
+  }
+
+  get powered() {
+    return this._powered;
+  }
+
+  set powered(state) {
+    this._powered = state;
+    this.output1.powered = state;
+  }
+
+  mouse_overlapping() {
+    return collidePointRect(mouseX, mouseY, 
+                            this.x, this.y, 
+                            switch_width, switch_height);
+  }
+
+  on_left_mouse_click() {
+    this.powered = !this.powered;
   }
   
   update() {
-
+    super.update();
+    this.output1.update();
   }
 
   draw() {
+    this.output1.draw();
+    
     push();
 
-    const switch_x = this.x + (component_width - (switch_width / 2));
+    const switch_x = this.x;
     const switch_y = this.y;
 
     strokeWeight(switch_stroke_weight);
