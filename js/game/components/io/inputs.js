@@ -8,13 +8,9 @@ const switch_fill = component_fill;
 const switch_powered_fill = component_powered_fill;
 
 class Switch extends Component {
-  constructor(x, y) {
-    super(x, y);
-    this.output1 = new ConnectionOutPoint(
-      this, 
-      this.x + (switch_width / 2), this.y + (switch_height / 2),
-      component_width * 0.75, 0
-    );
+  constructor(pos) {
+    super(pos);
+    this.output1 = new ConnectionOutPoint(this, createVector(component_width * 0.75, 0));
     this._powered = false;
   }
 
@@ -27,9 +23,13 @@ class Switch extends Component {
     this.output1.powered = state;
   }
 
+  get center_coord() {
+    return p5.Vector.add(this.pos, createVector(switch_width / 2, switch_height / 2));
+  }
+
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.x, this.y, 
+                            this.pos.x, this.pos.y, 
                             switch_width, switch_height);
   }
 
@@ -47,8 +47,8 @@ class Switch extends Component {
     
     push();
 
-    const switch_x = this.x;
-    const switch_y = this.y;
+    const switch_x = this.pos.x;
+    const switch_y = this.pos.y;
 
     strokeWeight(switch_stroke_weight);
     stroke(switch_stroke);

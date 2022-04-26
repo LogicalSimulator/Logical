@@ -11,8 +11,8 @@ class Game {
     this.items = [this.connections, this.components];
 
     // testing
-    this.components.push(new Switch(50, 50));
-    this.components.push(new Light(150, 50));
+    this.components.push(new Switch(createVector(50, 50)));
+    this.components.push(new Light(createVector(150, 50)));
     this.connections.push(make_connection(this.components[0].output1, this.components[1].input1));
   }
 

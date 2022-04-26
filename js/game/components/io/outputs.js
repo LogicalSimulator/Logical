@@ -8,20 +8,20 @@ const light_fill = component_fill;
 const light_powered_fill = component_powered_fill;
 
 class Light extends Component {
-  constructor(x, y) {
-    super(x, y);
-    this.input1 = new ConnectionInPoint(
-      this, 
-      this.x + (light_width / 2), this.y + (light_height / 2),
-      0, component_height * 0.75
-    );
+  constructor(pos) {
+    super(pos);
+    this.input1 = new ConnectionInPoint(this, createVector(0, component_height * 0.75));
     this.powered = false;
   }
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.x, this.y, 
+                            this.pos.x, this.pos.y, 
                             light_width, light_height);
+  }
+
+  get center_coord() {
+    return p5.Vector.add(this.pos, createVector(light_width / 2, light_height / 2));
   }
   
   update() {
@@ -34,8 +34,8 @@ class Light extends Component {
     
     push();
 
-    const light_x = this.x;
-    const light_y = this.y;
+    const light_x = this.pos.x;
+    const light_y = this.pos.y;
 
     const light_bulb_height = light_height * 0.75;
 

@@ -36,10 +36,10 @@ class Connection {
     strokeWeight(connection_stroke_weight);
     stroke(this._powered ? connection_powered_stroke : connection_stroke);
 
-    bezier(this.from_point.point_x, this.from_point.point_y, 
-           this.from_point.point_x, this.from_point.point_y, 
-           this.to_point.point_x, this.to_point.point_y, 
-           this.to_point.point_x, this.to_point.point_y);
+    bezier(this.from_point.pos.x, this.from_point.pos.y,
+           this.from_point.pos.x, this.from_point.pos.y,
+           this.to_point.pos.x, this.to_point.pos.y, 
+           this.to_point.pos.x, this.to_point.pos.y);
     
     pop();
   }
@@ -52,14 +52,10 @@ const connection_point_powered_fill = component_powered_fill;
 const connection_point_radius = 10;
 
 class ConnectionPoint {
-  constructor(parent, center_x, center_y, offset_x, offset_y) {
+  constructor(parent, offset) {
     this.parent = parent;
-    this.center_x = center_x;
-    this.center_y = center_y;
-    this.offset_x = offset_x;
-    this.offset_y = offset_y;
-    this.point_x = center_x + offset_x;
-    this.point_y = center_y + offset_y;
+    this.offset = offset;
+    this.pos = p5.Vector.add(this.parent.center_coord, this.offset);
     this._powered = false;
   }
 
@@ -78,17 +74,15 @@ class ConnectionPoint {
   draw() {
     push();
 
-    const from_x = this.center_x;
-    const from_y = this.center_y;
-    const to_x = this.point_x;
-    const to_y = this.point_y;
-
+    const from_vec = this.parent.center_coord;
+    this.pos = p5.Vector.add(this.parent.center_coord, this.offset);
+    
     strokeWeight(connection_point_stroke_weight);
     stroke(connection_point_stroke);
-    line(from_x, from_y, to_x, to_y);
+    line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
 
     fill(this._powered ? connection_point_powered_fill : connection_point_fill);
-    circle(to_x, to_y, connection_point_radius);
+    circle(this.pos.x, this.pos.y, connection_point_radius);
     
     pop();
   }
@@ -102,8 +96,8 @@ class ConnectionInPoint extends ConnectionPoint {
 }
 
 class ConnectionOutPoint extends ConnectionPoint {
-  constructor(parent, center_x, center_y, offset_x, offset_y) {
-    super(parent, center_x, center_y, offset_x, offset_y);
+  constructor(parent, offset) {
+    super(parent, offset);
     this.connect_point = undefined;
   }
 

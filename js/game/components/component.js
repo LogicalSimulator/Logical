@@ -9,15 +9,14 @@ const component_fill = "snow";
 const component_powered_fill = "cyan";
 
 class Component {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  constructor(pos) {
+    this.pos = pos;
     this.mouse_pressed = false;
   }
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.x, this.y, 
+                            this.pos.x, this.pos.y, 
                             component_width, component_height);
   }
 
