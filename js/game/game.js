@@ -7,7 +7,8 @@ const show_mouse_coords = true;
 class Game {
   constructor() {
     this.items = [
-      new Switch(50, 50)
+      new Switch(50, 50),
+      new Light(150, 50)
     ];
   }
 
