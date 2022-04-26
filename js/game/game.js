@@ -6,10 +6,14 @@ const show_mouse_coords = true;
 
 class Game {
   constructor() {
-    this.items = [
-      new Switch(50, 50),
-      new Light(150, 50)
-    ];
+    this.connections = [];
+    this.components = [];
+    this.items = [this.connections, this.components];
+
+    // testing
+    this.components.push(new Switch(50, 50));
+    this.components.push(new Light(150, 50));
+    this.connections.push(make_connection(this.components[0].output1, this.components[1].input1));
   }
 
   on_resize() {
@@ -33,16 +37,20 @@ class Game {
   }
   
   update() {
-    for (const item of this.items) {
-      item.update();
+    for (const group of this.items) {
+      for (const item of group) {
+        item.update();
+      }
     }
   }
 
   draw() {
     background(bg_color);
     
-    for (const item of this.items) {
-      item.draw();
+    for (const group of this.items) {
+      for (const item of group) {
+        item.draw();
+      }
     }
 
     if (show_mouse_coords) {
