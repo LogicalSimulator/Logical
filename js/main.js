@@ -1,3 +1,5 @@
+"use strict";
+
 p5.disableFriendlyErrors = true;
 
 const window_diff = 20;

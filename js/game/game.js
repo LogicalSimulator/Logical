@@ -1,8 +1,12 @@
+"use strict";
+
 const bg_color = 220;
 
 class Game {
   constructor() {
-    this.items = [];
+    this.items = [
+      new Switch(50, 50)
+    ];
   }
 
   on_resize() {
