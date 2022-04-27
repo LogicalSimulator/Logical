@@ -11,6 +11,7 @@ class Game {
     this.items = [this.connections, this.components];
 
     // testing
+    console.log("creating test objects");
     this.components.push(new Switch(createVector(50, 50)));
     this.components.push(new Light(createVector(150, 50)));
     this.components.push(new Light(createVector(200, 50)));
@@ -23,6 +24,19 @@ class Game {
     this.connections.push(make_connection(this.components[3].output1, this.components[4].input1));
     // connect a switch to a light, changing it's connection
     this.connections.push(make_connection(this.components[3].output1, this.components[2].input1));
+    // buffer gate
+    this.components.push(new Buffer(createVector(400, 50)));
+    // switch to buffer gate
+    this.components.push(new Switch(createVector(400, 200)));
+    // connect switch to buffer
+    this.connections.push(make_connection(this.components[6].output1, this.components[5].input1));
+    // light bulb from buffer gate
+    this.components.push(new Light(createVector(600, 50)));
+    this.connections.push(make_connection(this.components[5].output1, this.components[7].input1));
+    // light bulb from buffer gate
+    this.components.push(new Light(createVector(700, 50)));
+    this.connections.push(make_connection(this.components[5].output1, this.components[8].input1));
+    console.log("done with test objects");
   }
 
   on_resize() {

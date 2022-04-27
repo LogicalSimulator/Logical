@@ -6,12 +6,12 @@ const connection_powered_stroke = component_powered_fill;
 
 function make_connection(from_point, to_point) {
   if (to_point.connection != undefined) {
-    console.log("creating connection to already used input");
-    console.log(to_point.connection.from_point.connections.length);
+    // console.log("creating connection to already used input");
+    // console.log(to_point.connection.from_point.connections.length);
     for (const index in to_point.connection.from_point.connections) {
       const conn = to_point.connection.from_point.connections[index];
       if (conn.to_point === to_point) {
-        console.log("destroying connection at index " + index);
+        // console.log("destroying connection at index " + index);
         to_point.connection.from_point.connections[index].destroy_me = true;
         to_point.connection.from_point.connections[index] = undefined;
       }

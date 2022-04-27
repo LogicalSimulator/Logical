@@ -20,6 +20,10 @@ class Component {
                             component_width, component_height);
   }
 
+  get center_coord() {
+    return p5.Vector.add(this.pos, createVector(component_width / 2, components_height / 2));
+  }
+
   on_left_mouse_click() {
     
   }
