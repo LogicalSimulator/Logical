@@ -43,6 +43,10 @@ class Game {
     // light bulb from not gate
     this.components.push(new Light(createVector(600, 200)));
     this.connections.push(make_connection(this.components[9].output1, this.components[10].input1));
+    // not gate
+    this.components.push(new NotGate(createVector(300, 300)));
+    // connect not gate to self to test
+    this.connections.push(make_connection(this.components[11].output1, this.components[11].input1));
     console.log("done with test objects");
   }
 
