@@ -47,6 +47,17 @@ class Game {
     this.components.push(new NotGate(createVector(300, 300)));
     // connect not gate to self to test
     this.connections.push(make_connection(this.components[11].output1, this.components[11].input1));
+    // and gate
+    this.components.push(new AndGate(createVector(300, 400)));
+    // switches for and gate
+    this.components.push(new Switch(createVector(200, 350)));
+    this.components.push(new Switch(createVector(200, 450)));
+    // connect switches to and gate
+    this.connections.push(make_connection(this.components[13].output1, this.components[12].input1));
+    this.connections.push(make_connection(this.components[14].output1, this.components[12].input2));
+    // connect and gate to light
+    this.components.push(new Light(createVector(400, 300)));
+    this.connections.push(make_connection(this.components[12].output1, this.components[15].input1));
     console.log("done with test objects");
   }
 
