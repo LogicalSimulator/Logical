@@ -25,7 +25,7 @@ class Game {
     // connect a switch to a light, changing it's connection
     this.connections.push(make_connection(this.components[3].output1, this.components[2].input1));
     // buffer gate
-    this.components.push(new Buffer(createVector(400, 50)));
+    this.components.push(new BufferGate(createVector(400, 50)));
     // switch to buffer gate
     this.components.push(new Switch(createVector(400, 200)));
     // connect switch to buffer
@@ -36,6 +36,13 @@ class Game {
     // light bulb from buffer gate
     this.components.push(new Light(createVector(700, 50)));
     this.connections.push(make_connection(this.components[5].output1, this.components[8].input1));
+    // not gate
+    this.components.push(new NotGate(createVector(500, 200)));
+    // connection from switch to not gate
+    this.connections.push(make_connection(this.components[6].output1, this.components[9].input1));
+    // light bulb from not gate
+    this.components.push(new Light(createVector(600, 200)));
+    this.connections.push(make_connection(this.components[9].output1, this.components[10].input1));
     console.log("done with test objects");
   }
 
