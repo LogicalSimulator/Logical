@@ -5,8 +5,22 @@ const connection_stroke = component_stroke;
 const connection_powered_stroke = component_powered_fill;
 
 function make_connection(from_point, to_point) {
+  if (to_point.connection != undefined) {
+    console.log("creating connection to already used input");
+    console.log(to_point.connection.from_point.connections.length);
+    for (const index in to_point.connection.from_point.connections) {
+      const conn = to_point.connection.from_point.connections[index];
+      if (conn.to_point === to_point) {
+        console.log("destroying connection at index " + index);
+        to_point.connection.from_point.connections[index].destroy_me = true;
+        to_point.connection.from_point.connections[index] = undefined;
+      }
+    }
+    // console.log(to_point.connection.from_point);
+  }
   const connection = new Connection(from_point, to_point);
-  from_point.connect_point = connection;
+  from_point.connections.push(connection);
+  to_point.connection = connection;
   return connection;
 }
 
@@ -14,6 +28,7 @@ class Connection {
   constructor(from_point, to_point) {
     this.from_point = from_point;
     this.to_point = to_point;
+    this.destroy_me = false;
     this._powered = false;
   }
 
@@ -93,22 +108,31 @@ class ConnectionPoint {
 }
 
 class ConnectionInPoint extends ConnectionPoint {  
+  constructor(parent, offset, set_name) {
+    super(parent, offset);
+    this.set_name = set_name;
+    this.connection = undefined;
+  }
+  
   set powered(state) {
     this._powered = state;
-    this.parent.powered = state;
+    this.parent[this.set_name] = state;
   }
 }
 
 class ConnectionOutPoint extends ConnectionPoint {
   constructor(parent, offset) {
     super(parent, offset);
-    this.connect_point = undefined;
+    this.connections = [];
   }
 
   set powered(state) {
     this._powered = state;
-    if (this.connect_point != undefined) {
-      this.connect_point.powered = state;
+    this.connections = this.connections.filter((element) => {
+      return element != undefined;
+    });
+    for (const conn of this.connections) {
+      conn.powered = state;
     }
   }
 }

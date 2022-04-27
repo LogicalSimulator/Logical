@@ -10,7 +10,8 @@ const light_powered_fill = component_powered_fill;
 class Light extends Component {
   constructor(pos) {
     super(pos);
-    this.input1 = new ConnectionInPoint(this, createVector(0, component_height * 0.75));
+    this.input1_state = false;
+    this.input1 = new ConnectionInPoint(this, createVector(0, component_height * 0.75), "input1_state");
     this.powered = false;
   }
 
@@ -27,6 +28,7 @@ class Light extends Component {
   update() {
     super.update();
     this.input1.update();
+    this.powered = this.input1_state;
   }
 
   draw() {
