@@ -12,8 +12,10 @@ class BufferGate extends Gate {
   constructor(pos) {
     super(pos);
     this.input1_state = false;
-    this.input1 = new ConnectionInPoint(this, createVector(-(buffer_width * 0.75), 0), "input1_state");
-    this.output1 = new ConnectionOutPoint(this, createVector(buffer_width * 0.75, 0));
+    this.input1 = new ConnectionInPoint(this, createVector(buffer_width / 2, buffer_height / 2), 
+                                        createVector(-(buffer_width * 0.75), 0), "input1_state");
+    this.output1 = new ConnectionOutPoint(this, createVector(buffer_width / 2, buffer_height / 2), 
+                                          createVector(buffer_width * 0.75, 0));
     this.powered = false;
   }
 

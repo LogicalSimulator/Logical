@@ -13,10 +13,13 @@ class AndGate extends Gate {
   constructor(pos) {
     super(pos);
     this.input1_state = false;
-    this.input1 = new ConnectionInPoint(this, createVector(-(and_width * 0.75), -(and_height * 0.33)), "input1_state");
+    this.input1 = new ConnectionInPoint(this, createVector(and_width / 2, (and_height * 0.25)), 
+                                        createVector(-(and_width * 0.75), 0), "input1_state");
     this.input2_state = false;
-    this.input2 = new ConnectionInPoint(this, createVector(-(and_width * 0.75), (and_height * 0.33)), "input2_state");
-    this.output1 = new ConnectionOutPoint(this, createVector(and_width * 0.75, 0));
+    this.input2 = new ConnectionInPoint(this, createVector(and_width / 2, (and_height * 0.75)), 
+                                        createVector(-(and_width * 0.75), 0), "input2_state");
+    this.output1 = new ConnectionOutPoint(this, createVector(and_width / 2, and_height / 2), 
+                                          createVector(and_width * 0.75, 0));
     this.powered = false;
   }
 

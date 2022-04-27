@@ -10,7 +10,8 @@ const switch_powered_fill = component_powered_fill;
 class Switch extends Component {
   constructor(pos) {
     super(pos);
-    this.output1 = new ConnectionOutPoint(this, createVector(component_width * 0.75, 0));
+    this.output1 = new ConnectionOutPoint(this, createVector(component_width / 2, component_height / 2), 
+                                          createVector(component_width * 0.5, 0));
     this._powered = false;
   }
 
