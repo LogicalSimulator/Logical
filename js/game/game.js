@@ -58,6 +58,19 @@ class Game {
     // connect and gate to light
     this.components.push(new Light(createVector(400, 300)));
     this.connections.push(make_connection(this.components[12].output1, this.components[15].input1));
+    // nand gate
+    this.components.push(new NandGate(createVector(500, 300)));
+    // switches for nand gate
+    this.components.push(new Switch(createVector(500, 400)));
+    this.components.push(new Switch(createVector(500, 500)));
+    // connect switches to and gate
+    this.connections.push(make_connection(this.components[17].output1, this.components[16].input1));
+    this.connections.push(make_connection(this.components[18].output1, this.components[16].input2));
+    // connect nand gate to lights
+    this.components.push(new Light(createVector(600, 300)));
+    this.connections.push(make_connection(this.components[16].output1, this.components[19].input1));
+    this.components.push(new Light(createVector(650, 300)));
+    this.connections.push(make_connection(this.components[16].output1, this.components[20].input1));
     console.log("done with test objects");
   }
 
