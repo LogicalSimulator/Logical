@@ -33,12 +33,16 @@ class Connection {
   draw() {
     push();
 
+    const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
+    const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
+    
     strokeWeight(connection_stroke_weight);
     stroke(this._powered ? connection_powered_stroke : connection_stroke);
-
+    noFill();
+    
     bezier(this.from_point.pos.x, this.from_point.pos.y,
-           this.from_point.pos.x, this.from_point.pos.y,
-           this.to_point.pos.x, this.to_point.pos.y, 
+           from_point_offset.x, from_point_offset.y,
+           to_point_offset.x, to_point_offset.y,
            this.to_point.pos.x, this.to_point.pos.y);
     
     pop();
