@@ -1,6 +1,9 @@
 "use strict";
 
 const bg_color = 220;
+const grid_color = 240;
+
+const grid_size = 20;
 
 const show_mouse_coords = true;
 
@@ -80,11 +83,11 @@ class Game {
     this.connections.push(make_connection(this.components[22].output1, this.components[21].input1));
     this.connections.push(make_connection(this.components[23].output1, this.components[21].input2));
     // conecting multiple gates together
-    this.components.push(new OrGate(createVector(400, 500)));
-    this.components.push(new AndGate(createVector(500, 600)));
+    this.components.push(new AndGate(createVector(400, 500)));
+    this.components.push(new OrGate(createVector(500, 600)));
     // connect or gate output to and gate
     this.connections.push(make_connection(this.components[24].output1, this.components[25].input1));
-    // 3 switches, 2 for or gate and 1 or and gate
+    // 3 switches, 2 for and gate and 1 for the or gate
     this.components.push(new Switch(createVector(300, 700)));
     this.components.push(new Switch(createVector(400, 700)));
     this.components.push(new Switch(createVector(500, 700)));
@@ -94,11 +97,19 @@ class Game {
     this.connections.push(make_connection(this.components[28].output1, this.components[25].input2));
     // attach not gate to output
     this.components.push(new NotGate(createVector(600, 600)));
-    // connect and gate output to not gate
+    // connect or gate output to not gate
     this.connections.push(make_connection(this.components[25].output1, this.components[29].input1));
     // light bulb for output
     this.components.push(new Light(createVector(600, 700)));
     this.connections.push(make_connection(this.components[29].output1, this.components[30].input1));
+    // nor gate
+    this.components.push(new NorGate(createVector(50, 300)));
+    // switches for nor gate
+    this.components.push(new Switch(createVector(50, 400)));
+    this.components.push(new Switch(createVector(50, 500)));
+    // connect switches to nor gate
+    this.connections.push(make_connection(this.components[32].output1, this.components[31].input1));
+    this.connections.push(make_connection(this.components[33].output1, this.components[31].input2));
     console.log("done with test objects");
   }
 
@@ -139,12 +150,23 @@ class Game {
       });
     }
   }
-  drawGrid(cellSize){
-    for (const y=0)
+  
+  drawGrid(cellSize) {
+    push();
+    stroke(grid_color);
+    for (let y = 0; y < height; y += cellSize) {
+      line(0, y, width, y);
+    }
+    for (let x = 0; x < width; x += cellSize) {
+      line(x, 0, x, height);
+    }
+    pop();
   }
 
   draw() {
     background(bg_color);
+    
+    this.drawGrid(grid_size);
     
     for (const group of this.items) {
       for (const item of group) {

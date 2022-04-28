@@ -30,6 +30,7 @@ class OrGate extends Gate {
   }
 
   get center_coord() {
+    
     return p5.Vector.add(this.pos, createVector(or_width / 2, or_height / 2));
   }
   
