@@ -71,6 +71,34 @@ class Game {
     this.connections.push(make_connection(this.components[16].output1, this.components[19].input1));
     this.components.push(new Light(createVector(650, 300)));
     this.connections.push(make_connection(this.components[16].output1, this.components[20].input1));
+    // or gate
+    this.components.push(new OrGate(createVector(800, 300)));
+    // switches for or gate
+    this.components.push(new Switch(createVector(700, 400)));
+    this.components.push(new Switch(createVector(700, 500)));
+    // connect switches to and gate
+    this.connections.push(make_connection(this.components[22].output1, this.components[21].input1));
+    this.connections.push(make_connection(this.components[23].output1, this.components[21].input2));
+    // conecting multiple gates together
+    this.components.push(new OrGate(createVector(400, 500)));
+    this.components.push(new AndGate(createVector(500, 600)));
+    // connect or gate output to and gate
+    this.connections.push(make_connection(this.components[24].output1, this.components[25].input1));
+    // 3 switches, 2 for or gate and 1 or and gate
+    this.components.push(new Switch(createVector(300, 700)));
+    this.components.push(new Switch(createVector(400, 700)));
+    this.components.push(new Switch(createVector(500, 700)));
+    // connect switches to or and and gates
+    this.connections.push(make_connection(this.components[26].output1, this.components[24].input1));
+    this.connections.push(make_connection(this.components[27].output1, this.components[24].input2));
+    this.connections.push(make_connection(this.components[28].output1, this.components[25].input2));
+    // attach not gate to output
+    this.components.push(new NotGate(createVector(600, 600)));
+    // connect and gate output to not gate
+    this.connections.push(make_connection(this.components[25].output1, this.components[29].input1));
+    // light bulb for output
+    this.components.push(new Light(createVector(600, 700)));
+    this.connections.push(make_connection(this.components[29].output1, this.components[30].input1));
     console.log("done with test objects");
   }
 
@@ -110,6 +138,9 @@ class Game {
         return element != undefined;
       });
     }
+  }
+  drawGrid(cellSize){
+    for (const y=0)
   }
 
   draw() {
