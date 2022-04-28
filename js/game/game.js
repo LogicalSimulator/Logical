@@ -148,6 +148,10 @@ class Game {
     // -- connect clocks to and gate
     this.connections.push(make_connection(this.components[44].output1, this.components[46].input1));
     this.connections.push(make_connection(this.components[45].output1, this.components[46].input2));
+    // constant true
+    this.components.push(new TrueConstant(createVector(200, 340)));
+    // constant false
+    this.components.push(new FalseConstant(createVector(270, 340)));
     console.log("done with test objects");
   }
 
