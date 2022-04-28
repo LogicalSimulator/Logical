@@ -7,11 +7,14 @@ const grid_size = 20;
 
 const show_mouse_coords = true;
 
+let frame_millis = 0;
+
 class Game {
   constructor() {
     this.connections = [];
     this.components = [];
     this.items = [this.connections, this.components];
+    frame_millis = millis();
 
     // testing
     console.log("creating test objects");
@@ -135,6 +138,16 @@ class Game {
     // -- connect switch and button to xnor gate
     this.connections.push(make_connection(this.components[42].output1, this.components[41].input1));
     this.connections.push(make_connection(this.components[43].output1, this.components[41].input2));
+    // clock signal
+    this.components.push(new Clock(createVector(700, 350)));
+    // -- another clock signal with 500ms period instead of 1000ms
+    this.components.push(new Clock(createVector(700, 400)));
+    this.components[45].period = 500;
+    // -- and gate for clocks
+    this.components.push(new AndGate(createVector(800, 370)));
+    // -- connect clocks to and gate
+    this.connections.push(make_connection(this.components[44].output1, this.components[46].input1));
+    this.connections.push(make_connection(this.components[45].output1, this.components[46].input2));
     console.log("done with test objects");
   }
 
@@ -159,6 +172,7 @@ class Game {
   }
   
   update() {
+    frame_millis = millis();
     for (const i in this.items) {
       const group = this.items[i];
       for (const index in group) {
@@ -176,13 +190,13 @@ class Game {
     }
   }
   
-  drawGrid(cellSize) {
+  draw_grid(cell_size) {
     push();
     stroke(grid_color);
-    for (let y = 0; y < height; y += cellSize) {
+    for (let y = 0; y < height; y += cell_size) {
       line(0, y, width, y);
     }
-    for (let x = 0; x < width; x += cellSize) {
+    for (let x = 0; x < width; x += cell_size) {
       line(x, 0, x, height);
     }
     pop();
@@ -191,7 +205,7 @@ class Game {
   draw() {
     background(bg_color);
     
-    this.drawGrid(grid_size);
+    this.draw_grid(grid_size);
     
     for (const group of this.items) {
       for (const item of group) {
