@@ -111,12 +111,12 @@ class Game {
     this.connections.push(make_connection(this.components[32].output1, this.components[31].input1));
     this.connections.push(make_connection(this.components[33].output1, this.components[31].input2));
     // extended not gate to self test
-    this.components.push(new NotGate(createVector(50, 600)));
-    this.components.push(new NorGate(createVector(100, 650)));
     this.components.push(new NotGate(createVector(150, 700)));
-    this.connections.push(make_connection(this.components[34].output1, this.components[35].input1));
-    this.connections.push(make_connection(this.components[35].output1, this.components[36].input1));
-    this.connections.push(make_connection(this.components[36].output1, this.components[34].input1));
+    this.components.push(new NorGate(createVector(100, 650)));
+    this.components.push(new NotGate(createVector(50, 600)));
+    this.connections.push(make_connection(this.components[36].output1, this.components[35].input1));
+    this.connections.push(make_connection(this.components[35].output1, this.components[34].input1));
+    this.connections.push(make_connection(this.components[34].output1, this.components[36].input1));
     this.components.push(new Switch(createVector(200, 600)));
     this.connections.push(make_connection(this.components[37].output1, this.components[35].input2));
     console.log("done with test objects");
