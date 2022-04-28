@@ -129,10 +129,10 @@ class Game {
     this.connections.push(make_connection(this.components[40].output1, this.components[38].input2));
     // xnor gate
     this.components.push(new XnorGate(createVector(750, 70)));
-    // -- switches for xnor gate
+    // -- switch and button for xnor gate
     this.components.push(new Switch(createVector(580, 70)));
-    this.components.push(new Switch(createVector(640, 70)));
-    // -- connect switches to xnor gate
+    this.components.push(new Button(createVector(660, 75)));
+    // -- connect switch and button to xnor gate
     this.connections.push(make_connection(this.components[42].output1, this.components[41].input1));
     this.connections.push(make_connection(this.components[43].output1, this.components[41].input2));
     console.log("done with test objects");

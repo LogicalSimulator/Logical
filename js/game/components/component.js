@@ -32,6 +32,14 @@ class Component {
     
   }
 
+  on_left_mouse_release() {
+    
+  }
+
+  on_right_mouse_release() {
+    
+  }
+
   handle_mouse() {
     if (mouseIsPressed) {
       if (this.mouse_overlapping()) {
@@ -43,11 +51,16 @@ class Component {
             this.on_right_mouse_click();
           }
         }
-      } else {
-        this.mouse_pressed = false;
       }
     } else {
-      this.mouse_pressed = false;
+      if (this.mouse_pressed) {
+          this.mouse_pressed = false;
+          if (mouseButton === LEFT) {
+            this.on_left_mouse_release();
+          } else if (mouseButton === RIGHT) {
+            this.on_right_mouse_release();
+          }
+        }
     }
   }
   
