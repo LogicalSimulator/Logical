@@ -30,7 +30,6 @@ class NorGate extends Gate {
   }
 
   get center_coord() {
-    
     return p5.Vector.add(this.pos, createVector(nor_width / 2, nor_height / 2));
   }
   

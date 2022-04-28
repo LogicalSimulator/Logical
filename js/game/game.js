@@ -119,6 +119,14 @@ class Game {
     this.connections.push(make_connection(this.components[34].output1, this.components[36].input1));
     this.components.push(new Switch(createVector(200, 600)));
     this.connections.push(make_connection(this.components[37].output1, this.components[35].input2));
+    // xor gate
+    this.components.push(new XorGate(createVector(800, 50)));
+    // switches for xor gate
+    this.components.push(new Switch(createVector(800, 110)));
+    this.components.push(new Switch(createVector(800, 170)));
+    // connect switches to xor gate
+    this.connections.push(make_connection(this.components[39].output1, this.components[38].input1));
+    this.connections.push(make_connection(this.components[40].output1, this.components[38].input2));
     console.log("done with test objects");
   }
 
