@@ -154,7 +154,7 @@ class Game {
     this.components.push(new FalseConstant(createVector(270, 340)));
     // 4 bit digit
     this.components.push(new FourBitDigit(createVector(350, 550)));
-    // - switches for 4 bit digit
+    // -- switches for 4 bit digit
     this.components.push(new Switch(createVector(50, 550)));
     this.components.push(new Switch(createVector(110, 550)));
     this.components.push(new Switch(createVector(170, 550)));
@@ -164,6 +164,16 @@ class Game {
     this.connections.push(make_connection(this.components[51].output1, this.components[49].input2));
     this.connections.push(make_connection(this.components[52].output1, this.components[49].input3));
     this.connections.push(make_connection(this.components[53].output1, this.components[49].input4));
+    // 8 bit digit
+    this.components.push(new EightBitDigit(createVector(700, 460)));
+    // -- switches for 8 bit digit
+    for (let i = 0; i < 8; i ++) {
+      this.components.push(new Switch(createVector(410 + (60 * i), 550)));
+    }
+    // -- connect switches to 8 bit digit
+    for (let i = 0; i < 8; i ++) {
+      this.connections.push(make_connection(this.components[55 + i].output1, this.components[54]["input" + (i + 1)]));
+    }
     console.log("done with test objects");
   }
 
