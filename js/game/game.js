@@ -5,6 +5,7 @@ const grid_color = 240;
 
 const grid_size = 20;
 
+const make_testing_objs = true;
 const show_mouse_coords = true;
 
 let frame_millis = 0;
@@ -16,6 +17,32 @@ class Game {
     this.items = [this.connections, this.components];
     frame_millis = millis();
 
+    if (make_testing_objs) {
+      this.make_testing_objects();  
+    }
+  }
+
+  on_resize() {
+
+  }
+
+  on_mouse_drag() {
+    // return false;
+  }
+
+  on_mouse_wheel(event) {
+    // return false;
+  }
+
+  on_mouse_press() {
+    // return false;
+  }
+
+  on_key_press() {
+    // return false;
+  }
+
+  make_testing_objects() {
     // testing
     console.log("creating test objects");
     // testing switches and lights
@@ -175,26 +202,6 @@ class Game {
       this.connections.push(make_connection(this.components[55 + i].output1, this.components[54]["input" + (i + 1)]));
     }
     console.log("done with test objects");
-  }
-
-  on_resize() {
-
-  }
-
-  on_mouse_drag() {
-    // return false;
-  }
-
-  on_mouse_wheel(event) {
-    // return false;
-  }
-
-  on_mouse_press() {
-    // return false;
-  }
-
-  on_key_press() {
-    // return false;
   }
   
   update() {
