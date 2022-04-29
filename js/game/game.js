@@ -152,6 +152,18 @@ class Game {
     this.components.push(new TrueConstant(createVector(200, 340)));
     // constant false
     this.components.push(new FalseConstant(createVector(270, 340)));
+    // 4 bit digit
+    this.components.push(new FourBitDigit(createVector(350, 550)));
+    // - switches for 4 bit digit
+    this.components.push(new Switch(createVector(50, 550)));
+    this.components.push(new Switch(createVector(110, 550)));
+    this.components.push(new Switch(createVector(170, 550)));
+    this.components.push(new Switch(createVector(230, 550)));
+    // -- connect switches to 4 bit digit
+    this.connections.push(make_connection(this.components[50].output1, this.components[49].input1));
+    this.connections.push(make_connection(this.components[51].output1, this.components[49].input2));
+    this.connections.push(make_connection(this.components[52].output1, this.components[49].input3));
+    this.connections.push(make_connection(this.components[53].output1, this.components[49].input4));
     console.log("done with test objects");
   }
 
