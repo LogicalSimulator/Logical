@@ -24,7 +24,7 @@ class Game {
     this.drag_mode = true;
     this.drag_origin = createVector();
     this.cam_prev_pos = createVector();
-    this.dark_mode = true;
+    this.dark_mode = false;
     
     frame_millis = millis();
 
