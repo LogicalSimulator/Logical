@@ -27,7 +27,7 @@ class FourBitDigit extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x, this.pos.y, 
+                            this.pos.x + camera.x, this.pos.y + camera.y, 
                             four_bit_digit_width, four_bit_digit_height);
   }
 

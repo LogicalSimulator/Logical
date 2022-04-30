@@ -29,7 +29,7 @@ function draw() {
   textAlign(LEFT, BOTTOM);
   textSize(12);
   fill(0);
-  text("FPS: " + last_fps, 10, height - 10);
+  text("FPS: " + last_fps, 10 - camera.x, height - 10 - camera.y);
   pop();
 }
 

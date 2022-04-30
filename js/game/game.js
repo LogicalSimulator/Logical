@@ -8,25 +8,60 @@ const grid_size = 20;
 const make_testing_objs = true;
 const show_mouse_coords = true;
 
+let hovering_on_obj = false;
+
 let frame_millis = 0;
+let camera;
 
 class Game {
   constructor() {
     this.connections = [];
     this.components = [];
     this.items = [this.connections, this.components];
+    
+    this.drag_mode = true;
+    this.drag_origin = createVector();
+    this.cam_prev_pos = createVector();
+    
     frame_millis = millis();
+
+    camera = createVector(0, 0);
+    hovering_on_obj = false;
 
     if (make_testing_objs) {
       this.make_testing_objects();  
     }
   }
-
+  
+  get_hover_component() {
+    // why do we need this?
+    // ok let me commit first
+    // wait
+    // get the components mouse is on
+    const realPos = createVector(mouseX - camera.x, mouseY - camera.y);
+    let closest = dist(realPos.x, realPos.y, 
+                       this.components[0].pos.x, this.components[0].pos.y);
+    let closestIndex = -1;
+    for (const comp in this.components) {
+      const d = dist(realPos.x, realPos.y, 
+                       this.components[comp].pos.x, this.components[comp].pos.y)
+      if (d < closest) {
+        closest = d;
+        closestIndex = comp;
+      }
+    }
+    return this.components[closestIndex];
+  }
+  
   on_resize() {
 
   }
 
   on_mouse_drag() {
+    if (this.drag_mode && !hovering_on_obj) {
+      camera = p5.Vector.add(this.cam_prev_pos, 
+                             createVector(mouseX - this.drag_origin.x, mouseY - this.drag_origin.y));
+    }
     // return false;
   }
 
@@ -35,6 +70,10 @@ class Game {
   }
 
   on_mouse_press() {
+    if (this.drag_mode && !hovering_on_obj) {
+      this.drag_origin = createVector(mouseX, mouseY);
+      this.cam_prev_pos = camera.copy();
+    }
     // return false;
   }
 
@@ -206,6 +245,7 @@ class Game {
   
   update() {
     frame_millis = millis();
+    hovering_on_obj = false;
     for (const i in this.items) {
       const group = this.items[i];
       for (const index in group) {
@@ -223,22 +263,26 @@ class Game {
     }
   }
   
-  draw_grid(cell_size) {
+  draw_grid(cell_size, shift) {
     push();
     stroke(grid_color);
-    for (let y = 0; y < height; y += cell_size) {
-      line(0, y, width, y);
+    const shift_x = shift.x % cell_size;
+    const shift_y = shift.y % cell_size;
+    for (let y = shift_y - shift.y; y < height + (shift_y - shift.y); y += cell_size) {
+      line(-shift.x, y, width + (shift_x - shift.x), y);
     }
-    for (let x = 0; x < width; x += cell_size) {
-      line(x, 0, x, height);
+    for (let x = shift_x - shift.x; x < width + (shift_x - shift.x); x += cell_size) {
+      line(x, -shift.y, x, height + (shift_y - shift.y));
     }
     pop();
   }
 
   draw() {
     background(bg_color);
+
+    translate(camera);
     
-    this.draw_grid(grid_size);
+    this.draw_grid(grid_size, camera);
     
     for (const group of this.items) {
       for (const item of group) {
@@ -249,8 +293,12 @@ class Game {
     if (show_mouse_coords) {
       push();
       fill(0);
-      text(mouseX + ", " + mouseY, mouseX, mouseY);
+      text((mouseX - camera.x) + ", " + (mouseY - camera.y), mouseX - camera.x, mouseY - camera.y);
       pop();
+    }
+    let test = this.get_hover_component()
+    if (test != -1){
+      circle()
     }
   }
 }

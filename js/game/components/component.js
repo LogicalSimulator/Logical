@@ -16,7 +16,7 @@ class Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x, this.pos.y, 
+                            this.pos.x + camera.x, this.pos.y + camera.y, 
                             component_width, component_height);
   }
 
@@ -41,8 +41,12 @@ class Component {
   }
 
   handle_mouse() {
+    if (this.mouse_pressed) {
+      hovering_on_obj = true;
+    }
     if (mouseIsPressed) {
       if (this.mouse_overlapping()) {
+        hovering_on_obj = true;
         if (!this.mouse_pressed) {
           this.mouse_pressed = true;
           if (mouseButton === LEFT) {
