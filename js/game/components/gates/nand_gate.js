@@ -43,7 +43,7 @@ class NandGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -51,7 +51,7 @@ class NandGate extends Gate {
     push();
 
     strokeWeight(nand_stroke_weight);
-    stroke(nand_stroke);
+    stroke(outline == undefined ? nand_stroke : outline);
     fill(this.powered ? nand_powered_fill : nand_fill);
 
     rect(this.pos.x, this.pos.y, nand_width / 2, nand_height);

@@ -39,14 +39,14 @@ class NotGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.output1.draw();
     
     push();
 
     strokeWeight(buffer_stroke_weight);
-    stroke(buffer_stroke);
+    stroke(outline == undefined ? buffer_stroke : outline);
     fill(this.powered ? buffer_powered_fill : buffer_fill);
 
     const bottom_point = p5.Vector.add(this.pos, createVector(0, buffer_height));

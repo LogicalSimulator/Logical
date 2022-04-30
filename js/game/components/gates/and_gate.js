@@ -43,7 +43,7 @@ class AndGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -51,7 +51,7 @@ class AndGate extends Gate {
     push();
 
     strokeWeight(and_stroke_weight);
-    stroke(and_stroke);
+    stroke(outline == undefined ? and_stroke : outline);
     fill(this.powered ? and_powered_fill : and_fill);
 
     rect(this.pos.x, this.pos.y, and_width / 2, and_height);

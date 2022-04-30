@@ -43,7 +43,7 @@ class OrGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -51,7 +51,7 @@ class OrGate extends Gate {
     push();
 
     strokeWeight(or_stroke_weight);
-    stroke(or_stroke);
+    stroke(outline == undefined ? or_stroke : outline);
     fill(this.powered ? or_powered_fill : or_fill);
 
     const top_left = this.pos;

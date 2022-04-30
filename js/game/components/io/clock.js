@@ -48,7 +48,7 @@ class Clock extends Component {
     this.output1.update();
   }
 
-  draw() {
+  draw(outline) {
     this.output1.draw();
     
     push();
@@ -58,7 +58,7 @@ class Clock extends Component {
     const clock_y = this.pos.y;
     
     strokeWeight(clock_stroke_weight);
-    stroke(clock_stroke);
+    stroke(outline == undefined ? clock_stroke : outline);
     fill(clock_fill);
     rect(clock_x, clock_y, clock_width, clock_height);
 

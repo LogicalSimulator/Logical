@@ -43,7 +43,7 @@ class Switch extends Component {
     this.output1.update();
   }
 
-  draw() {
+  draw(outline) {
     this.output1.draw();
     
     push();
@@ -52,7 +52,7 @@ class Switch extends Component {
     const switch_y = this.pos.y;
 
     strokeWeight(switch_stroke_weight);
-    stroke(switch_stroke);
+    stroke(outline == undefined ? switch_stroke : outline);
     fill(switch_fill);
     rect(switch_x, switch_y, switch_width, switch_height);
 
@@ -62,6 +62,7 @@ class Switch extends Component {
     const inner_switch_x = switch_x + inner_gap_width;
     const inner_switch_y = switch_y + inner_gap_width;
 
+    stroke(switch_stroke);
     fill(this.powered ? switch_powered_fill : switch_fill);
     rect(inner_switch_x, inner_switch_y, inner_switch_width, inner_switch_height);
 

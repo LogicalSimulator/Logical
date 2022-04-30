@@ -32,7 +32,7 @@ class Light extends Component {
     this.powered = this.input1_state;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     
     push();
@@ -43,7 +43,7 @@ class Light extends Component {
     const light_bulb_height = light_height * 0.75;
 
     strokeWeight(light_stroke_weight);
-    stroke(light_stroke);
+    stroke(outline == undefined ? light_stroke : outline);
     fill(this.powered ? light_powered_fill:light_fill);
     ellipseMode(CORNER);
     arc(light_x, light_y, light_width, light_bulb_height, HALF_PI + QUARTER_PI, QUARTER_PI, OPEN);

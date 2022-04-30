@@ -44,7 +44,7 @@ class XorGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -52,7 +52,7 @@ class XorGate extends Gate {
     push();
 
     strokeWeight(xor_stroke_weight);
-    stroke(xor_stroke);
+    stroke(outline == undefined ? xor_stroke : outline);
     fill(this.powered ? xor_powered_fill : xor_fill);
     
     const top_left = this.pos;

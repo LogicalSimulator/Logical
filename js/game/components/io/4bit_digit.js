@@ -59,7 +59,7 @@ class FourBitDigit extends Component {
     this.display_digit = value.toString(16).toUpperCase();
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.input3.draw();
@@ -72,11 +72,12 @@ class FourBitDigit extends Component {
     const four_bit_digit_y = this.pos.y;
 
     strokeWeight(four_bit_digit_stroke_weight);
-    stroke(four_bit_digit_stroke);
+    stroke(outline == undefined ? four_bit_digit_stroke : outline);
     fill(four_bit_digit_fill);
 
     rect(four_bit_digit_x, four_bit_digit_y, four_bit_digit_width, four_bit_digit_height);
-
+    
+    stroke(four_bit_digit_stroke);
     fill(this.display_digit === "0" ? four_bit_digit_stroke : four_bit_digit_powered_fill);
     textAlign(CENTER, CENTER);
     textSize(get_text_size(this.display_digit, four_bit_digit_width * 0.75, four_bit_digit_height * 0.75));

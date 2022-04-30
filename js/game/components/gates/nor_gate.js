@@ -43,7 +43,7 @@ class NorGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -51,7 +51,7 @@ class NorGate extends Gate {
     push();
 
     strokeWeight(nor_stroke_weight);
-    stroke(nor_stroke);
+    stroke(outline == undefined ? nor_stroke : outline);
     fill(this.powered ? nor_powered_fill : nor_fill);
 
     const tip_sub = (nor_point_radius / 2);

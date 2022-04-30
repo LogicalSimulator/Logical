@@ -44,7 +44,7 @@ class XnorGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw() {
+  draw(outline) {
     this.input1.draw();
     this.input2.draw();
     this.output1.draw();
@@ -52,7 +52,7 @@ class XnorGate extends Gate {
     push();
 
     strokeWeight(xnor_stroke_weight);
-    stroke(xnor_stroke);
+    stroke(outline == undefined ? xnor_stroke : outline);
     fill(this.powered ? xnor_powered_fill : xnor_fill);
 
     const tip_sub = (xnor_point_radius / 2);

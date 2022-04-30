@@ -72,7 +72,7 @@ class EightBitDigit extends Component {
     }
   }
 
-  draw() {
+  draw(outline) {
     for (let i = 1; i <= 8; i ++) {
       this["input" + i].draw();
     }
@@ -84,11 +84,12 @@ class EightBitDigit extends Component {
     const eight_bit_digit_y = this.pos.y;
 
     strokeWeight(eight_bit_digit_stroke_weight);
-    stroke(eight_bit_digit_stroke);
+    stroke(outline == undefined ? eight_bit_digit_stroke : outline);
     fill(eight_bit_digit_fill);
 
     rect(eight_bit_digit_x, eight_bit_digit_y, eight_bit_digit_width, eight_bit_digit_height);
 
+    stroke(eight_bit_digit_stroke);
     fill(this.display_digit === "00" ? eight_bit_digit_stroke : eight_bit_digit_powered_fill);
     textAlign(CENTER, CENTER);
     textSize(get_text_size(this.display_digit, eight_bit_digit_width * 0.75, eight_bit_digit_height * 0.75));

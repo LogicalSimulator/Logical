@@ -42,7 +42,7 @@ class Constant extends Component {
     // and update output
   }
 
-  draw() {
+  draw(outline) {
     this.output1.draw();
     // subclasses will override drawing method
   }
@@ -57,8 +57,8 @@ class TrueConstant extends Constant {
     this.output1.update();
   }
 
-  draw() {
-    super.draw();
+  draw(outline) {
+    super.draw(outline);
     
     push();
 
@@ -67,11 +67,12 @@ class TrueConstant extends Constant {
     const constant_y = this.pos.y;
     
     strokeWeight(constant_stroke_weight);
-    stroke(constant_stroke);
+    stroke(outline == undefined ? constant_stroke : outline);
     fill(constant_fill);
     rect(constant_x, constant_y, constant_width, constant_height);
 
     fill(this.powered ? constant_powered_fill : constant_stroke);
+    stroke(constant_stroke);
 
     const str = "1";
     
@@ -84,7 +85,7 @@ class TrueConstant extends Constant {
 }
 
 class FalseConstant extends Constant {
-  update() {
+  update(highlighted) {
     super.update();
 
     this.powered = false;
@@ -92,8 +93,8 @@ class FalseConstant extends Constant {
     this.output1.update();
   }
 
-  draw() {
-    super.draw();
+  draw(outline) {
+    super.draw(outline);
     
     push();
 
@@ -102,11 +103,12 @@ class FalseConstant extends Constant {
     const constant_y = this.pos.y;
     
     strokeWeight(constant_stroke_weight);
-    stroke(constant_stroke);
+    stroke(outline == undefined ? constant_stroke : outline);
     fill(constant_fill);
     rect(constant_x, constant_y, constant_width, constant_height);
 
     fill(this.powered ? constant_powered_fill : constant_stroke);
+    stroke(constant_stroke);
 
     const str = "0";
     

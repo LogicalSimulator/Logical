@@ -1,7 +1,9 @@
 "use strict";
 
 const bg_color = 220;
+const dark_bg_color = 56;
 const grid_color = 240;
+const dark_grid_color = 100;
 
 const grid_size = 20;
 
@@ -22,6 +24,7 @@ class Game {
     this.drag_mode = true;
     this.drag_origin = createVector();
     this.cam_prev_pos = createVector();
+    this.dark_mode = true;
     
     frame_millis = millis();
 
@@ -33,24 +36,52 @@ class Game {
     }
   }
   
-  get_hover_component() {
-    // why do we need this?
-    // ok let me commit first
-    // wait
-    // get the components mouse is on
-    const realPos = createVector(mouseX - camera.x, mouseY - camera.y);
-    let closest = dist(realPos.x, realPos.y, 
-                       this.components[0].pos.x, this.components[0].pos.y);
-    let closestIndex = -1;
-    for (const comp in this.components) {
-      const d = dist(realPos.x, realPos.y, 
-                       this.components[comp].pos.x, this.components[comp].pos.y)
-      if (d < closest) {
-        closest = d;
-        closestIndex = comp;
+  get_hover_component(distance) {
+    if (distance == undefined) {
+      for (const i in this.components) {
+        const comp = this.components[i];
+        if (comp.mouse_overlapping()) {
+          return i;
+        }
+      }
+      return -1;
+    } else {
+      const comps = [];
+      for (const i in this.components) {
+        const comp = this.components[i];
+        if (dist(mouseX, mouseY, comp.pos.x, comp.pos.y) < distance) {
+          comps.push(comp);
+        }
+      }
+      return comps;
+    }
+  }
+
+  get_hover_connect_point(component) {
+    const all_connect_points = [];
+    for (let i = 1; ; i ++) {
+      const attr = "input" + i;
+      if (component[attr] != undefined) {
+        all_connect_points.push(attr);
+      } else {
+        break;
       }
     }
-    return this.components[closestIndex];
+    for (let i = 1; ; i ++) {
+      const attr = "output" + i;
+      if (component[attr] != undefined) {
+        all_connect_points.push(attr);
+      } else {
+        break;
+      }
+    }
+    for (const attr of all_connect_points) {
+      const connect_point = component[attr];
+      if (connect_point.mouse_overlapping()) {
+        return connect_point;
+      }
+    }
+    return undefined;
   }
   
   on_resize() {
@@ -265,7 +296,12 @@ class Game {
   
   draw_grid(cell_size, shift) {
     push();
-    stroke(grid_color);
+    if (this.dark_mode) {
+      stroke(dark_grid_color) 
+    } else {
+      stroke(grid_color);
+    }
+    
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
     for (let y = shift_y - shift.y; y < height + (shift_y - shift.y); y += cell_size) {
@@ -278,8 +314,11 @@ class Game {
   }
 
   draw() {
-    background(bg_color);
-
+    if (this.dark_mode) {
+      background(dark_bg_color)
+    } else {
+      background(bg_color);
+    }
     translate(camera);
     
     this.draw_grid(grid_size, camera);
@@ -295,10 +334,6 @@ class Game {
       fill(0);
       text((mouseX - camera.x) + ", " + (mouseY - camera.y), mouseX - camera.x, mouseY - camera.y);
       pop();
-    }
-    let test = this.get_hover_component()
-    if (test != -1){
-      circle()
     }
   }
 }

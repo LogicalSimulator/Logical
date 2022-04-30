@@ -72,7 +72,7 @@ class Component {
     this.handle_mouse();
   }
 
-  draw() {
+  draw(outline) {
     
   }
 }

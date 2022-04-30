@@ -47,7 +47,7 @@ class Button extends Component {
     this.output1.update();
   }
 
-  draw() {
+  draw(outline) {
     this.output1.draw();
     
     push();
@@ -57,13 +57,14 @@ class Button extends Component {
     const button_y = this.pos.y;
     
     strokeWeight(button_stroke_weight);
-    stroke(button_stroke);
+    stroke(outline == undefined ? button_stroke : outline);
     fill(button_fill);
     rect(button_x, button_y, button_width, button_height);
 
     const button_outer_radius = button_width * 0.8;
     const button_inner_radius = button_width * 0.6;
 
+    stroke(button_stroke);
     fill(this.powered ? button_powered_fill : button_fill);
     circle(button_center.x, button_center.y, button_outer_radius);
 

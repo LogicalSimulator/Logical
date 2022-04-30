@@ -87,11 +87,17 @@ class ConnectionPoint {
     this._powered = state;
   }
 
+  mouse_overlapping() {
+    return collidePointCircle(mouseX, mouseY, 
+                             this.pos.x + camera.x, this.pos.y + camera.y, 
+                             connection_point_radius);
+  }
+  
   update() {
     
   }
 
-  draw() {
+  draw(outline) {
     push();
 
     const from_vec = p5.Vector.add(this.parent.pos, this.from);
@@ -101,6 +107,7 @@ class ConnectionPoint {
     stroke(connection_point_stroke);
     line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
 
+    stroke(outline == undefined ? connection_point_stroke : outline);
     fill(this._powered ? connection_point_powered_fill : connection_point_fill);
     circle(this.pos.x, this.pos.y, connection_point_radius);
     
