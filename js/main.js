@@ -38,16 +38,21 @@ function windowResized() {
   game.on_resize();
 }
 
+function mousePressed() {
+  return game.on_mouse_press();
+}
+
 function mouseDragged() {
   return game.on_mouse_drag();
 }
 
-function mouseWheel(event) {
-  return game.on_mouse_wheel(event);
+
+function mouseReleased() {
+  return game.on_mouse_release();
 }
 
-function mousePressed() {
-  return game.on_mouse_press();
+function mouseWheel(event) {
+  return game.on_mouse_wheel(event);
 }
 
 function keyPressed() {

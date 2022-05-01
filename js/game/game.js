@@ -90,11 +90,19 @@ class Game {
 
   }
 
+  on_mouse_press() {
+    return false;
+  }
+  
   on_mouse_drag() {
     if (this.drag_mode && !hovering_on_obj) {
       camera.add(createVector(movedX, 
                               movedY));
     }
+    return false;
+  }
+
+  on_mouse_release() {
     return false;
   }
 
@@ -106,14 +114,6 @@ class Game {
     }
     zoom = Math.max(Math.min(zoom, zoom_max), zoom_min);
     return false;
-  }
-
-  on_mouse_press() {
-    return false;
-  }
-
-  on_key_press() {
-    // return false;
   }
 
   make_testing_objects() {
