@@ -322,10 +322,34 @@ class Game {
     translate(camera);
     
     this.draw_grid(grid_size, camera);
+
+    const min_x = -(component_width * 3);
+    const max_x = width + (component_width * 3);
+    const min_y = -(component_height * 3);
+    const max_y = height + (component_height * 3);
     
     for (const group of this.items) {
       for (const item of group) {
-        item.draw();
+        if (item instanceof Connection) {
+          // const real_from_x = item.from_point.pos.x + camera.x;
+          // const real_from_y = item.from_point.pos.y + camera.y;
+          // const real_to_x = item.to_point.pos.x + camera.x;
+          // const real_to_y = item.to_point.pos.y + camera.y;
+          // if ((real_from_x > min_x && real_from_x < max_x &&
+          //      real_from_y > min_y && real_from_y < max_y) ||
+          //     (real_to_x > min_x && real_to_x < max_x &&
+          //      real_to_y > min_y && real_to_y < max_y)) {
+          //   item.draw();
+          // }
+          item.draw();
+        } else {
+          const real_x = item.pos.x + camera.x;
+          const real_y = item.pos.y + camera.y;
+          if (real_x > min_x && real_x < max_x &&
+              real_y > min_y && real_y < max_y) {
+            item.draw();
+          }
+        }
       }
     }
 
