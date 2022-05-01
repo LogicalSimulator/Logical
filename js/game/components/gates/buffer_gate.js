@@ -21,8 +21,8 @@ class BufferGate extends Gate {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            buffer_width, buffer_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            buffer_width * zoom, buffer_height * zoom);
   }
 
   get center_coord() {

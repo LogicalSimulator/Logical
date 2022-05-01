@@ -30,8 +30,8 @@ class Switch extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            switch_width, switch_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            switch_width * zoom, switch_height * zoom);
   }
 
   on_left_mouse_click() {

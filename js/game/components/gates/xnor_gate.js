@@ -26,8 +26,8 @@ class XnorGate extends Gate {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            xnor_width, xnor_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            xnor_width * zoom, xnor_height * zoom);
   }
 
   get center_coord() {

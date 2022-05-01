@@ -18,8 +18,8 @@ class Light extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            light_width, light_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            light_width * zoom, light_height * zoom);
   }
 
   get center_coord() {

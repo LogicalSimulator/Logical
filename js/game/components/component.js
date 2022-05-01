@@ -16,8 +16,8 @@ class Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            component_width, component_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            component_width * zoom, component_height * zoom);
   }
 
   get center_coord() {

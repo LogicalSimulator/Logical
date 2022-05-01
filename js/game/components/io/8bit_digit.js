@@ -39,8 +39,8 @@ class EightBitDigit extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            eight_bit_digit_width, eight_bit_digit_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            eight_bit_digit_width * zoom, eight_bit_digit_height * zoom);
   }
 
   get center_coord() {

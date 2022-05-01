@@ -25,8 +25,8 @@ class NorGate extends Gate {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            nor_width, nor_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            nor_width * zoom, nor_height * zoom);
   }
 
   get center_coord() {

@@ -15,8 +15,8 @@ class Gate extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            gate_width, gate_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            gate_width * zoom, gate_height * zoom);
   }
 
   get center_coord() {

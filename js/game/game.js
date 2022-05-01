@@ -9,11 +9,15 @@ const grid_size = 20;
 
 const make_testing_objs = true;
 const show_mouse_coords = true;
+const zoom_diff = 0.1;
+const zoom_min = 0.1;
+const zoom_max = 3;
 
 let hovering_on_obj = false;
 
 let frame_millis = 0;
 let camera;
+let zoom = 1;
 
 class Game {
   constructor() {
@@ -22,8 +26,6 @@ class Game {
     this.items = [this.connections, this.components];
     
     this.drag_mode = true;
-    this.drag_origin = createVector();
-    this.cam_prev_pos = createVector();
     this.dark_mode = false;
     
     frame_millis = millis();
@@ -90,21 +92,23 @@ class Game {
 
   on_mouse_drag() {
     if (this.drag_mode && !hovering_on_obj) {
-      camera = p5.Vector.add(this.cam_prev_pos, 
-                             createVector(mouseX - this.drag_origin.x, mouseY - this.drag_origin.y));
+      camera.add(createVector(movedX, 
+                              movedY));
     }
     return false;
   }
 
   on_mouse_wheel(event) {
-    // return false;
+    if (event.deltaY > 0) {
+      zoom -= zoom_diff;
+    } else {
+      zoom += zoom_diff;
+    }
+    zoom = Math.max(Math.min(zoom, zoom_max), zoom_min);
+    return false;
   }
 
   on_mouse_press() {
-    if (this.drag_mode && !hovering_on_obj) {
-      this.drag_origin = createVector(mouseX, mouseY);
-      this.cam_prev_pos = camera.copy();
-    }
     return false;
   }
 
@@ -294,14 +298,14 @@ class Game {
     }
   }
   
-  draw_grid(cell_size, shift) {
+  draw_grid(cell_size, cam) {
     push();
     if (this.dark_mode) {
       stroke(dark_grid_color) 
     } else {
       stroke(grid_color);
     }
-    
+    const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
     for (let y = shift_y - shift.y; y < height + (shift_y - shift.y); y += cell_size) {
@@ -320,43 +324,23 @@ class Game {
       background(bg_color);
     }
     translate(camera);
+    scale(zoom);
     
     this.draw_grid(grid_size, camera);
-
-    const min_x = -(component_width * 3);
-    const max_x = width + (component_width * 3);
-    const min_y = -(component_height * 3);
-    const max_y = height + (component_height * 3);
     
     for (const group of this.items) {
       for (const item of group) {
-        if (item instanceof Connection) {
-          // const real_from_x = item.from_point.pos.x + camera.x;
-          // const real_from_y = item.from_point.pos.y + camera.y;
-          // const real_to_x = item.to_point.pos.x + camera.x;
-          // const real_to_y = item.to_point.pos.y + camera.y;
-          // if ((real_from_x > min_x && real_from_x < max_x &&
-          //      real_from_y > min_y && real_from_y < max_y) ||
-          //     (real_to_x > min_x && real_to_x < max_x &&
-          //      real_to_y > min_y && real_to_y < max_y)) {
-          //   item.draw();
-          // }
-          item.draw();
-        } else {
-          const real_x = item.pos.x + camera.x;
-          const real_y = item.pos.y + camera.y;
-          if (real_x > min_x && real_x < max_x &&
-              real_y > min_y && real_y < max_y) {
-            item.draw();
-          }
-        }
+        item.draw();
       }
     }
 
     if (show_mouse_coords) {
       push();
       fill(0);
-      text((mouseX - camera.x) + ", " + (mouseY - camera.y), mouseX - camera.x, mouseY - camera.y);
+      textSize(12 / zoom);
+      text(Math.round((mouseX - camera.x) / zoom) + ", " + Math.round((mouseY - camera.y) / zoom), 
+           (mouseX - camera.x) / zoom, 
+           (mouseY - camera.y) / zoom);
       pop();
     }
   }

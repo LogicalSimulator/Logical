@@ -27,9 +27,9 @@ function draw() {
   push();
   strokeWeight(0);
   textAlign(LEFT, BOTTOM);
-  textSize(12);
+  textSize(12 / zoom);
   fill(0);
-  text("FPS: " + last_fps, 10 - camera.x, height - 10 - camera.y);
+  text("FPS: " + last_fps, (10 - camera.x) / zoom, (height - 10 - camera.y) / zoom);
   pop();
 }
 

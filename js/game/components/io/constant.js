@@ -31,8 +31,8 @@ class Constant extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            constant_width, constant_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            constant_width * zoom, constant_height * zoom);
   }
   
   update() {

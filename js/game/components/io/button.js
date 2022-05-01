@@ -30,8 +30,8 @@ class Button extends Component {
 
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
-                            this.pos.x + camera.x, this.pos.y + camera.y, 
-                            button_width, button_height);
+                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                            button_width * zoom, button_height * zoom);
   }
 
   on_left_mouse_click() {
