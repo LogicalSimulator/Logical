@@ -76,6 +76,7 @@ class ConnectionPoint {
     this.from = from;
     this.offset = offset;
     this.pos = p5.Vector.add(p5.Vector.add(this.parent.pos, from), this.offset);
+    this.mouse_pressed = false;
     this._powered = false;
   }
 
@@ -89,12 +90,56 @@ class ConnectionPoint {
 
   mouse_overlapping() {
     return collidePointCircle(mouseX, mouseY, 
-                             this.pos.x + camera.x, this.pos.y + camera.y, 
-                             connection_point_radius);
+                              (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+                              connection_point_radius * zoom);
+  }
+
+  on_left_mouse_click() {
+    
+  }
+
+  on_right_mouse_click() {
+    
+  }
+
+  on_left_mouse_release() {
+    
+  }
+
+  on_right_mouse_release() {
+    
+  }
+
+  handle_mouse() {
+    if (this.mouse_pressed) {
+      hovering_on_obj = true;
+    }
+    if (mouseIsPressed) {
+      if (this.mouse_overlapping()) {
+        hovering_on_obj = true;
+        if (!this.mouse_pressed) {
+          this.mouse_pressed = true;
+          if (mouseButton === LEFT) {
+            this.on_left_mouse_click();
+          } else if (mouseButton === RIGHT) {
+            this.on_right_mouse_click();
+          }
+        }
+      }
+    } else {
+      if (this.mouse_pressed) {
+          this.mouse_pressed = false;
+          if (mouseButton === LEFT) {
+            this.on_left_mouse_release();
+          } else if (mouseButton === RIGHT) {
+            this.on_right_mouse_release();
+          }
+        }
+    }
   }
   
   update() {
-    
+    this.handle_mouse();
   }
 
   draw(outline) {
