@@ -93,7 +93,7 @@ class Game {
       camera = p5.Vector.add(this.cam_prev_pos, 
                              createVector(mouseX - this.drag_origin.x, mouseY - this.drag_origin.y));
     }
-    // return false;
+    return false;
   }
 
   on_mouse_wheel(event) {
@@ -105,7 +105,7 @@ class Game {
       this.drag_origin = createVector(mouseX, mouseY);
       this.cam_prev_pos = camera.copy();
     }
-    // return false;
+    return false;
   }
 
   on_key_press() {

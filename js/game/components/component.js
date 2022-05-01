@@ -4,9 +4,9 @@ const component_width = 50;
 const component_height = 50;
 
 const component_stroke_weight = 1;
-const component_stroke = "black";
-const component_fill = "snow";
-const component_powered_fill = "cyan";
+const component_stroke = 0;  // black 
+const component_fill = 255;  // white
+const component_powered_fill = [0, 255, 255];  // cyan
 
 class Component {
   constructor(pos) {
