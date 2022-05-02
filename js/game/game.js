@@ -308,11 +308,11 @@ class Game {
     const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
-    for (let y = shift_y - shift.y; y < height + (shift_y - shift.y); y += cell_size) {
-      line(-shift.x, y, width + (shift_x - shift.x), y);
+    for (let y = shift_y - shift.y; y < (height / zoom) + (shift_y - shift.y); y += cell_size) {
+      line(-shift.x, y, (width / zoom) + (shift_x - shift.x), y);
     }
-    for (let x = shift_x - shift.x; x < width + (shift_x - shift.x); x += cell_size) {
-      line(x, -shift.y, x, height + (shift_y - shift.y));
+    for (let x = shift_x - shift.x; x < (width / zoom) + (shift_x - shift.x); x += cell_size) {
+      line(x, -shift.y, x, (height / zoom) + (shift_y - shift.y));
     }
     pop();
   }
