@@ -35,6 +35,7 @@ class Switch extends Component {
   }
 
   on_left_mouse_click() {
+    Sounds.play_tap();
     this.powered = !this.powered;
   }
   

@@ -10,6 +10,10 @@ let last_fps = 0;
 
 let game;
 
+function preload() {
+  preload_sounds();
+}
+
 function setup() {
   createCanvas(windowWidth - window_diff, windowHeight - window_diff);
   frameRate(desired_fps);
