@@ -16,6 +16,7 @@ const zoom_max = 3;
 let hovering_on_obj = false;
 
 let frame_millis = 0;
+
 let camera;
 let zoom = 1;
 
@@ -31,6 +32,7 @@ class Game {
     frame_millis = millis();
 
     camera = createVector(0, 0);
+    
     hovering_on_obj = false;
 
     if (make_testing_objs) {
@@ -107,12 +109,26 @@ class Game {
   }
 
   on_mouse_wheel(event) {
+    let scale_factor;
     if (event.deltaY > 0) {
-      zoom -= zoom_diff;
+      scale_factor = (zoom - zoom_diff) / zoom;
+      // scale_factor = 1 - zoom_diff;
     } else {
-      zoom += zoom_diff;
+      scale_factor = (zoom + zoom_diff) / zoom;
+      // scale_factor = 1 + zoom_diff;
     }
-    zoom = Math.max(Math.min(zoom, zoom_max), zoom_min);
+
+    // https://stackoverflow.com/a/70660569/10291933
+    const previous = zoom;
+    zoom *= scale_factor;
+    zoom = Math.min(Math.max(zoom, zoom_min), zoom_max);
+    zoom = Math.round(zoom * 10) / 10;
+
+    if (zoom != previous) {
+      camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
+      camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
+    }
+    
     return false;
   }
 
@@ -308,11 +324,18 @@ class Game {
     const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
-    for (let y = shift_y - shift.y; y < (height / zoom) + (shift_y - shift.y); y += cell_size) {
-      line(-shift.x, y, (width / zoom) + (shift_x - shift.x), y);
+    const add_some = cell_size * 3 * zoom;
+    for (let y = shift_y - shift.y; 
+         y < ((height + add_some) / zoom) + (shift_y - shift.y); 
+         y += cell_size) {
+      line(-shift.x, y, 
+           ((width + add_some) / zoom) + (shift_x - shift.x), y);
     }
-    for (let x = shift_x - shift.x; x < (width / zoom) + (shift_x - shift.x); x += cell_size) {
-      line(x, -shift.y, x, (height / zoom) + (shift_y - shift.y));
+    for (let x = shift_x - shift.x; 
+         x < ((width + add_some) / zoom) + (shift_x - shift.x); 
+         x += cell_size) {
+      line(x, -shift.y, x, 
+           ((height + add_some) / zoom) + (shift_y - shift.y));
     }
     pop();
   }
@@ -323,9 +346,10 @@ class Game {
     } else {
       background(bg_color);
     }
+
     translate(camera);
     scale(zoom);
-    
+
     this.draw_grid(grid_size, camera);
     
     for (const group of this.items) {
@@ -338,9 +362,11 @@ class Game {
       push();
       fill(0);
       textSize(12 / zoom);
-      text(Math.round((mouseX - camera.x) / zoom) + ", " + Math.round((mouseY - camera.y) / zoom), 
-           (mouseX - camera.x) / zoom, 
-           (mouseY - camera.y) / zoom);
+      let string = Math.round((mouseX - camera.x) / zoom) + ", " + Math.round((mouseY - camera.y) / zoom);
+      if (zoom !== 1) {
+        string += " at " + zoom + "x";
+      }
+      text(string, (mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       pop();
     }
   }
