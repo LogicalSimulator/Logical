@@ -44,6 +44,9 @@ class Component {
     if (this.mouse_pressed) {
       hovering_on_obj = true;
     }
+    if (hovering_on_button()) {
+      return;
+    }
     if (mouseIsPressed) {
       if (this.mouse_overlapping()) {
         hovering_on_obj = true;

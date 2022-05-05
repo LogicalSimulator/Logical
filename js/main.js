@@ -21,8 +21,10 @@ function setup() {
 }
 
 function draw() {
+  push();
   game.update();
   game.draw();
+  pop();
   
   if (millis() - last_fps_time > 1000) {
     last_fps_time = millis();
@@ -31,9 +33,9 @@ function draw() {
   push();
   strokeWeight(0);
   textAlign(LEFT, BOTTOM);
-  textSize(12 / zoom);
+  textSize(12);
   fill(0);
-  text("FPS: " + last_fps, (10 - camera.x) / zoom, (height - 10 - camera.y) / zoom);
+  text("FPS: " + last_fps, 10, height - 10);
   pop();
 }
 

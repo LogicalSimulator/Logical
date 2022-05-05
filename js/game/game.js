@@ -24,6 +24,7 @@ class Game {
   constructor() {
     this.connections = [];
     this.components = [];
+    this.gui = [];
     this.items = [this.connections, this.components];
     
     this.drag_mode = true;
@@ -35,9 +36,54 @@ class Game {
     
     hovering_on_obj = false;
 
+    this.make_gui();
+
     if (make_testing_objs) {
       this.make_testing_objects();  
     }
+  }
+
+  make_gui() {
+    const side_group = new VerticalWidgetGroup();
+
+    const button_names = {
+      "Switch": () => {},
+      "Button": () => {},
+      "Clock": () => {},
+      "True constant": () => {},
+      "False constant": () => {},
+      "Light": () => {},
+      "4 bit display": () => {},
+      "8 bit display": () => {},
+      "Buffer gate": () => {},
+      "NOT gate": () => {},
+      "OR gate": () => {},
+      "NOR gate": () => {},
+      "AND gate": () => {},
+      "NAND gate": () => {},
+      "XOR gate": () => {},
+      "XNOR gate": () => {}
+    };
+    const buttons = [];
+
+    for (const key of Object.keys(button_names)) {
+      buttons.push(
+        create_button(key, 0, 0, 0, 0, 
+                      button_names[key])
+      )
+    }
+
+    for (let i = 0; i < buttons.length; i ++) {
+      side_group.widgets.push(buttons[i]);
+    }
+
+    side_group.x = 10;
+    side_group.y = 10;
+    side_group.width = 100;
+    side_group.height = height - 20;
+    side_group.y_pad = 5;
+    
+    this.gui.push(side_group);
   }
   
   get_hover_component(distance) {
@@ -97,7 +143,7 @@ class Game {
   }
   
   on_mouse_drag() {
-    if (this.drag_mode && !hovering_on_obj) {
+    if (this.drag_mode && !hovering_on_obj && !hovering_on_button()) {
       camera.add(createVector(movedX, 
                               movedY));
     }
@@ -109,24 +155,28 @@ class Game {
   }
 
   on_mouse_wheel(event) {
-    let scale_factor;
-    if (event.deltaY > 0) {
-      scale_factor = (zoom - zoom_diff) / zoom;
-      // scale_factor = 1 - zoom_diff;
+    if (hovering_on_button()) {
+      
     } else {
-      scale_factor = (zoom + zoom_diff) / zoom;
-      // scale_factor = 1 + zoom_diff;
-    }
-
-    // https://stackoverflow.com/a/70660569/10291933
-    const previous = zoom;
-    zoom *= scale_factor;
-    zoom = Math.min(Math.max(zoom, zoom_min), zoom_max);
-    zoom = Math.round(zoom * 10) / 10;
-
-    if (zoom != previous) {
-      camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
-      camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
+      let scale_factor;
+      if (event.deltaY > 0) {
+        scale_factor = (zoom - zoom_diff) / zoom;
+        // scale_factor = 1 - zoom_diff;
+      } else {
+        scale_factor = (zoom + zoom_diff) / zoom;
+        // scale_factor = 1 + zoom_diff;
+      }
+  
+      // https://stackoverflow.com/a/70660569/10291933
+      const previous = zoom;
+      zoom *= scale_factor;
+      zoom = Math.min(Math.max(zoom, zoom_min), zoom_max);
+      zoom = Math.round(zoom * 10) / 10;
+  
+      if (zoom != previous) {
+        camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
+        camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
+      }
     }
     
     return false;
@@ -312,6 +362,9 @@ class Game {
         return element != undefined;
       });
     }
+    for (const widget of this.gui) {
+      widget.update();
+    }
   }
   
   draw_grid(cell_size, cam) {
@@ -347,6 +400,7 @@ class Game {
       background(bg_color);
     }
 
+    push();
     translate(camera);
     scale(zoom);
 
@@ -357,9 +411,19 @@ class Game {
         item.draw();
       }
     }
+    pop();
+
+    
+    push();
+    for (const widget of this.gui) {
+      widget.draw();
+    }
+    pop();
 
     if (show_mouse_coords) {
       push();
+      translate(camera);
+      scale(zoom);
       fill(0);
       textSize(12 / zoom);
       let string = Math.round((mouseX - camera.x) / zoom) + ", " + Math.round((mouseY - camera.y) / zoom);
