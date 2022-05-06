@@ -44,17 +44,26 @@ class Game {
   }
 
   make_gui() {
-    const side_group = new VerticalWidgetGroup();
+    let main_group;
+    let sub_group;
+    if (width > height) {
+      main_group = VerticalWidgetGroup;
+      sub_group = HorizontalWidgetGroup;
+    } else {
+      sub_group = VerticalWidgetGroup;
+      main_group = HorizontalWidgetGroup;
+    }
+    this.side_group = new main_group();
 
     const button_names = {
       "Switch": () => {},
       "Button": () => {},
       "Clock": () => {},
-      "True constant": () => {},
-      "False constant": () => {},
+      "True\nconstant": () => {},
+      "False\nconstant": () => {},
       "Light": () => {},
-      "4 bit display": () => {},
-      "8 bit display": () => {},
+      "4 bit\ndisplay": () => {},
+      "8 bit\ndisplay": () => {},
       "Buffer gate": () => {},
       "NOT gate": () => {},
       "OR gate": () => {},
@@ -64,6 +73,7 @@ class Game {
       "XOR gate": () => {},
       "XNOR gate": () => {}
     };
+    
     const buttons = [];
 
     for (const key of Object.keys(button_names)) {
@@ -73,17 +83,42 @@ class Game {
       )
     }
 
-    for (let i = 0; i < buttons.length; i ++) {
-      side_group.widgets.push(buttons[i]);
+    const btns_per_row = 2;
+    for (let i = 0; i < buttons.length; i += btns_per_row) {
+      const row = new sub_group();
+      for (let j = 0; j < btns_per_row; j ++) {
+        row.widgets.push(buttons[i + j]);
+      }
+      this.side_group.widgets.push(row);
     }
 
-    side_group.x = 10;
-    side_group.y = 10;
-    side_group.width = 100;
-    side_group.height = height - 20;
-    side_group.y_pad = 5;
-    
-    this.gui.push(side_group);
+    this.side_group.x = 10;
+    this.side_group.y = 10;
+    if (width > height) {
+      this.side_group.width = 150;
+      this.side_group.height = height - 20;
+      this.side_group.y_pad = 5;
+    } else {
+      this.side_group.width = width - 20;
+      this.side_group.height = 100;
+      this.side_group.x_pad = 5;
+    }
+
+    if (!(this.side_group in this.gui)) {
+      this.gui.push(this.side_group);
+    }
+  }
+
+  resize_gui() {
+    if (this.side_group instanceof VerticalWidgetGroup) {
+      this.side_group.width = 150;
+      this.side_group.height = height - 20;
+      this.side_group.y_pad = 5;
+    } else {
+      this.side_group.width = width - 20;
+      this.side_group.height = 100;
+      this.side_group.x_pad = 5;
+    }
   }
   
   get_hover_component(distance) {
@@ -135,7 +170,7 @@ class Game {
   }
   
   on_resize() {
-
+    this.resize_gui();
   }
 
   on_mouse_press() {

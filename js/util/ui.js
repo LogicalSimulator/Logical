@@ -5,6 +5,7 @@ class Widget {
     this._width = 0;
     this._height = 0;
     this._enabled = true;
+    this.destroy_me = false;
   }
 
   get x() {

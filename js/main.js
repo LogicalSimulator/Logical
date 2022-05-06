@@ -32,10 +32,10 @@ function draw() {
   }
   push();
   strokeWeight(0);
-  textAlign(LEFT, BOTTOM);
+  textAlign(RIGHT, BOTTOM);
   textSize(12);
   fill(0);
-  text("FPS: " + last_fps, 10, height - 10);
+  text("FPS: " + last_fps, width - 10, height - 10);
   pop();
 }
 
