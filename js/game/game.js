@@ -98,35 +98,37 @@ class Game {
     if (make_vertical) {
       this.side_group.width = 150;
       this.side_group.height = height;
-      // this.side_group.y_pad = 5;
+      this.side_group.y_pad = -1;
     } else {
       this.side_group.width = width;
       this.side_group.height = 100;
-      // this.side_group.x_pad = 5;
+      this.side_group.x_pad = -1;
     }
 
     this.gui.push(this.side_group);
 
-    const line = new WidgetLine();
+    this.button_line = new WidgetLine();
     if (make_vertical) {
-      line.x = this.side_group.x + this.side_group.width;
-      line.y = this.side_group.y;
-      line.width = 0;
-      line.height = this.side_group.height;
+      this.button_line.x = this.side_group.x + this.side_group.width;
+      this.button_line.y = this.side_group.y;
+      this.button_line.width = 0;
+      this.button_line.height = this.side_group.height;
     } else {
-      line.x = this.side_group.x;
-      line.y = this.side_group.y + this.side_group.height;
-      line.width = this.side_group.width;
-      line.height = 0;
+      this.button_line.x = this.side_group.x;
+      this.button_line.y = this.side_group.y + this.side_group.height;
+      this.button_line.width = this.side_group.width;
+      this.button_line.height = 0;
     }
-    this.gui.push(line);
+    this.gui.push(this.button_line);
   }
 
   resize_gui() {
     if (this.side_group instanceof VerticalWidgetGroup) {
       this.side_group.height = height;
+      this.button_line.height = this.side_group.height;
     } else {
       this.side_group.width = width;
+      this.button_line.width = this.side_group.width;
     }
   }
   
