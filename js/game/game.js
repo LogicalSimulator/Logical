@@ -28,6 +28,14 @@ const MOVE_MODE = 4;
 
 let mouse_mode = PAN_MODE;
 
+const GENERAL_INTERACT_MODE = 0;
+const GENERAL_EDIT_MODE = 1;
+
+let general_mode = GENERAL_INTERACT_MODE;
+
+const menu_outside_pad = 10;
+const menu_button_height = 30;
+
 class Game {
   constructor() {
     this.connections = [];
@@ -59,8 +67,8 @@ class Game {
       main_group = VerticalWidgetGroup;
       sub_group = HorizontalWidgetGroup;
     } else {
-      sub_group = VerticalWidgetGroup;
       main_group = HorizontalWidgetGroup;
+      sub_group = VerticalWidgetGroup;
     }
     this.side_group = new main_group();
 
@@ -130,15 +138,41 @@ class Game {
       this.button_line.height = 0;
     }
     this.gui.push(this.button_line);
+
+    this.menu_group = new main_group(
+      [
+        create_button("Menu", 0, 0, 0, 0, () => {}),
+        create_button("Interact mode", 0, 0, 0, 0, () => {}),
+        create_button("Edit mode", 0, 0, 0, 0, () => {})
+      ]
+    );
+    
+    if (make_vertical) {
+      this.menu_group.x = width - 100 - menu_outside_pad;
+      this.menu_group.y = this.side_group.y + menu_outside_pad;
+      this.menu_group.width = 100;
+      this.menu_group.height = (menu_button_height + 5) * 3;
+      this.menu_group.y_pad = 5;
+    } else {
+      this.menu_group.x = this.side_group.x + menu_outside_pad;
+      this.menu_group.y = height - menu_button_height - menu_outside_pad;
+      this.menu_group.width = 300;
+      this.menu_group.height = menu_button_height;
+      this.menu_group.x_pad = 5;
+    }
+
+    this.gui.push(this.menu_group);
   }
 
   resize_gui() {
     if (this.side_group instanceof VerticalWidgetGroup) {
       this.side_group.height = height;
       this.button_line.height = this.side_group.height;
+      this.menu_group.x = width - 100 - menu_outside_pad;
     } else {
       this.side_group.width = width;
       this.button_line.width = this.side_group.width;
+      this.menu_group.y = height - menu_button_height - menu_outside_pad;
     }
   }
   
