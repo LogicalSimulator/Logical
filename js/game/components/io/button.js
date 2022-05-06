@@ -13,6 +13,7 @@ class Button extends Component {
     this.output1 = new ConnectionOutPoint(this, createVector(button_width / 2, button_height / 2), 
                                           createVector(component_width * 0.75, 0));
     this._powered = false;
+    this.click_activate = false
   }
 
   get powered() {

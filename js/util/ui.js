@@ -52,7 +52,7 @@ class Widget {
     
   }
 
-  draw(x, y, width, height) {
+  draw() {
     
   }
 }
@@ -104,7 +104,7 @@ class WidgetButton extends Widget {
     this.clickable.enabled = e;
   }
   
-  draw(x, y, width, height) {
+  draw() {
     this.clickable.draw();
   }
 }
@@ -217,9 +217,9 @@ class WidgetGroup {
     }
   }
 
-  draw(x, y, width, height) {
+  draw() {
     for (let widget of this.widgets) {
-      widget.draw(x, y, width, height);
+      widget.draw();
     }
   }
 }
@@ -253,6 +253,36 @@ class VerticalWidgetGroup extends WidgetGroup {
       widget.width = new_width;
       widget.height = new_height;
     }
+  }
+}
+
+class RadiobuttonGroup {
+  constructor(widgets) {
+    if (widgets != undefined) {
+      this.widgets = widgets;
+    } else {
+      this.widgets = [];
+    }
+    this._enabled = true;
+  }
+  
+  get enabled() {
+    return this._enabled;
+  }
+
+  set enabled(e) {
+    this._enabled = e;
+    for (const w of this.widgets) {
+      w.enabled = e;
+    }
+  }
+
+  update() {
+    
+  }
+
+  draw() {
+    
   }
 }
 

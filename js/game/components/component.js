@@ -12,6 +12,10 @@ class Component {
   constructor(pos) {
     this.pos = pos;
     this.mouse_pressed = false;
+    this.camera_shifted = false
+    this.activated_check = false
+    this.old_pos_mouse = createVector(mouseX, mouseY)
+    this.click_activate = true
   }
 
   mouse_overlapping() {
@@ -26,7 +30,7 @@ class Component {
 
   set_pos_center(p) {
     this.pos = p;
-    this.pos.add(createVector(component_width / 2, components_height / 2));
+    //this.pos.add(createVector(component_width / 2, components_height / 2));
   }
 
   on_left_mouse_click() {
@@ -45,32 +49,57 @@ class Component {
     
   }
 
+  mouse_clicked(){
+    
+  }
+
   handle_mouse() {
     if (this.mouse_overlapping() && !(this in hovering)) {
       hovering.push(this);
     }
-    if (mouse_mode !== INTERACT_MODE || hovering_on_button()) {
+    if (hovering_on_button()) {
       return;
     }
-    if (mouseIsPressed) {
-      if (this.mouse_overlapping()) {
-        if (!this.mouse_pressed) {
-          this.mouse_pressed = true;
-          if (mouseButton === LEFT) {
-            this.on_left_mouse_click();
-          } else if (mouseButton === RIGHT) {
-            this.on_right_mouse_click();
+    if (this.click_activate) {
+      if (mouseIsPressed) {
+        if (!this.activated_check){
+          this.old_pos_mouse = createVector(mouseX, mouseY);
+        }
+        if (this.mouse_overlapping()){
+          this.activated_check = true;
+        }
+      } else {
+        if (this.activated_check) {
+          this.activated_check = false;
+          if (this.mouse_overlapping()){
+            let diff = p5.Vector.sub(createVector(mouseX, mouseY),this.old_pos_mouse);
+            if (diff.mag() < 1) {
+              this.on_left_mouse_click();
+            }
           }
         }
       }
     } else {
-      if (this.mouse_pressed) {
-          this.mouse_pressed = false;
-          if (mouseButton === LEFT) {
-            this.on_left_mouse_release();
-          } else if (mouseButton === RIGHT) {
-            this.on_right_mouse_release();
+        if (mouseIsPressed) {
+          if (this.mouse_overlapping()) {
+            if (!this.mouse_pressed) {
+              this.mouse_pressed = true;
+              if (mouseButton === LEFT) {
+                this.on_left_mouse_click();
+              } else if (mouseButton === RIGHT) {
+                this.on_right_mouse_click();
+              }
+            }
           }
+        } else {
+          if (this.mouse_pressed) {
+              this.mouse_pressed = false;
+              if (mouseButton === LEFT) {
+                this.on_left_mouse_release();
+              } else if (mouseButton === RIGHT) {
+                this.on_right_mouse_release();
+              }
+            }
         }
     }
   }

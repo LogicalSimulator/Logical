@@ -52,6 +52,9 @@ function mouseDragged() {
   return game.on_mouse_drag();
 }
 
+function mouseClicked() {
+  game.mouse_clicked()
+}
 
 function mouseReleased() {
   return game.on_mouse_release();

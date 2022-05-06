@@ -22,17 +22,11 @@ let zoom = 1;
 
 const NONE_MODE = 0;
 const PAN_MODE = 1;
-const INTERACT_MODE = 2;
+const ITEM_MODE = 2;
 const ADD_MODE = 3;
-const MOVE_MODE = 4;
 
 let mouse_mode = PAN_MODE;
-
-const GENERAL_INTERACT_MODE = 0;
-const GENERAL_EDIT_MODE = 1;
-
-let general_mode = GENERAL_INTERACT_MODE;
-
+ 
 const menu_outside_pad = 10;
 const menu_button_height = 30;
 
@@ -142,8 +136,6 @@ class Game {
     this.menu_group = new main_group(
       [
         create_button("Menu", 0, 0, 0, 0, () => {}),
-        create_button("Interact mode", 0, 0, 0, 0, () => {}),
-        create_button("Edit mode", 0, 0, 0, 0, () => {})
       ]
     );
     
@@ -151,12 +143,12 @@ class Game {
       this.menu_group.x = width - 100 - menu_outside_pad;
       this.menu_group.y = this.side_group.y + menu_outside_pad;
       this.menu_group.width = 100;
-      this.menu_group.height = (menu_button_height + 5) * 3;
+      this.menu_group.height = (menu_button_height + 5) * 1;
       this.menu_group.y_pad = 5;
     } else {
       this.menu_group.x = this.side_group.x + menu_outside_pad;
       this.menu_group.y = height - menu_button_height - menu_outside_pad;
-      this.menu_group.width = 300;
+      this.menu_group.width = 100;
       this.menu_group.height = menu_button_height;
       this.menu_group.x_pad = 5;
     }
@@ -199,9 +191,7 @@ class Game {
     for (let comp of this.components){
       if (comp.mouse_overlapping()){
         allOverlaps.push(comp)
-        
       }
-      
     }
     //Get the one closest
     let return_comp = undefined
@@ -257,9 +247,8 @@ class Game {
     if (hovering_on_button()) {
       mouse_mode = ADD_MODE;
     } else if (hovering.length > 0) {
-      // mouse_mode = MOVE_MODE;
-      // this.drag_component = this.get_hover_component(30);
-      mouse_mode = INTERACT_MODE;
+      mouse_mode = ITEM_MODE;
+      this.drag_component = this.get_hover_component(30);
     } else {
       mouse_mode = PAN_MODE;
     }
@@ -270,11 +259,11 @@ class Game {
     if (hovering_on_button()) {
       
     } else if (hovering.length > 0) {
-      if (mouse_mode === MOVE_MODE) {
-        if (mouseIsPressed && this.drag_component != undefined){
-          let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-          this.drag_component.set_pos_center(mp)
-        }
+      if (mouse_mode === ITEM_MODE && 
+          mouseIsPressed && 
+          this.drag_component != undefined) {
+        let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+        this.drag_component.set_pos_center(mp)
       }
     } else {
       if (mouse_mode === PAN_MODE) {
@@ -287,6 +276,12 @@ class Game {
   on_mouse_release() {
     this.drag_component = undefined;
     return false;
+  }
+  
+  mouse_clicked(){
+    for (let comp of this.components){
+      comp.mouse_clicked()
+    }
   }
 
   on_mouse_wheel(event) {
@@ -501,7 +496,6 @@ class Game {
       widget.update();
     }
   }
-  
   
   draw_grid(cell_size, cam) {
     push();
