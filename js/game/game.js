@@ -20,6 +20,10 @@ let frame_millis = 0;
 let camera;
 let zoom = 1;
 
+const NONE_MODE = 0;
+const PAN_MODE = 1;
+const ADD_MODE = 2;
+
 class Game {
   constructor() {
     this.connections = [];
@@ -27,7 +31,7 @@ class Game {
     this.gui = [];
     this.items = [this.connections, this.components];
     
-    this.drag_mode = true;
+    this.mouse_mode = PAN_MODE;
     this.dark_mode = false;
     
     frame_millis = millis();
@@ -187,13 +191,25 @@ class Game {
   }
 
   on_mouse_press() {
+    if (hovering_on_button()) {
+      this.mouse_mode = ADD_MODE;
+    } else if (hovering_on_obj) {
+      this.mouse_mode = NONE_MODE;
+    } else {
+      this.mouse_mode = PAN_MODE;
+    }
     return false;
   }
   
   on_mouse_drag() {
-    if (this.drag_mode && !hovering_on_obj && !hovering_on_button()) {
-      camera.add(createVector(movedX, 
-                              movedY));
+    if (hovering_on_button()) {
+      
+    } else if (hovering_on_obj) {
+      
+    } else {
+      if (this.mouse_mode === PAN_MODE) {
+        camera.add(createVector(movedX, movedY));
+      }
     }
     return false;
   }
