@@ -13,6 +13,7 @@
   transform: translate(-50%, -50%);
 }
 
+/* https://www.w3schools.com/howto/howto_css_loader.asp */
 .loader {
   border: 5px solid #F3F3F3;
   border-radius: 50%;
