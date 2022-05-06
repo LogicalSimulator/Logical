@@ -99,10 +99,12 @@ class Game {
       this.side_group.width = 150;
       this.side_group.height = height;
       this.side_group.y_pad = -1;
+      camera.x = this.side_group.width;
     } else {
       this.side_group.width = width;
       this.side_group.height = 100;
       this.side_group.x_pad = -1;
+      camera.y = this.side_group.height;
     }
 
     this.gui.push(this.side_group);
