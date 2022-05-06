@@ -39,6 +39,8 @@ class Game {
     
     this.dark_mode = false;
     this.drag_component = undefined;
+    this.creating_new_component = false;
+    this.new_component = undefined;
     
     frame_millis = millis();
 
@@ -67,7 +69,7 @@ class Game {
     this.side_group = new main_group();
 
     const button_names = {
-      "Switch": () => {},
+      "Switch": () => {this.add_component(0)},
       "Button": () => {},
       "Clock": () => {},
       "True\nconstant": () => {},
@@ -155,7 +157,7 @@ class Game {
 
     this.gui.push(this.menu_group);
   }
-
+  
   resize_gui() {
     if (this.side_group instanceof VerticalWidgetGroup) {
       this.side_group.height = height;
@@ -166,6 +168,19 @@ class Game {
       this.button_line.width = this.side_group.width;
       this.menu_group.y = height - menu_button_height - menu_outside_pad;
     }
+  }
+
+  add_component(c){
+    if (mouse_mode != ADD_MODE){
+      return
+    }
+    this.creating_new_component = true
+    if (c == 0){
+      this.items[1].push(new Light(createVector((mouseX-camera.x)/zoom,(mouseY-camera.y)/zoom)))
+    }
+    mouse_mode = ITEM_MODE
+    this.components = this.items[1]
+    this.drag_component = this.items[1][this.items[1].length-1]
   }
   
   get_hover_component(distance) {
@@ -188,12 +203,12 @@ class Game {
     //   return comps;
     // }
     let allOverlaps = []
-    for (let comp of this.components){
-      if (comp.mouse_overlapping()){
+    for (let comp of this.components) {
+      if (comp.mouse_overlapping()) {
         allOverlaps.push(comp)
       }
     }
-    //Get the one closest
+    // Get the one closest
     let return_comp = undefined
     if (allOverlaps.length > 0){
       let closest = 99999
@@ -249,6 +264,10 @@ class Game {
     } else if (hovering.length > 0) {
       mouse_mode = ITEM_MODE;
       this.drag_component = this.get_hover_component(30);
+      // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+      // this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
+      // this.drag_component.pos = mp;
+      // console.log(this.drag_component.mouse_select_pos_diff)
     } else {
       mouse_mode = PAN_MODE;
     }
@@ -256,14 +275,22 @@ class Game {
   }
   
   on_mouse_drag() {
+    // if (mouse_mode == ADD_MODE){
+    //   if (this.creating_new_component){
+    //     let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+    //     this.items[1][this.items[1].length-1].set_pos_center(mp)
+    //   }
+    // }
     if (hovering_on_button()) {
       
     } else if (hovering.length > 0) {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
           this.drag_component != undefined) {
-        let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-        this.drag_component.set_pos_center(mp)
+        // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+        // this.drag_component.set_pos_center(mp)
+        // this.drag_component.pos = mp;
+        this.drag_component.pos.add(createVector(movedX, movedY));
       }
     } else {
       if (mouse_mode === PAN_MODE) {
@@ -274,13 +301,14 @@ class Game {
   }
 
   on_mouse_release() {
+    this.creating_new_component = false
     this.drag_component = undefined;
     return false;
   }
   
-  mouse_clicked(){
-    for (let comp of this.components){
-      comp.mouse_clicked()
+  mouse_clicked() {
+    for (let comp of this.components) {
+      comp.mouse_clicked();
     }
   }
 

@@ -1,6 +1,6 @@
 "use strict";
 
-const connection_stroke_weight = component_stroke_weight;
+const connection_stroke_weight = component_stroke_weight*2;
 const connection_stroke = component_stroke;
 const connection_powered_stroke = component_powered_fill;
 
@@ -54,11 +54,18 @@ class Connection {
     strokeWeight(connection_stroke_weight);
     stroke(this._powered ? connection_powered_stroke : connection_stroke);
     noFill();
+
+    beginShape()
+    vertex(this.from_point.pos.x, this.from_point.pos.y)
+    bezierVertex(from_point_offset.x, from_point_offset.y,
+                 to_point_offset.x, to_point_offset.y,
+                 this.to_point.pos.x, this.to_point.pos.y)
     
-    bezier(this.from_point.pos.x, this.from_point.pos.y,
-           from_point_offset.x, from_point_offset.y,
-           to_point_offset.x, to_point_offset.y,
-           this.to_point.pos.x, this.to_point.pos.y);
+    endShape()
+    //  bezier(this.from_point.pos.x, this.from_point.pos.y,
+    //        from_point_offset.x, from_point_offset.y,
+    //        to_point_offset.x, to_point_offset.y,
+    //        this.to_point.pos.x, this.to_point.pos.y);
     
     pop();
   }
