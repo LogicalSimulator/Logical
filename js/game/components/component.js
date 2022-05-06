@@ -24,6 +24,11 @@ class Component {
     return p5.Vector.add(this.pos, createVector(component_width / 2, components_height / 2));
   }
 
+  set_pos_center(p) {
+    this.pos = p;
+    this.pos.add(createVector(component_width / 2, components_height / 2));
+  }
+
   on_left_mouse_click() {
     
   }
@@ -44,7 +49,7 @@ class Component {
     if (this.mouse_overlapping() && !(this in hovering)) {
       hovering.push(this);
     }
-    if (hovering_on_button()) {
+    if (mouse_mode !== INTERACT_MODE || hovering_on_button()) {
       return;
     }
     if (mouseIsPressed) {

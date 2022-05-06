@@ -22,7 +22,11 @@ let zoom = 1;
 
 const NONE_MODE = 0;
 const PAN_MODE = 1;
-const ADD_MODE = 2;
+const INTERACT_MODE = 2;
+const ADD_MODE = 3;
+const MOVE_MODE = 4;
+
+let mouse_mode = PAN_MODE;
 
 class Game {
   constructor() {
@@ -31,8 +35,8 @@ class Game {
     this.gui = [];
     this.items = [this.connections, this.components];
     
-    this.mouse_mode = PAN_MODE;
     this.dark_mode = false;
+    this.drag_component = undefined;
     
     frame_millis = millis();
 
@@ -139,24 +143,49 @@ class Game {
   }
   
   get_hover_component(distance) {
-    if (distance == undefined) {
-      for (const i in this.components) {
-        const comp = this.components[i];
-        if (comp.mouse_overlapping()) {
-          return i;
-        }
+    // if (distance == undefined) {
+    //   for (const i in this.components) {
+    //     const comp = this.components[i];
+    //     if (comp.mouse_overlapping()) {
+    //       return i;
+    //     }
+    //   }
+    //   return -1;
+    // } else {
+    //   const comps = [];
+    //   for (const i in this.components) {
+    //     const comp = this.components[i];
+    //     if (dist(mouseX, mouseY, comp.pos.x, comp.pos.y) < distance) {
+    //       comps.push(comp);
+    //     }
+    //   }
+    //   return comps;
+    // }
+    let allOverlaps = []
+    for (let comp of this.components){
+      if (comp.mouse_overlapping()){
+        allOverlaps.push(comp)
+        
       }
-      return -1;
-    } else {
-      const comps = [];
-      for (const i in this.components) {
-        const comp = this.components[i];
-        if (dist(mouseX, mouseY, comp.pos.x, comp.pos.y) < distance) {
-          comps.push(comp);
-        }
-      }
-      return comps;
+      
     }
+    //Get the one closest
+    let return_comp = undefined
+    if (allOverlaps.length > 0){
+      let closest = 99999
+      return_comp = allOverlaps[0]
+      for (let comp of allOverlaps){
+        let centerPosX = comp.center_coord.x * zoom + camera.x
+        let centerPosY= comp.center_coord.y * zoom + camera.y
+        let d = dist(mouseX,mouseY,centerPosX,centerPosY)
+        if (d < distance){
+          return_comp = comp
+          closest = d
+        }
+      }
+    }
+    
+    return return_comp
   }
 
   get_hover_connect_point(component) {
@@ -192,11 +221,13 @@ class Game {
 
   on_mouse_press() {
     if (hovering_on_button()) {
-      this.mouse_mode = ADD_MODE;
+      mouse_mode = ADD_MODE;
     } else if (hovering.length > 0) {
-      this.mouse_mode = NONE_MODE;
+      // mouse_mode = MOVE_MODE;
+      // this.drag_component = this.get_hover_component(30);
+      mouse_mode = INTERACT_MODE;
     } else {
-      this.mouse_mode = PAN_MODE;
+      mouse_mode = PAN_MODE;
     }
     return false;
   }
@@ -205,9 +236,14 @@ class Game {
     if (hovering_on_button()) {
       
     } else if (hovering.length > 0) {
-      
+      if (mouse_mode === MOVE_MODE) {
+        if (mouseIsPressed && this.drag_component != undefined){
+          let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+          this.drag_component.set_pos_center(mp)
+        }
+      }
     } else {
-      if (this.mouse_mode === PAN_MODE) {
+      if (mouse_mode === PAN_MODE) {
         camera.add(createVector(movedX, movedY));
       }
     }
@@ -215,6 +251,7 @@ class Game {
   }
 
   on_mouse_release() {
+    this.drag_component = undefined;
     return false;
   }
 
@@ -477,7 +514,6 @@ class Game {
       }
     }
     pop();
-
     
     push();
     for (const widget of this.gui) {
