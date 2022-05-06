@@ -46,7 +46,8 @@ class Game {
   make_gui() {
     let main_group;
     let sub_group;
-    if (width > height) {
+    const make_vertical = width > height * 2;
+    if (make_vertical) {
       main_group = VerticalWidgetGroup;
       sub_group = HorizontalWidgetGroup;
     } else {
@@ -77,10 +78,10 @@ class Game {
     const buttons = [];
 
     for (const key of Object.keys(button_names)) {
-      buttons.push(
-        create_button(key, 0, 0, 0, 0, 
-                      button_names[key])
-      )
+      const button = create_button(key, 0, 0, 0, 0, button_names[key]);
+      button.clickable.cornerRadius = 0;
+      button.clickable.strokeWeight = 0;
+      buttons.push(button);
     }
 
     const btns_per_row = 2;
@@ -92,32 +93,40 @@ class Game {
       this.side_group.widgets.push(row);
     }
 
-    this.side_group.x = 10;
-    this.side_group.y = 10;
-    if (width > height) {
+    this.side_group.x = 0;
+    this.side_group.y = 0;
+    if (make_vertical) {
       this.side_group.width = 150;
-      this.side_group.height = height - 20;
-      this.side_group.y_pad = 5;
+      this.side_group.height = height;
+      // this.side_group.y_pad = 5;
     } else {
-      this.side_group.width = width - 20;
+      this.side_group.width = width;
       this.side_group.height = 100;
-      this.side_group.x_pad = 5;
+      // this.side_group.x_pad = 5;
     }
 
-    if (!(this.side_group in this.gui)) {
-      this.gui.push(this.side_group);
+    this.gui.push(this.side_group);
+
+    const line = new WidgetLine();
+    if (make_vertical) {
+      line.x = this.side_group.x + this.side_group.width;
+      line.y = this.side_group.y;
+      line.width = 0;
+      line.height = this.side_group.height;
+    } else {
+      line.x = this.side_group.x;
+      line.y = this.side_group.y + this.side_group.height;
+      line.width = this.side_group.width;
+      line.height = 0;
     }
+    this.gui.push(line);
   }
 
   resize_gui() {
     if (this.side_group instanceof VerticalWidgetGroup) {
-      this.side_group.width = 150;
-      this.side_group.height = height - 20;
-      this.side_group.y_pad = 5;
+      this.side_group.height = height;
     } else {
-      this.side_group.width = width - 20;
-      this.side_group.height = 100;
-      this.side_group.x_pad = 5;
+      this.side_group.width = width;
     }
   }
   

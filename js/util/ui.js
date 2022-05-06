@@ -109,6 +109,22 @@ class WidgetButton extends Widget {
   }
 }
 
+class WidgetLine extends Widget {
+  constructor() {
+    super();
+    this.stroke = 0;
+    this.stroke_weight = 1;
+  }
+  
+  draw() {
+    push();
+    strokeWeight(this.stroke_weight);
+    stroke(this.stroke);
+    line(this.x, this.y, this.x + this.width, this.y + this.height);
+    pop();
+  }
+}
+
 class WidgetGroup {
   constructor(widgets) {
     if (widgets != undefined) {
