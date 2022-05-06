@@ -13,7 +13,7 @@ const zoom_diff = 0.1;
 const zoom_min = 0.1;
 const zoom_max = 3;
 
-let hovering_on_obj = false;
+const hovering = [];
 
 let frame_millis = 0;
 
@@ -38,7 +38,7 @@ class Game {
 
     camera = createVector(0, 0);
     
-    hovering_on_obj = false;
+    hovering.length = 0;
 
     this.make_gui();
 
@@ -193,7 +193,7 @@ class Game {
   on_mouse_press() {
     if (hovering_on_button()) {
       this.mouse_mode = ADD_MODE;
-    } else if (hovering_on_obj) {
+    } else if (hovering.length > 0) {
       this.mouse_mode = NONE_MODE;
     } else {
       this.mouse_mode = PAN_MODE;
@@ -204,7 +204,7 @@ class Game {
   on_mouse_drag() {
     if (hovering_on_button()) {
       
-    } else if (hovering_on_obj) {
+    } else if (hovering.length > 0) {
       
     } else {
       if (this.mouse_mode === PAN_MODE) {
@@ -410,7 +410,7 @@ class Game {
   
   update() {
     frame_millis = millis();
-    hovering_on_obj = false;
+    hovering.length = 0;
     for (const i in this.items) {
       const group = this.items[i];
       for (const index in group) {
@@ -430,6 +430,7 @@ class Game {
       widget.update();
     }
   }
+  
   
   draw_grid(cell_size, cam) {
     push();

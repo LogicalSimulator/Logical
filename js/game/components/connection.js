@@ -111,12 +111,11 @@ class ConnectionPoint {
   }
 
   handle_mouse() {
-    if (this.mouse_pressed) {
-      hovering_on_obj = true;
+    if (this.mouse_overlapping() && !(this in hovering)) {
+      hovering.push(this);
     }
     if (mouseIsPressed) {
       if (this.mouse_overlapping()) {
-        hovering_on_obj = true;
         if (!this.mouse_pressed) {
           this.mouse_pressed = true;
           if (mouseButton === LEFT) {
