@@ -11,7 +11,7 @@ const make_testing_objs = true;
 const show_mouse_coords = true;
 const zoom_diff = 0.1;
 const zoom_min = 0.1;
-const zoom_max = 3;
+const zoom_max = 5;
 
 const hovering = [];
 
@@ -264,10 +264,10 @@ class Game {
     } else if (hovering.length > 0) {
       mouse_mode = ITEM_MODE;
       this.drag_component = this.get_hover_component(30);
-      // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-      // this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
-      // this.drag_component.pos = mp;
-      // console.log(this.drag_component.mouse_select_pos_diff)
+      //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+      //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
+      //this.drag_component.pos = mp;
+      //console.log(this.drag_component.mouse_select_pos_diff)
     } else {
       mouse_mode = PAN_MODE;
     }
@@ -281,20 +281,21 @@ class Game {
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
     // }
-    if (hovering_on_button()) {
+    if (hovering_on_button() && mouse_mode != ITEM_MODE) {
       
     } else if (hovering.length > 0) {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
           this.drag_component != undefined) {
-        // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-        // this.drag_component.set_pos_center(mp)
+        let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+        this.drag_component.set_pos_center(mp)
         // this.drag_component.pos = mp;
-        this.drag_component.pos.add(createVector(movedX, movedY));
+        //this.drag_component.pos.add(createVector(movedX, movedY));
       }
     } else {
       if (mouse_mode === PAN_MODE) {
         camera.add(createVector(movedX, movedY));
+        //console.log(movedX)
       }
     }
     return false;

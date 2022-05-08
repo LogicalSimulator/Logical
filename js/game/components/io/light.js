@@ -44,7 +44,7 @@ class Light extends Component {
 
     strokeWeight(light_stroke_weight);
     stroke(outline == undefined ? light_stroke : outline);
-    fill(this.powered ? light_powered_fill:light_fill);
+    fill(this.powered ? light_powered_fill : light_fill);
     ellipseMode(CORNER);
     arc(light_x, light_y, light_width, light_bulb_height, HALF_PI + QUARTER_PI, QUARTER_PI, OPEN);
 
@@ -60,7 +60,7 @@ class Light extends Component {
     const left_light_bulb_point_y = light_bulb_radius * sin(HALF_PI + QUARTER_PI) + light_center_y;
 
     const light_bulb_straight_y = (light_y + light_height) - ((light_height - light_bulb_height) / 2);
-
+    
     strokeWeight(0)
     rectMode(CORNERS)
     rect(left_light_bulb_point_x, left_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
@@ -70,8 +70,10 @@ class Light extends Component {
     line(right_light_bulb_point_x, right_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
 
     fill(light_stroke);
-    ellipseMode(CORNERS);
-    arc(left_light_bulb_point_x, left_light_bulb_point_y, right_light_bulb_point_x, light_y + light_height,
+    ellipseMode(CORNER);
+    arc(left_light_bulb_point_x, left_light_bulb_point_y, 
+        right_light_bulb_point_x - left_light_bulb_point_x, 
+        (light_y + light_height) - left_light_bulb_point_y,
         0, PI, CHORD);
     
     pop();

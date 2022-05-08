@@ -56,9 +56,9 @@ class AndGate extends Gate {
 
     rect(this.pos.x, this.pos.y, and_width / 2, and_height);
     
-    ellipseMode(CORNERS);
+    ellipseMode(CORNER);
     arc(this.pos.x - (and_stroke_weight + 1), this.pos.y, 
-        this.pos.x + and_width, this.pos.y + and_height, 
+        and_width, and_height, 
         -HALF_PI, HALF_PI);
     
     pop();

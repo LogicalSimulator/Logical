@@ -58,9 +58,9 @@ class NandGate extends Gate {
 
     const tip_sub = (nand_point_radius / 2);
     
-    ellipseMode(CORNERS);
+    ellipseMode(CORNER);
     arc(this.pos.x - (nand_stroke_weight + 1), this.pos.y, 
-        this.pos.x + nand_width - tip_sub, this.pos.y + nand_height, 
+        nand_width, nand_height, 
         -HALF_PI, HALF_PI);
 
     ellipseMode(CENTER)
