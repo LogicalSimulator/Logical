@@ -34,6 +34,7 @@ class EightBitDigit extends Component {
     this.input8_state = false;
     this.input8 = new ConnectionInPoint(this, createVector(eight_bit_digit_width * (8 / 9), eight_bit_digit_height / 2), 
                                         createVector(0, -(component_height * 0.75)), "input8_state");
+    this.connect_points = [this.input1, this.input2, this.input3, this.input4, this.input5, this.input6, this.input7, this.input8];
     this.display_digit = "00";
   }
 
@@ -49,10 +50,6 @@ class EightBitDigit extends Component {
   
   update() {
     super.update();
-    this.input1.update();
-    this.input2.update();
-    this.input3.update();
-    this.input4.update();
 
     let value = 0;
     
@@ -73,9 +70,7 @@ class EightBitDigit extends Component {
   }
 
   draw(outline) {
-    for (let i = 1; i <= 8; i ++) {
-      this["input" + i].draw();
-    }
+    super.draw(outline);
     
     push();
 

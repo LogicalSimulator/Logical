@@ -12,6 +12,7 @@ class Switch extends Component {
     super(pos);
     this.output1 = new ConnectionOutPoint(this, createVector(component_width / 2, component_height / 2), 
                                           createVector(component_width * 0.5, 0));
+    this.connect_points = [this.output1];
     this._powered = false;
   }
 
@@ -41,11 +42,10 @@ class Switch extends Component {
   
   update() {
     super.update();
-    this.output1.update();
   }
 
   draw(outline) {
-    this.output1.draw();
+    super.draw(outline);
     
     push();
 

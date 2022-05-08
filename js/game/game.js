@@ -5,6 +5,8 @@ const dark_bg_color = 56;
 const grid_color = 240;
 const dark_grid_color = 100;
 
+const hover_color = [127, 255, 0];
+
 const grid_size = 20;
 
 const make_testing_objs = true;
@@ -33,9 +35,10 @@ const menu_button_height = 30;
 class Game {
   constructor() {
     this.connections = [];
+    this.connect_points = [];
     this.components = [];
     this.gui = [];
-    this.items = [this.connections, this.components];
+    this.items = [this.connections, this.connect_points, this.components];
     
     this.dark_mode = false;
     this.drag_component = undefined;
@@ -567,7 +570,7 @@ class Game {
     
     for (const group of this.items) {
       for (const item of group) {
-        item.draw();
+        item.draw(hovering.indexOf(item) != -1 ? hover_color : undefined);
       }
     }
     pop();
@@ -588,6 +591,7 @@ class Game {
       if (zoom !== 1) {
         string += " at " + zoom + "x";
       }
+      // string += " hovering " + hovering.length;
       text(string, (mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       pop();
     }

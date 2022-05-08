@@ -22,6 +22,7 @@ class FourBitDigit extends Component {
     this.input4_state = false;
     this.input4 = new ConnectionInPoint(this, createVector(four_bit_digit_width / 2, four_bit_digit_height * 0.8), 
                                         createVector(-(component_height * 0.75), 0), "input4_state");
+    this.connect_points = [this.input1, this.input2, this.input3, this.input4];
     this.display_digit = "0";
   }
 
@@ -37,10 +38,6 @@ class FourBitDigit extends Component {
   
   update() {
     super.update();
-    this.input1.update();
-    this.input2.update();
-    this.input3.update();
-    this.input4.update();
 
     let value = 0;
     if (this.input1_state) {
@@ -60,10 +57,7 @@ class FourBitDigit extends Component {
   }
 
   draw(outline) {
-    this.input1.draw();
-    this.input2.draw();
-    this.input3.draw();
-    this.input4.draw();
+    super.draw(outline);
     
     push();
 

@@ -13,6 +13,7 @@ class Constant extends Component {
     super(pos);
     this.output1 = new ConnectionOutPoint(this, createVector(constant_width / 2, constant_height / 2), 
                                           createVector(component_width * 0.75, 0));
+    this.connect_points = [this.output1];
     this._powered = false;
   }
 
@@ -43,7 +44,7 @@ class Constant extends Component {
   }
 
   draw(outline) {
-    this.output1.draw();
+    super.draw(outline);
     // subclasses will override drawing method
   }
 }
@@ -53,8 +54,6 @@ class TrueConstant extends Constant {
     super.update();
 
     this.powered = true;
-    
-    this.output1.update();
   }
 
   draw(outline) {
@@ -89,8 +88,6 @@ class FalseConstant extends Constant {
     super.update();
 
     this.powered = false;
-    
-    this.output1.update();
   }
 
   draw(outline) {

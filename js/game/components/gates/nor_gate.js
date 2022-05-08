@@ -20,6 +20,7 @@ class NorGate extends Gate {
                                         createVector(-(nor_width * 0.75), 0), "input2_state");
     this.output1 = new ConnectionOutPoint(this, createVector(nor_width / 2, nor_height / 2), 
                                           createVector(nor_width * 0.75, 0));
+    this.connect_points = [this.input1, this.input2, this.output1];
     this.powered = false;
   }
 
@@ -35,18 +36,13 @@ class NorGate extends Gate {
   
   update() {
     super.update();
-    this.input1.update();
-    this.input2.update();
-    this.output1.update();
     
     this.powered = !(this.input1_state || this.input2_state);
     this.output1.powered = this.powered;
   }
 
   draw(outline) {
-    this.input1.draw();
-    this.input2.draw();
-    this.output1.draw();
+    super.draw(outline);
     
     push();
 

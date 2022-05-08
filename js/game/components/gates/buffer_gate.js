@@ -16,6 +16,7 @@ class BufferGate extends Gate {
                                         createVector(-(buffer_width * 0.75), 0), "input1_state");
     this.output1 = new ConnectionOutPoint(this, createVector(buffer_width / 2, buffer_height / 2), 
                                           createVector(buffer_width * 0.75, 0));
+    this.connect_points = [this.input1, this.output1];
     this.powered = false;
   }
 
@@ -31,16 +32,13 @@ class BufferGate extends Gate {
   
   update() {
     super.update();
-    this.input1.update();
-    this.output1.update();
     
     this.powered = this.input1_state
     this.output1.powered = this.powered;
   }
 
   draw(outline) {
-    this.input1.draw();
-    this.output1.draw();
+    super.draw();
     
     push();
 

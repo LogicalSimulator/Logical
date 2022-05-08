@@ -12,11 +12,12 @@ class Component {
   constructor(pos) {
     this.pos = pos;
     this.mouse_pressed = false;
-    this.camera_shifted = false
-    this.activated_check = false
-    this.old_pos_mouse = createVector(mouseX, mouseY)
-    this.click_activate = true
-    this.mouse_select_pos_diff = createVector()
+    this.camera_shifted = false;
+    this.activated_check = false;
+    this.old_pos_mouse = createVector(mouseX, mouseY);
+    this.click_activate = true;
+    this.mouse_select_pos_diff = createVector();
+    this.connect_points = [];
   }
 
   mouse_overlapping() {
@@ -108,9 +109,14 @@ class Component {
   
   update() {
     this.handle_mouse();
+    for (const point of this.connect_points) {
+      point.update();
+    }
   }
 
   draw(outline) {
-    
+    for (const point of this.connect_points) {
+      point.draw(hovering.indexOf(point) != -1 ? hover_color : undefined);
+    }
   }
 }

@@ -13,6 +13,7 @@ class Light extends Component {
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(light_width / 2, light_height / 2), 
                                         createVector(0, component_height * 0.75), "input1_state");
+    this.connect_points = [this.input1];
     this.powered = false;
   }
 
@@ -28,12 +29,11 @@ class Light extends Component {
   
   update() {
     super.update();
-    this.input1.update();
     this.powered = this.input1_state;
   }
 
   draw(outline) {
-    this.input1.draw();
+    super.draw(outline);
     
     push();
 

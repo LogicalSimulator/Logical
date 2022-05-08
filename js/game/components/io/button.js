@@ -12,6 +12,7 @@ class Button extends Component {
     super(pos);
     this.output1 = new ConnectionOutPoint(this, createVector(button_width / 2, button_height / 2), 
                                           createVector(component_width * 0.75, 0));
+    this.connect_points = [this.output1];
     this._powered = false;
     this.click_activate = false
   }
@@ -46,11 +47,10 @@ class Button extends Component {
   
   update() {
     super.update();
-    this.output1.update();
   }
 
   draw(outline) {
-    this.output1.draw();
+    super.draw(outline);
     
     push();
 

@@ -17,6 +17,7 @@ class NotGate extends Gate {
                                         createVector(-(not_width * 0.75), 0), "input1_state");
     this.output1 = new ConnectionOutPoint(this, createVector(not_width / 2, not_height / 2), 
                                           createVector(not_width * 0.75, 0));
+    this.connect_points = [this.input1, this.output1];
     this.powered = false;
   }
 
@@ -32,16 +33,13 @@ class NotGate extends Gate {
   
   update() {
     super.update();
-    this.input1.update();
-    this.output1.update();
     
     this.powered = !this.input1_state
     this.output1.powered = this.powered;
   }
 
   draw(outline) {
-    this.input1.draw();
-    this.output1.draw();
+    super.draw(outline);
     
     push();
 
