@@ -276,7 +276,7 @@ class Game {
   
   on_mouse_drag() {
     // if (mouse_mode == ADD_MODE){
-    //   if (this.creating_new_component){
+    //   if (this.creating_new_component) {
     //     let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
@@ -287,10 +287,10 @@ class Game {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
           this.drag_component != undefined) {
-        let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-        this.drag_component.set_pos_center(mp)
+        // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+        // this.drag_component.set_pos_center(mp)
         // this.drag_component.pos = mp;
-        //this.drag_component.pos.add(createVector(movedX, movedY));
+        this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
       }
     } else {
       if (mouse_mode === PAN_MODE) {
