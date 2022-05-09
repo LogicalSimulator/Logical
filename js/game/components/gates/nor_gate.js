@@ -41,14 +41,14 @@ class NorGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
-    strokeWeight(nor_stroke_weight);
-    stroke(outline == undefined ? nor_stroke : outline);
-    fill(this.powered ? nor_powered_fill : nor_fill);
+    graphics.strokeWeight(nor_stroke_weight);
+    graphics.stroke(outline == undefined ? nor_stroke : outline);
+    graphics.fill(this.powered ? nor_powered_fill : nor_fill);
 
     const tip_sub = (nor_point_radius / 2);
     
@@ -58,21 +58,21 @@ class NorGate extends Gate {
     const bottom_right = p5.Vector.add(top_left, createVector(nor_width, nor_height));
     const right_center = p5.Vector.add(top_left, createVector(nor_width - tip_sub, nor_height / 2));
 
-    beginShape();
-    vertex(top_left.x, top_left.y);
-    bezierVertex(top_right.x - (nor_width * 0.75), top_right.y, 
-                 top_left.x + (nor_width * 0.75), top_left.y, 
-                 right_center.x, right_center.y);
-    bezierVertex(right_center.x, right_center.y,
-                 top_left.x + (nor_width * 0.75), bottom_right.y,
-                 bottom_left.x, bottom_left.y);
-    bezierVertex(bottom_left.x, bottom_left.y,
-                 top_left.x + (nor_width * 0.25), top_left.y + (nor_height * 0.5),
-                 top_left.x, top_left.y);
-    endShape();
+    graphics.beginShape();
+    graphics.vertex(top_left.x, top_left.y);
+    graphics.bezierVertex(top_right.x - (nor_width * 0.75), top_right.y, 
+                          top_left.x + (nor_width * 0.75), top_left.y, 
+                          right_center.x, right_center.y);
+    graphics.bezierVertex(right_center.x, right_center.y,
+                          top_left.x + (nor_width * 0.75), bottom_right.y,
+                          bottom_left.x, bottom_left.y);
+    graphics.bezierVertex(bottom_left.x, bottom_left.y,
+                          top_left.x + (nor_width * 0.25), top_left.y + (nor_height * 0.5),
+                          top_left.x, top_left.y);
+    graphics.endShape();
 
-    circle(right_center.x - tip_sub + (nor_point_radius / 1), right_center.y, nor_point_radius);
+    graphics.circle(right_center.x - tip_sub + (nor_point_radius / 1), right_center.y, nor_point_radius);
     
-    pop();
+    graphics.pop();
   }
 }

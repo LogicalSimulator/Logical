@@ -69,27 +69,27 @@ class EightBitDigit extends Component {
     }
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const eight_bit_center = this.center_coord;
     const eight_bit_digit_x = this.pos.x;
     const eight_bit_digit_y = this.pos.y;
 
-    strokeWeight(eight_bit_digit_stroke_weight);
-    stroke(outline == undefined ? eight_bit_digit_stroke : outline);
-    fill(eight_bit_digit_fill);
+    graphics.strokeWeight(eight_bit_digit_stroke_weight);
+    graphics.stroke(outline == undefined ? eight_bit_digit_stroke : outline);
+    graphics.fill(eight_bit_digit_fill);
 
-    rect(eight_bit_digit_x, eight_bit_digit_y, eight_bit_digit_width, eight_bit_digit_height);
+    graphics.rect(eight_bit_digit_x, eight_bit_digit_y, eight_bit_digit_width, eight_bit_digit_height);
 
-    stroke(eight_bit_digit_stroke);
-    fill(this.display_digit === "00" ? eight_bit_digit_stroke : eight_bit_digit_powered_fill);
-    textAlign(CENTER, CENTER);
-    textSize(get_text_size(this.display_digit, eight_bit_digit_width * 0.75, eight_bit_digit_height * 0.75));
-    text(this.display_digit, eight_bit_center.x, eight_bit_center.y + (eight_bit_digit_height * 0.05));
+    graphics.stroke(eight_bit_digit_stroke);
+    graphics.fill(this.display_digit === "00" ? eight_bit_digit_stroke : eight_bit_digit_powered_fill);
+    graphics.textAlign(CENTER, CENTER);
+    graphics.textSize(get_text_size(this.display_digit, eight_bit_digit_width * 0.75, eight_bit_digit_height * 0.75));
+    graphics.text(this.display_digit, eight_bit_center.x, eight_bit_center.y + (eight_bit_digit_height * 0.05));
     
-    pop();
+    graphics.pop();
   }
 }

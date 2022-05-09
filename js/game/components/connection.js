@@ -45,29 +45,29 @@ class Connection {
     
   }
 
-  draw() {
-    push();
+  draw(graphics) {
+    graphics.push();
 
     const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
     const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
     
-    strokeWeight(connection_stroke_weight);
-    stroke(this._powered ? connection_powered_stroke : connection_stroke);
-    noFill();
+    graphics.strokeWeight(connection_stroke_weight);
+    graphics.stroke(this._powered ? connection_powered_stroke : connection_stroke);
+    graphics.noFill();
 
-    beginShape()
-    vertex(this.from_point.pos.x, this.from_point.pos.y)
-    bezierVertex(from_point_offset.x, from_point_offset.y,
-                 to_point_offset.x, to_point_offset.y,
-                 this.to_point.pos.x, this.to_point.pos.y)
+    graphics.beginShape();
+    graphics.vertex(this.from_point.pos.x, this.from_point.pos.y);
+    graphics.bezierVertex(from_point_offset.x, from_point_offset.y,
+                          to_point_offset.x, to_point_offset.y,
+                          this.to_point.pos.x, this.to_point.pos.y);
+    graphics.endShape();
     
-    endShape()
-    //  bezier(this.from_point.pos.x, this.from_point.pos.y,
-    //        from_point_offset.x, from_point_offset.y,
-    //        to_point_offset.x, to_point_offset.y,
-    //        this.to_point.pos.x, this.to_point.pos.y);
+    //  graphics.bezier(this.from_point.pos.x, this.from_point.pos.y,
+    //                  from_point_offset.x, from_point_offset.y,
+    //                  to_point_offset.x, to_point_offset.y,
+    //                  this.to_point.pos.x, this.to_point.pos.y);
     
-    pop();
+    graphics.pop();
   }
 }
 
@@ -148,21 +148,21 @@ class ConnectionPoint {
     this.handle_mouse();
   }
 
-  draw(outline) {
-    push();
+  draw(graphics, outline) {
+    graphics.push();
 
     const from_vec = p5.Vector.add(this.parent.pos, this.from);
     this.pos = p5.Vector.add(from_vec, this.offset);
     
-    strokeWeight(connection_point_stroke_weight);
-    stroke(connection_point_stroke);
-    line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
+    graphics.strokeWeight(connection_point_stroke_weight);
+    graphics.stroke(connection_point_stroke);
+    graphics.line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
 
-    stroke(outline == undefined ? connection_point_stroke : outline);
-    fill(this._powered ? connection_point_powered_fill : connection_point_fill);
-    circle(this.pos.x, this.pos.y, connection_point_radius);
+    graphics.stroke(outline == undefined ? connection_point_stroke : outline);
+    graphics.fill(this._powered ? connection_point_powered_fill : connection_point_fill);
+    graphics.circle(this.pos.x, this.pos.y, connection_point_radius);
     
-    pop();
+    graphics.pop();
   }
 }
 

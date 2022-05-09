@@ -35,7 +35,7 @@ class Gate extends Component {
     super.update();
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
   }
 }

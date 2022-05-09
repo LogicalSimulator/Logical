@@ -44,18 +44,18 @@ class Switch extends Component {
     super.update();
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const switch_x = this.pos.x;
     const switch_y = this.pos.y;
 
-    strokeWeight(switch_stroke_weight);
-    stroke(outline == undefined ? switch_stroke : outline);
-    fill(switch_fill);
-    rect(switch_x, switch_y, switch_width, switch_height);
+    graphics.strokeWeight(switch_stroke_weight);
+    graphics.stroke(outline == undefined ? switch_stroke : outline);
+    graphics.fill(switch_fill);
+    graphics.rect(switch_x, switch_y, switch_width, switch_height);
 
     const inner_gap_width = switch_width * 0.1;
     const inner_switch_width = switch_width - (inner_gap_width * 2);
@@ -63,9 +63,9 @@ class Switch extends Component {
     const inner_switch_x = switch_x + inner_gap_width;
     const inner_switch_y = switch_y + inner_gap_width;
 
-    stroke(switch_stroke);
-    fill(this.powered ? switch_powered_fill : switch_fill);
-    rect(inner_switch_x, inner_switch_y, inner_switch_width, inner_switch_height);
+    graphics.stroke(switch_stroke);
+    graphics.fill(this.powered ? switch_powered_fill : switch_fill);
+    graphics.rect(inner_switch_x, inner_switch_y, inner_switch_width, inner_switch_height);
 
     const center_gap_width = switch_width * 0.3;
     const center_switch_width = switch_width - (center_gap_width * 2);
@@ -73,20 +73,20 @@ class Switch extends Component {
     const center_switch_x = switch_x + center_gap_width;
     const center_switch_y = switch_y + center_gap_width;
 
-    fill(switch_fill);
-    rect(center_switch_x, center_switch_y, center_switch_width, center_switch_height);
+    graphics.fill(switch_fill);
+    graphics.rect(center_switch_x, center_switch_y, center_switch_width, center_switch_height);
 
     const switch_part_diff = switch_width * 0.1;
     const center_half_height = center_switch_height / 2;
 
     if (this.powered) {
-      rect(center_switch_x - switch_part_diff, center_switch_y - switch_part_diff, 
-           center_switch_width + (switch_part_diff * 2), center_half_height + switch_part_diff);
+      graphics.rect(center_switch_x - switch_part_diff, center_switch_y - switch_part_diff, 
+                    center_switch_width + (switch_part_diff * 2), center_half_height + switch_part_diff);
     } else {
-      rect(center_switch_x - switch_part_diff, center_switch_y + center_half_height, 
-           center_switch_width + (switch_part_diff * 2), center_half_height + switch_part_diff);
+      graphics.rect(center_switch_x - switch_part_diff, center_switch_y + center_half_height, 
+                    center_switch_width + (switch_part_diff * 2), center_half_height + switch_part_diff);
     }
     
-    pop();
+    graphics.pop();
   }
 }

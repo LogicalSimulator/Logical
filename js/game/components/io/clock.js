@@ -47,36 +47,36 @@ class Clock extends Component {
     }
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const clock_center = this.center_coord;
     const clock_x = this.pos.x;
     const clock_y = this.pos.y;
     
-    strokeWeight(clock_stroke_weight);
-    stroke(outline == undefined ? clock_stroke : outline);
-    fill(clock_fill);
-    rect(clock_x, clock_y, clock_width, clock_height);
+    graphics.strokeWeight(clock_stroke_weight);
+    graphics.stroke(outline == undefined ? clock_stroke : outline);
+    graphics.fill(clock_fill);
+    graphics.rect(clock_x, clock_y, clock_width, clock_height);
 
-    fill(this.powered ? clock_powered_fill : clock_fill);
+    graphics.fill(this.powered ? clock_powered_fill : clock_fill);
 
-    strokeWeight(clock_animation_stroke_weight);
-    stroke(this.powered ? clock_powered_fill : clock_stroke);
-    noFill();
+    graphics.strokeWeight(clock_animation_stroke_weight);
+    graphics.stroke(this.powered ? clock_powered_fill : clock_stroke);
+    graphics.noFill();
     
-    beginShape();
-    vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.5));
-    vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.25));
-    vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.25));
-    vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
-    vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
-    vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.75));
-    vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.5));
-    endShape();
+    graphics.beginShape();
+    graphics.vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.5));
+    graphics.vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.25));
+    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.25));
+    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
+    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
+    graphics.vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.75));
+    graphics.vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.5));
+    graphics.endShape();
     
-    pop();
+    graphics.pop();
   }
 }

@@ -42,14 +42,14 @@ class XnorGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
-    strokeWeight(xnor_stroke_weight);
-    stroke(outline == undefined ? xnor_stroke : outline);
-    fill(this.powered ? xnor_powered_fill : xnor_fill);
+    graphics.strokeWeight(xnor_stroke_weight);
+    graphics.stroke(outline == undefined ? xnor_stroke : outline);
+    graphics.fill(this.powered ? xnor_powered_fill : xnor_fill);
 
     const tip_sub = (xnor_point_radius / 2);
     
@@ -59,30 +59,30 @@ class XnorGate extends Gate {
     const bottom_right = p5.Vector.add(top_left, createVector(xnor_width, xnor_height));
     const right_center = p5.Vector.add(top_left, createVector(xnor_width - tip_sub, xnor_height / 2));
 
-    beginShape();
-    vertex(top_left.x, top_left.y);
-    bezierVertex(top_right.x - (xnor_width * 0.75), top_right.y, 
-                 top_left.x + (xnor_width * 0.75), top_left.y, 
-                 right_center.x, right_center.y);
-    bezierVertex(right_center.x, right_center.y,
-                 top_left.x + (xnor_width * 0.75), bottom_right.y,
-                 bottom_left.x, bottom_left.y);
-    bezierVertex(bottom_left.x, bottom_left.y,
-                 top_left.x + (xnor_width * 0.25), top_left.y + (xnor_height * 0.5),
-                 top_left.x, top_left.y);
-    endShape();
+    graphics.beginShape();
+    graphics.vertex(top_left.x, top_left.y);
+    graphics.bezierVertex(top_right.x - (xnor_width * 0.75), top_right.y, 
+                          top_left.x + (xnor_width * 0.75), top_left.y, 
+                          right_center.x, right_center.y);
+    graphics.bezierVertex(right_center.x, right_center.y,
+                          top_left.x + (xnor_width * 0.75), bottom_right.y,
+                          bottom_left.x, bottom_left.y);
+    graphics.bezierVertex(bottom_left.x, bottom_left.y,
+                          top_left.x + (xnor_width * 0.25), top_left.y + (xnor_height * 0.5),
+                          top_left.x, top_left.y);
+    graphics.endShape();
 
-    noFill();
-    beginShape();
-    vertex(top_left.x - xnor_line_sub, top_left.y);
-    bezierVertex(top_left.x - xnor_line_sub, top_left.y,
-                 top_left.x - xnor_line_sub + (xnor_width * 0.25), top_left.y + (xnor_height * 0.5), 
-                 bottom_left.x - xnor_line_sub, bottom_left.y);
-    endShape();
+    graphics.noFill();
+    graphics.beginShape();
+    graphics.vertex(top_left.x - xnor_line_sub, top_left.y);
+    graphics.bezierVertex(top_left.x - xnor_line_sub, top_left.y,
+                          top_left.x - xnor_line_sub + (xnor_width * 0.25), top_left.y + (xnor_height * 0.5), 
+                          bottom_left.x - xnor_line_sub, bottom_left.y);
+    graphics.endShape();
 
-    fill(this.powered ? xnor_powered_fill : xnor_fill);
-    circle(right_center.x - tip_sub + (nor_point_radius / 1), right_center.y, xnor_point_radius);
+    graphics.fill(this.powered ? xnor_powered_fill : xnor_fill);
+    graphics.circle(right_center.x - tip_sub + (nor_point_radius / 1), right_center.y, xnor_point_radius);
     
-    pop();
+    graphics.pop();
   }
 }

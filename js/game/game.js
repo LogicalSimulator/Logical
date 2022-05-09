@@ -34,6 +34,8 @@ const menu_button_height = 30;
 
 class Game {
   constructor() {
+    this.graphics = createGraphics(width, height);
+    
     this.connections = [];
     this.connect_points = [];
     this.components = [];
@@ -173,17 +175,17 @@ class Game {
     }
   }
 
-  add_component(c){
-    if (mouse_mode != ADD_MODE){
-      return
+  add_component(c) {
+    if (mouse_mode != ADD_MODE) {
+      return;
     }
-    this.creating_new_component = true
-    if (c == 0){
-      this.items[1].push(new Light(createVector((mouseX-camera.x)/zoom,(mouseY-camera.y)/zoom)))
+    this.creating_new_component = true;
+    if (c == 0) {
+      this.items[1].push(new Light(createVector((mouseX-camera.x)/zoom,(mouseY-camera.y)/zoom)));
     }
-    mouse_mode = ITEM_MODE
-    this.components = this.items[1]
-    this.drag_component = this.items[1][this.items[1].length-1]
+    mouse_mode = ITEM_MODE;
+    this.components = this.items[1];
+    this.drag_component = this.items[1][this.items[1].length-1];
   }
   
   get_hover_component(distance) {
@@ -530,11 +532,11 @@ class Game {
   }
   
   draw_grid(cell_size, cam) {
-    push();
+    this.graphics.push();
     if (this.dark_mode) {
-      stroke(dark_grid_color) 
+      this.graphics.stroke(dark_grid_color) 
     } else {
-      stroke(grid_color);
+      this.graphics.stroke(grid_color);
     }
     const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
@@ -543,38 +545,39 @@ class Game {
     for (let y = shift_y - shift.y; 
          y < ((height + add_some) / zoom) + (shift_y - shift.y); 
          y += cell_size) {
-      line(-shift.x, y, 
-           ((width + add_some) / zoom) + (shift_x - shift.x), y);
+      this.graphics.line(-shift.x, y, 
+                        ((width + add_some) / zoom) + (shift_x - shift.x), y);
     }
     for (let x = shift_x - shift.x; 
          x < ((width + add_some) / zoom) + (shift_x - shift.x); 
          x += cell_size) {
-      line(x, -shift.y, x, 
-           ((height + add_some) / zoom) + (shift_y - shift.y));
+      this.graphics.line(x, -shift.y, x, 
+                        ((height + add_some) / zoom) + (shift_y - shift.y));
     }
-    pop();
+    this.graphics.pop();
   }
 
   draw() {
     if (this.dark_mode) {
-      background(dark_bg_color)
+      this.graphics.background(dark_bg_color)
     } else {
-      background(bg_color);
+      this.graphics.background(bg_color);
     }
 
-    push();
-    translate(camera);
-    scale(zoom);
+    this.graphics.push();
+    this.graphics.translate(camera);
+    this.graphics.scale(zoom);
 
     this.draw_grid(grid_size, camera);
     
     for (const group of this.items) {
       for (const item of group) {
-        item.draw(hovering.indexOf(item) != -1 ? hover_color : undefined);
+        item.draw(this.graphics, hovering.indexOf(item) != -1 ? hover_color : undefined);
       }
     }
-    pop();
-    
+    image(game.graphics, 0, 0);
+    this.graphics.pop();
+
     push();
     for (const widget of this.gui) {
       widget.draw();

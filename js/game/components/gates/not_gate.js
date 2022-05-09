@@ -38,24 +38,24 @@ class NotGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
-    strokeWeight(buffer_stroke_weight);
-    stroke(outline == undefined ? buffer_stroke : outline);
-    fill(this.powered ? buffer_powered_fill : buffer_fill);
+    graphics.strokeWeight(buffer_stroke_weight);
+    graphics.stroke(outline == undefined ? buffer_stroke : outline);
+    graphics.fill(this.powered ? buffer_powered_fill : buffer_fill);
 
     const bottom_point = p5.Vector.add(this.pos, createVector(0, buffer_height));
     const right_point = p5.Vector.add(this.pos, createVector(buffer_width, buffer_height / 2));
     
-    triangle(this.pos.x, this.pos.y,
-             bottom_point.x, bottom_point.y,
-             right_point.x, right_point.y);
+    graphics.triangle(this.pos.x, this.pos.y,
+                      bottom_point.x, bottom_point.y,
+                      right_point.x, right_point.y);
 
-    circle(right_point.x, right_point.y, not_point_radius);
+    graphics.circle(right_point.x, right_point.y, not_point_radius);
     
-    pop();
+    graphics.pop();
   }
 }

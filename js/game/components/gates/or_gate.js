@@ -41,14 +41,14 @@ class OrGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
-    strokeWeight(or_stroke_weight);
-    stroke(outline == undefined ? or_stroke : outline);
-    fill(this.powered ? or_powered_fill : or_fill);
+    graphics.strokeWeight(or_stroke_weight);
+    graphics.stroke(outline == undefined ? or_stroke : outline);
+    graphics.fill(this.powered ? or_powered_fill : or_fill);
 
     const top_left = this.pos;
     const bottom_left = p5.Vector.add(top_left, createVector(0, or_height));
@@ -56,19 +56,19 @@ class OrGate extends Gate {
     const bottom_right = p5.Vector.add(top_left, createVector(or_width, or_height));
     const right_center = p5.Vector.add(top_left, createVector(or_width, or_height / 2));
 
-    beginShape();
-    vertex(top_left.x, top_left.y);
-    bezierVertex(top_right.x - (or_width * 0.75), top_right.y, 
-                 top_left.x + (or_width * 0.75), top_left.y, 
-                 right_center.x, right_center.y);
-    bezierVertex(right_center.x, right_center.y,
-                 top_left.x + (or_width * 0.75), bottom_right.y,
-                 bottom_left.x, bottom_left.y);
-    bezierVertex(bottom_left.x, bottom_left.y,
-                 top_left.x + (or_width * 0.25), top_left.y + (or_height * 0.5),
-                 top_left.x, top_left.y);
-    endShape();
+    graphics.beginShape();
+    graphics.vertex(top_left.x, top_left.y);
+    graphics.bezierVertex(top_right.x - (or_width * 0.75), top_right.y, 
+                          top_left.x + (or_width * 0.75), top_left.y, 
+                          right_center.x, right_center.y);
+    graphics.bezierVertex(right_center.x, right_center.y,
+                          top_left.x + (or_width * 0.75), bottom_right.y,
+                          bottom_left.x, bottom_left.y);
+    graphics.bezierVertex(bottom_left.x, bottom_left.y,
+                          top_left.x + (or_width * 0.25), top_left.y + (or_height * 0.5),
+                          top_left.x, top_left.y);
+    graphics.endShape();
     
-    pop();
+    graphics.pop();
   }
 }

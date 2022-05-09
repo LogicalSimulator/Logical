@@ -49,30 +49,30 @@ class Button extends Component {
     super.update();
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const button_center = this.center_coord;
     const button_x = this.pos.x;
     const button_y = this.pos.y;
     
-    strokeWeight(button_stroke_weight);
-    stroke(outline == undefined ? button_stroke : outline);
-    fill(button_fill);
-    rect(button_x, button_y, button_width, button_height);
+    graphics.strokeWeight(button_stroke_weight);
+    graphics.stroke(outline == undefined ? button_stroke : outline);
+    graphics.fill(button_fill);
+    graphics.rect(button_x, button_y, button_width, button_height);
 
     const button_outer_radius = button_width * 0.8;
     const button_inner_radius = button_width * 0.6;
 
-    stroke(button_stroke);
-    fill(this.powered ? button_powered_fill : button_fill);
-    circle(button_center.x, button_center.y, button_outer_radius);
+    graphics.stroke(button_stroke);
+    graphics.fill(this.powered ? button_powered_fill : button_fill);
+    graphics.circle(button_center.x, button_center.y, button_outer_radius);
 
-    fill(button_fill);
-    circle(button_center.x, button_center.y, button_inner_radius);
+    graphics.fill(button_fill);
+    graphics.circle(button_center.x, button_center.y, button_inner_radius);
     
-    pop();
+    graphics.pop();
   }
 }

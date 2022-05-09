@@ -114,9 +114,9 @@ class Component {
     }
   }
 
-  draw(outline) {
+  draw(graphics, outline) {
     for (const point of this.connect_points) {
-      point.draw(hovering.indexOf(point) != -1 ? hover_color : undefined);
+      point.draw(graphics, hovering.indexOf(point) != -1 ? hover_color : undefined);
     }
   }
 }

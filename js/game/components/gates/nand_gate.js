@@ -41,28 +41,28 @@ class NandGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
-    strokeWeight(nand_stroke_weight);
-    stroke(outline == undefined ? nand_stroke : outline);
-    fill(this.powered ? nand_powered_fill : nand_fill);
+    graphics.strokeWeight(nand_stroke_weight);
+    graphics.stroke(outline == undefined ? nand_stroke : outline);
+    graphics.fill(this.powered ? nand_powered_fill : nand_fill);
 
-    rect(this.pos.x, this.pos.y, nand_width / 2, nand_height);
+    graphics.rect(this.pos.x, this.pos.y, nand_width / 2, nand_height);
 
     const tip_sub = (nand_point_radius / 2);
     
-    ellipseMode(CORNER);
-    arc(this.pos.x - (nand_stroke_weight + 1), this.pos.y, 
-        nand_width, nand_height, 
-        -HALF_PI, HALF_PI);
+    graphics.ellipseMode(CORNER);
+    graphics.arc(this.pos.x - (nand_stroke_weight + 1), this.pos.y, 
+                 nand_width, nand_height, 
+                 -HALF_PI, HALF_PI);
 
-    ellipseMode(CENTER)
+    graphics.ellipseMode(CENTER);
     const output_point = p5.Vector.add(this.pos, createVector(nand_width - tip_sub + (nand_point_radius / 2), nand_height / 2));
-    circle(output_point.x, output_point.y, nand_point_radius);
+    graphics.circle(output_point.x, output_point.y, nand_point_radius);
     
-    pop();
+    graphics.pop();
   }
 }

@@ -41,22 +41,22 @@ class AndGate extends Gate {
     this.output1.powered = this.powered;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
+    
+    graphics.strokeWeight(and_stroke_weight);
+    graphics.stroke(outline == undefined ? and_stroke : outline);
+    graphics.fill(this.powered ? and_powered_fill : and_fill);
 
-    strokeWeight(and_stroke_weight);
-    stroke(outline == undefined ? and_stroke : outline);
-    fill(this.powered ? and_powered_fill : and_fill);
-
-    rect(this.pos.x, this.pos.y, and_width / 2, and_height);
+    graphics.rect(this.pos.x, this.pos.y, and_width / 2, and_height);
     
-    ellipseMode(CORNER);
-    arc(this.pos.x - (and_stroke_weight + 1), this.pos.y, 
-        and_width, and_height, 
-        -HALF_PI, HALF_PI);
+    graphics.ellipseMode(CORNER);
+    graphics.arc(this.pos.x - (and_stroke_weight + 1), this.pos.y, 
+                 and_width, and_height, 
+                 -HALF_PI, HALF_PI);
     
-    pop();
+    graphics.pop();
   }
 }

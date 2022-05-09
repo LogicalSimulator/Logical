@@ -52,7 +52,7 @@ class Widget {
     
   }
 
-  draw() {
+  draw(graphics) {
     
   }
 }

@@ -32,21 +32,21 @@ class Light extends Component {
     this.powered = this.input1_state;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const light_x = this.pos.x;
     const light_y = this.pos.y;
 
     const light_bulb_height = light_height * 0.75;
 
-    strokeWeight(light_stroke_weight);
-    stroke(outline == undefined ? light_stroke : outline);
-    fill(this.powered ? light_powered_fill : light_fill);
-    ellipseMode(CORNER);
-    arc(light_x, light_y, light_width, light_bulb_height, HALF_PI + QUARTER_PI, QUARTER_PI, OPEN);
+    graphics.strokeWeight(light_stroke_weight);
+    graphics.stroke(outline == undefined ? light_stroke : outline);
+    graphics.fill(this.powered ? light_powered_fill : light_fill);
+    graphics.ellipseMode(CORNER);
+    graphics.arc(light_x, light_y, light_width, light_bulb_height, HALF_PI + QUARTER_PI, QUARTER_PI, OPEN);
 
     const light_center_x = light_x + (light_width / 2);
     const light_center_y = light_y + (light_bulb_height / 2);
@@ -61,21 +61,21 @@ class Light extends Component {
 
     const light_bulb_straight_y = (light_y + light_height) - ((light_height - light_bulb_height) / 2);
     
-    strokeWeight(0)
-    rectMode(CORNERS)
-    rect(left_light_bulb_point_x, left_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
+    graphics.strokeWeight(0);
+    graphics.rectMode(CORNERS);
+    graphics.rect(left_light_bulb_point_x, left_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
 
-    strokeWeight(1);
-    line(left_light_bulb_point_x, left_light_bulb_point_y, left_light_bulb_point_x, light_bulb_straight_y);
-    line(right_light_bulb_point_x, right_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
+    graphics.strokeWeight(1);
+    graphics.line(left_light_bulb_point_x, left_light_bulb_point_y, left_light_bulb_point_x, light_bulb_straight_y);
+    graphics.line(right_light_bulb_point_x, right_light_bulb_point_y, right_light_bulb_point_x, light_bulb_straight_y);
 
-    fill(light_stroke);
-    ellipseMode(CORNER);
-    arc(left_light_bulb_point_x, left_light_bulb_point_y, 
-        right_light_bulb_point_x - left_light_bulb_point_x, 
-        (light_y + light_height) - left_light_bulb_point_y,
-        0, PI, CHORD);
+    graphics.fill(light_stroke);
+    graphics.ellipseMode(CORNER);
+    graphics.arc(left_light_bulb_point_x, left_light_bulb_point_y, 
+                 right_light_bulb_point_x - left_light_bulb_point_x, 
+                 (light_y + light_height) - left_light_bulb_point_y,
+                 0, PI, CHORD);
     
-    pop();
+    graphics.pop();
   }
 }

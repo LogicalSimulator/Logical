@@ -43,8 +43,8 @@ class Constant extends Component {
     // and update output
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     // subclasses will override drawing method
   }
 }
@@ -56,30 +56,30 @@ class TrueConstant extends Constant {
     this.powered = true;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const constant_center = this.center_coord;
     const constant_x = this.pos.x;
     const constant_y = this.pos.y;
     
-    strokeWeight(constant_stroke_weight);
-    stroke(outline == undefined ? constant_stroke : outline);
-    fill(constant_fill);
-    rect(constant_x, constant_y, constant_width, constant_height);
+    graphics.strokeWeight(constant_stroke_weight);
+    graphics.stroke(outline == undefined ? constant_stroke : outline);
+    graphics.fill(constant_fill);
+    graphics.rect(constant_x, constant_y, constant_width, constant_height);
 
-    fill(this.powered ? constant_powered_fill : constant_stroke);
-    stroke(constant_stroke);
+    graphics.fill(this.powered ? constant_powered_fill : constant_stroke);
+    graphics.stroke(constant_stroke);
 
     const str = "1";
     
-    textAlign(CENTER, CENTER);
-    textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
-    text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
+    graphics.textAlign(CENTER, CENTER);
+    graphics.textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
+    graphics.text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
     
-    pop();
+    graphics.pop();
   }
 }
 
@@ -90,29 +90,29 @@ class FalseConstant extends Constant {
     this.powered = false;
   }
 
-  draw(outline) {
-    super.draw(outline);
+  draw(graphics, outline) {
+    super.draw(graphics, outline);
     
-    push();
+    graphics.push();
 
     const constant_center = this.center_coord;
     const constant_x = this.pos.x;
     const constant_y = this.pos.y;
     
-    strokeWeight(constant_stroke_weight);
-    stroke(outline == undefined ? constant_stroke : outline);
-    fill(constant_fill);
-    rect(constant_x, constant_y, constant_width, constant_height);
+    graphics.strokeWeight(constant_stroke_weight);
+    graphics.stroke(outline == undefined ? constant_stroke : outline);
+    graphics.fill(constant_fill);
+    graphics.rect(constant_x, constant_y, constant_width, constant_height);
 
-    fill(this.powered ? constant_powered_fill : constant_stroke);
-    stroke(constant_stroke);
+    graphics.fill(this.powered ? constant_powered_fill : constant_stroke);
+    graphics.stroke(constant_stroke);
 
     const str = "0";
     
-    textAlign(CENTER, CENTER);
-    textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
-    text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
+    graphics.textAlign(CENTER, CENTER);
+    graphics.textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
+    graphics.text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
     
-    pop();
+    graphics.pop();
   }
 }
