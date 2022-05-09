@@ -575,8 +575,8 @@ class Game {
         item.draw(this.graphics, hovering.indexOf(item) != -1 ? hover_color : undefined);
       }
     }
-    image(game.graphics, 0, 0);
     this.graphics.pop();
+    image(this.graphics, 0, 0);
 
     push();
     for (const widget of this.gui) {
