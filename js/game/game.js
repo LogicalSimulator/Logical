@@ -33,6 +33,13 @@ const add_item_top_pad = 30;
 const menu_outside_pad = 10;
 const menu_button_height = 30;
 
+const components = [
+  Switch, Button, Clock, TrueConstant, FalseConstant,
+  Light, FourBitDigit, EightBitDigit, BufferGate,
+  NotGate, OrGate, NorGate, AndGate, 
+  NandGate, XorGate, XnorGate
+];
+
 class Game {
   constructor() {
     this.graphics = createGraphics(width, height);
@@ -74,22 +81,22 @@ class Game {
     this.side_group = new main_group();
 
     const button_names = {
-      "Switch": {"image": Icons.switch_icon, "callback": () => {/*this.add_component(0)*/}},
-      "Button": {"image": Icons.button_icon, "callback": () => {/*this.add_component(0)*/}},
-      "Clock": {"image": Icons.clock_icon, "callback": () => {/*this.add_component(0)*/}},
-      "True\nconstant": {"image": Icons.true_constant_icon, "callback": () => {/*this.add_component(0)*/}},
-      "False\nconstant": {"image": Icons.false_constant_icon, "callback": () => {/*this.add_component(0)*/}},
-      "Light": {"image": Icons.light_icon, "callback": () => {/*this.add_component(0)*/}},
-      "4 bit\ndisplay": {"image": Icons.four_bit_display_icon, "callback": () => {/*this.add_component(0)*/}},
-      "8 bit\ndisplay": {"image": Icons.eight_bit_display_icon, "callback": () => {/*this.add_component(0)*/}},
-      "Buffer gate": {"image": Icons.buffer_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "NOT gate": {"image": Icons.not_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "OR gate": {"image": Icons.or_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "NOR gate": {"image": Icons.nor_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "AND gate": {"image": Icons.and_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "NAND gate": {"image": Icons.nand_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "XOR gate": {"image": Icons.xor_gate_icon, "callback": () => {/*this.add_component(0)*/}},
-      "XNOR gate": {"image": Icons.xnor_gate_icon, "callback": () => {/*this.add_component(0)*/}}
+      "Switch": {"image": Icons.switch_icon, "callback": () => {this.add_component(0)}},
+      "Button": {"image": Icons.button_icon, "callback": () => {this.add_component(1)}},
+      "Clock": {"image": Icons.clock_icon, "callback": () => {this.add_component(2)}},
+      "True\nconstant": {"image": Icons.true_constant_icon, "callback": () => {this.add_component(3)}},
+      "False\nconstant": {"image": Icons.false_constant_icon, "callback": () => {this.add_component(4)}},
+      "Light": {"image": Icons.light_icon, "callback": () => {this.add_component(5)}},
+      "4 bit\ndisplay": {"image": Icons.four_bit_display_icon, "callback": () => {this.add_component(6)}},
+      "8 bit\ndisplay": {"image": Icons.eight_bit_display_icon, "callback": () => {this.add_component(7)}},
+      "Buffer gate": {"image": Icons.buffer_gate_icon, "callback": () => {this.add_component(8)}},
+      "NOT gate": {"image": Icons.not_gate_icon, "callback": () => {this.add_component(9)}},
+      "OR gate": {"image": Icons.or_gate_icon, "callback": () => {this.add_component(10)}},
+      "NOR gate": {"image": Icons.nor_gate_icon, "callback": () => {this.add_component(11)}},
+      "AND gate": {"image": Icons.and_gate_icon, "callback": () => {this.add_component(12)}},
+      "NAND gate": {"image": Icons.nand_gate_icon, "callback": () => {this.add_component(13)}},
+      "XOR gate": {"image": Icons.xor_gate_icon, "callback": () => {this.add_component(14)}},
+      "XNOR gate": {"image": Icons.xnor_gate_icon, "callback": () => {this.add_component(15)}}
     };
     
     const buttons = [];
@@ -183,12 +190,15 @@ class Game {
       return;
     }
     this.creating_new_component = true;
-    if (c == 0) {
-      this.items[1].push(new Light(createVector((mouseX-camera.x)/zoom,(mouseY-camera.y)/zoom)));
-    }
-    mouse_mode = ITEM_MODE;
-    this.components = this.items[1];
-    this.drag_component = this.items[1][this.items[1].length-1];
+    this.drag_component = new components[c](
+      createVector(
+        (mouseX - camera.x) / zoom, 
+        (mouseY - camera.y) / zoom
+      )
+    );
+    this.drag_component.pos.sub(p5.Vector.div(this.drag_component.size, 2));
+    // mouse_mode = ITEM_MODE;
+    this.items[2].push(this.drag_component);
   }
   
   get_hover_component(distance) {
@@ -271,7 +281,8 @@ class Game {
       mouse_mode = ADD_MODE;
     } else if (hovering.length > 0) {
       mouse_mode = ITEM_MODE;
-      this.drag_component = this.get_hover_component(30);
+      // this.drag_component = this.get_hover_component(30);
+      this.drag_component = hovering[0];
       //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
       //this.drag_component.pos = mp;
@@ -289,8 +300,10 @@ class Game {
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
     // }
-    if (hovering_on_button() && mouse_mode != ITEM_MODE) {
-      
+    if (mouse_mode === ADD_MODE) {
+      if (this.drag_component != undefined) {
+        this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
+      }
     } else if (hovering.length > 0) {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
@@ -303,15 +316,15 @@ class Game {
     } else {
       if (mouse_mode === PAN_MODE) {
         camera.add(createVector(movedX, movedY));
-        //console.log(movedX)
       }
     }
     return false;
   }
 
   on_mouse_release() {
-    this.creating_new_component = false
+    this.creating_new_component = false;
     this.drag_component = undefined;
+    this.mouse_mode = PAN_MODE;
     return false;
   }
   
@@ -576,6 +589,9 @@ class Game {
     for (const group of this.items) {
       for (const item of group) {
         item.draw(this.graphics, hovering.indexOf(item) != -1 ? hover_color : undefined);
+        // if (item === this.drag_component) {
+        //   console.log("look it's me " + item);
+        // }
       }
     }
     this.graphics.pop();
