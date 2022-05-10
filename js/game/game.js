@@ -29,6 +29,7 @@ const NONE_MODE = 0;
 const PAN_MODE = 1;
 const ITEM_MODE = 2;
 const ADD_MODE = 3;
+const CONNECT_MODE = 4;
 
 let mouse_mode = PAN_MODE;
 
@@ -59,7 +60,6 @@ class Game {
     this.creating_new_component = false;
     this.new_component = undefined;
     this.drag_connection = undefined;
-    this.draw_connection = false
     
     frame_millis = millis();
 
@@ -270,6 +270,9 @@ class Game {
       let hover_con;
       for (let comp of this.components) {
         hover_con = this.get_hover_connect_point(comp);
+        if (!(hover_con instanceof ConnectionOutPoint)) {
+          hover_con = undefined;
+        }
         if (hover_con != undefined) {
           break
         } 
@@ -278,7 +281,7 @@ class Game {
         mouse_mode = ADD_MODE;
       } else if (hover_con != undefined) {
         this.drag_connection = hover_con;
-        this.draw_connection = true;
+        mouse_mode = CONNECT_MODE;
       } else if (hovering.length > 0) {
         mouse_mode = ITEM_MODE;
         // this.drag_component = this.get_hover_component(30);
@@ -341,7 +344,6 @@ class Game {
         this.items[0].push(make_connection(this.drag_connection, hover_con));
       }
     }
-    this.draw_connection = false;
     this.drag_connection = undefined;
     this.creating_new_component = false;
     this.drag_component = undefined;
