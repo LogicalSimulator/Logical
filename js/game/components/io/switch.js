@@ -16,7 +16,16 @@ class Switch extends Component {
     this.connect_points = [this.output1];
     this._powered = false;
   }
+  
+  get powered() {
+    return this._powered;
+  }
 
+  set powered(state) {
+    this._powered = state;
+    this.output1.powered = state;
+  }
+  
   on_left_mouse_click() {
     Sounds.play_tap();
     this.powered = !this.powered;

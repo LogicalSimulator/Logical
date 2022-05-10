@@ -10,7 +10,7 @@ function make_connection(from_point, to_point) {
     // console.log(to_point.connection.from_point.connections.length);
     for (const index in to_point.connection.from_point.connections) {
       const conn = to_point.connection.from_point.connections[index];
-      if (conn.to_point === to_point) {
+      if (conn != undefined && conn.to_point === to_point) {
         // console.log("destroying connection at index " + index);
         to_point.connection.from_point.connections[index].destroy_me = true;
         to_point.connection.from_point.connections[index] = undefined;

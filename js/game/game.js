@@ -6,6 +6,7 @@ const grid_color = 240;
 const dark_grid_color = 100;
 
 const hover_color = [127, 255, 0];
+const right_click_color = [255, 127, 80];
 
 const grid_size = 20;
 
@@ -16,6 +17,8 @@ const zoom_min = 0.1;
 const zoom_max = 5;
 
 const hovering = [];
+
+// let right_clicked = undefined;
 
 let frame_millis = 0;
 
@@ -52,8 +55,11 @@ class Game {
     
     this.dark_mode = false;
     this.drag_component = undefined;
+    this.selected_component = undefined;
     this.creating_new_component = false;
     this.new_component = undefined;
+    this.drag_connection = undefined;
+    this.draw_connection = false
     
     frame_millis = millis();
 
@@ -202,24 +208,6 @@ class Game {
   }
   
   get_hover_component(distance) {
-    // if (distance == undefined) {
-    //   for (const i in this.components) {
-    //     const comp = this.components[i];
-    //     if (comp.mouse_overlapping()) {
-    //       return i;
-    //     }
-    //   }
-    //   return -1;
-    // } else {
-    //   const comps = [];
-    //   for (const i in this.components) {
-    //     const comp = this.components[i];
-    //     if (dist(mouseX, mouseY, comp.pos.x, comp.pos.y) < distance) {
-    //       comps.push(comp);
-    //     }
-    //   }
-    //   return comps;
-    // }
     let allOverlaps = []
     for (let comp of this.components) {
       if (comp.mouse_overlapping()) {
@@ -277,18 +265,35 @@ class Game {
   }
 
   on_mouse_press() {
-    if (hovering_on_button()) {
-      mouse_mode = ADD_MODE;
-    } else if (hovering.length > 0) {
-      mouse_mode = ITEM_MODE;
-      // this.drag_component = this.get_hover_component(30);
-      this.drag_component = hovering[0];
-      //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
-      //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
-      //this.drag_component.pos = mp;
-      //console.log(this.drag_component.mouse_select_pos_diff)
-    } else {
-      mouse_mode = PAN_MODE;
+    this.selected_component = undefined;
+    if (mouseButton === LEFT) {
+      let hover_con;
+      for (let comp of this.components) {
+        hover_con = this.get_hover_connect_point(comp);
+        if (hover_con != undefined) {
+          break
+        } 
+      }
+      if (hovering_on_button()) {
+        mouse_mode = ADD_MODE;
+      } else if (hover_con != undefined) {
+        this.drag_connection = hover_con;
+        this.draw_connection = true;
+      } else if (hovering.length > 0) {
+        mouse_mode = ITEM_MODE;
+        // this.drag_component = this.get_hover_component(30);
+        this.drag_component = hovering[0];
+        //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+        //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
+        //this.drag_component.pos = mp;
+        //console.log(this.drag_component.mouse_select_pos_diff)
+      } else {
+        mouse_mode = PAN_MODE;
+      }
+    } else if (mouseButton === RIGHT) {
+      if (this.drag_component !== hovering[0]) {
+        this.selected_component = hovering[0];
+      }
     }
     return false;
   }
@@ -322,9 +327,25 @@ class Game {
   }
 
   on_mouse_release() {
+    if (this.drag_connection != undefined) {
+      let hover_con = undefined;
+      for (let comp of this.components) {
+        hover_con = this.get_hover_connect_point(comp);
+        if (hover_con != undefined) {
+          break;
+        } 
+      }
+      if (((this.drag_connection instanceof ConnectionOutPoint) && 
+           (hover_con instanceof ConnectionInPoint))) {
+        console.log(this.drag_connection, hover_con);
+        this.items[0].push(make_connection(this.drag_connection, hover_con));
+      }
+    }
+    this.draw_connection = false;
+    this.drag_connection = undefined;
     this.creating_new_component = false;
     this.drag_component = undefined;
-    this.mouse_mode = PAN_MODE;
+    this.mouse_mode = NONE_MODE;
     return false;
   }
   
@@ -529,18 +550,22 @@ class Game {
     hovering.length = 0;
     for (const i in this.items) {
       const group = this.items[i];
+      let did_destroy = false;
       for (const index in group) {
         const item = group[index];
         if (item.destroy_me != undefined && item.destroy_me) {
           group[index] = undefined;
+          did_destroy = true;
           continue;
         }
         item.update();
       }
       this.items[i] = group;
-      this.items[i] = this.items[i].filter((element) => {
-        return element != undefined;
-      });
+      if (did_destroy) {
+        this.items[i] = this.items[i].filter((element) => {
+          return element != undefined;
+        });
+      }
     }
     for (const widget of this.gui) {
       widget.update();
@@ -554,6 +579,7 @@ class Game {
     } else {
       this.graphics.stroke(grid_color);
     }
+    
     const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
@@ -585,16 +611,47 @@ class Game {
     this.graphics.scale(zoom);
 
     this.draw_grid(grid_size, camera);
+
+    if (this.drag_connection != undefined) {
+      this.graphics.push();
+      this.graphics.strokeWeight(1);
+      this.graphics.stroke(0);
+      const from_point = this.drag_connection.pos.copy();
+      // from_point.mult(zoom);
+      // from_point.add(camera);
+      // this.graphics.push();
+      // this.graphics.strokeWeight(5);
+      // this.graphics.stroke(255, 0, 0);
+      // this.graphics.point(from_point.x, from_point.y);
+      // this.graphics.pop();
+      const m_pos = createVector(mouseX, mouseY);
+      m_pos.sub(camera);
+      m_pos.div(zoom);
+      // this.graphics.push();
+      // this.graphics.strokeWeight(5);
+      // this.graphics.stroke(255, 255, 0);
+      // this.graphics.point(m_pos.x, m_pos.y);
+      // this.graphics.pop();
+      this.graphics.line(from_point.x, from_point.y, m_pos.x, m_pos.y);
+      this.graphics.pop();
+    }
     
     for (const group of this.items) {
       for (const item of group) {
-        item.draw(this.graphics, hovering.indexOf(item) != -1 ? hover_color : undefined);
+        if (item === this.selected_component) {
+          item.draw(this.graphics, right_click_color);
+        } else if (hovering.indexOf(item) != -1) {
+          item.draw(this.graphics, hover_color);
+        } else {
+          item.draw(this.graphics);
+        }
         // if (item === this.drag_component) {
         //   console.log("look it's me " + item);
         // }
       }
     }
     this.graphics.pop();
+    
     image(this.graphics, 0, 0);
 
     push();

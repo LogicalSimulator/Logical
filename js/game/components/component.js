@@ -75,7 +75,7 @@ class Component {
       } else {
         if (this.activated_check) {
           this.activated_check = false;
-          if (this.mouse_overlapping()){
+          if (this.mouse_overlapping()) {
             let diff = p5.Vector.sub(createVector(mouseX, mouseY), this.old_pos_mouse);
             if (diff.mag() < 1) {
               this.on_left_mouse_click();
