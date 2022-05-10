@@ -166,6 +166,7 @@ class Game {
   }
   
   resize_gui() {
+    this.graphics.resizeCanvas(windowWidth - window_diff, windowHeight - window_diff);
     if (this.side_group instanceof VerticalWidgetGroup) {
       this.side_group.height = height;
       this.button_line.height = this.side_group.height;
