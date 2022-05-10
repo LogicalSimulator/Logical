@@ -12,6 +12,7 @@ const nand_point_radius = connection_point_radius * 0.75;
 class NandGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(nand_width, nand_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(nand_width / 2, (nand_height * 0.25)), 
                                         createVector(-(nand_width * 0.75), 0), "input1_state");

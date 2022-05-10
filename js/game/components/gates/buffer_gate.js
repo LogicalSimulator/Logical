@@ -11,6 +11,7 @@ const buffer_powered_fill = gate_powered_fill;
 class BufferGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(buffer_width, buffer_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(buffer_width / 2, buffer_height / 2), 
                                         createVector(-(buffer_width * 0.75), 0), "input1_state");

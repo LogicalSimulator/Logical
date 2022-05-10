@@ -10,6 +10,7 @@ const light_powered_fill = component_powered_fill;
 class Light extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(light_width, light_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(light_width / 2, light_height / 2), 
                                         createVector(0, component_height * 0.75), "input1_state");

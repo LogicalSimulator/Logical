@@ -12,6 +12,7 @@ const nor_point_radius = connection_point_radius * 0.75;
 class NorGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(nor_width, nor_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(nor_width / 2, (nor_height * 0.25)), 
                                         createVector(-(nor_width * 0.75), 0), "input1_state");

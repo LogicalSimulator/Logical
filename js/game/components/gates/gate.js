@@ -11,6 +11,7 @@ const gate_powered_fill = component_powered_fill;
 class Gate extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(gate_width, gate_height);
   }
 
   mouse_overlapping() {

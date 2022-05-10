@@ -13,6 +13,7 @@ const xnor_line_sub = xnor_width * 0.1;
 class XnorGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(xnor_width, xnor_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(xnor_width / 2, (xnor_height * 0.25)), 
                                         createVector(-(xnor_width * 0.75), 0), "input1_state");

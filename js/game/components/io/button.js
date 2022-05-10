@@ -10,6 +10,7 @@ const button_powered_fill = component_powered_fill;
 class Button extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(button_width, button_height);
     this.output1 = new ConnectionOutPoint(this, createVector(button_width / 2, button_height / 2), 
                                           createVector(component_width * 0.75, 0));
     this.connect_points = [this.output1];

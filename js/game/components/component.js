@@ -11,6 +11,7 @@ const component_powered_fill = [0, 255, 255];  // cyan
 class Component {
   constructor(pos) {
     this.pos = pos;
+    this.size = createVector(component_width, component_height);
     this.mouse_pressed = false;
     this.camera_shifted = false;
     this.activated_check = false;

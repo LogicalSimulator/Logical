@@ -13,6 +13,7 @@ const xor_line_sub = xor_width * 0.1;
 class XorGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(xor_width, xor_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(xor_width / 2, (xor_height * 0.25)), 
                                         createVector(-(xor_width * 0.75), 0), "input1_state");

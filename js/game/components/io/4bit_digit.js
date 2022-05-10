@@ -10,6 +10,7 @@ const four_bit_digit_powered_fill = component_powered_fill;
 class FourBitDigit extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(four_bit_digit_width, four_bit_digit_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(four_bit_digit_width / 2, four_bit_digit_height * 0.2), 
                                         createVector(-(component_height * 0.75), 0), "input1_state");

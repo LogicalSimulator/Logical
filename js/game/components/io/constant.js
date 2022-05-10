@@ -11,6 +11,7 @@ const constant_powered_fill = component_powered_fill;
 class Constant extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(constant_width, constant_height);
     this.output1 = new ConnectionOutPoint(this, createVector(constant_width / 2, constant_height / 2), 
                                           createVector(component_width * 0.75, 0));
     this.connect_points = [this.output1];

@@ -28,7 +28,8 @@ const ITEM_MODE = 2;
 const ADD_MODE = 3;
 
 let mouse_mode = PAN_MODE;
- 
+
+const add_item_top_pad = 30;
 const menu_outside_pad = 10;
 const menu_button_height = 30;
 
@@ -74,30 +75,32 @@ class Game {
     this.side_group = new main_group();
 
     const button_names = {
-      "Switch": () => {this.add_component(0)},
-      "Button": () => {},
-      "Clock": () => {},
-      "True\nconstant": () => {},
-      "False\nconstant": () => {},
-      "Light": () => {},
-      "4 bit\ndisplay": () => {},
-      "8 bit\ndisplay": () => {},
-      "Buffer gate": () => {},
-      "NOT gate": () => {},
-      "OR gate": () => {},
-      "NOR gate": () => {},
-      "AND gate": () => {},
-      "NAND gate": () => {},
-      "XOR gate": () => {},
-      "XNOR gate": () => {}
+      "Switch": {"image": Icons.switch_icon, "callback": () => {/*this.add_component(0)*/}},
+      "Button": {"image": Icons.button_icon, "callback": () => {/*this.add_component(0)*/}},
+      "Clock": {"image": Icons.clock_icon, "callback": () => {/*this.add_component(0)*/}},
+      "True\nconstant": {"image": Icons.true_constant_icon, "callback": () => {/*this.add_component(0)*/}},
+      "False\nconstant": {"image": Icons.false_constant_icon, "callback": () => {/*this.add_component(0)*/}},
+      "Light": {"image": Icons.light_icon, "callback": () => {/*this.add_component(0)*/}},
+      "4 bit\ndisplay": {"image": Icons.four_bit_display_icon, "callback": () => {/*this.add_component(0)*/}},
+      "8 bit\ndisplay": {"image": Icons.eight_bit_display_icon, "callback": () => {/*this.add_component(0)*/}},
+      "Buffer gate": {"image": Icons.buffer_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "NOT gate": {"image": Icons.not_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "OR gate": {"image": Icons.or_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "NOR gate": {"image": Icons.nor_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "AND gate": {"image": Icons.and_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "NAND gate": {"image": Icons.nand_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "XOR gate": {"image": Icons.xor_gate_icon, "callback": () => {/*this.add_component(0)*/}},
+      "XNOR gate": {"image": Icons.xnor_gate_icon, "callback": () => {/*this.add_component(0)*/}}
     };
     
     const buttons = [];
 
     for (const key of Object.keys(button_names)) {
-      const button = create_button(key, 0, 0, 0, 0, button_names[key]);
+      const button = create_button(key, 0, 0, 0, 0, button_names[key]["callback"]);
       button.clickable.cornerRadius = 0;
       button.clickable.strokeWeight = 0;
+      button.clickable.image = button_names[key]["image"];
+      button.clickable.fitImage = true;
       buttons.push(button);
     }
 

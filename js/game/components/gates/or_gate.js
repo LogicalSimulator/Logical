@@ -12,6 +12,7 @@ const or_powered_fill = gate_powered_fill;
 class OrGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(or_width, or_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(or_width / 2, (or_height * 0.25)), 
                                         createVector(-(or_width * 0.75), 0), "input1_state");

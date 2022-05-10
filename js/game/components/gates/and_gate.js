@@ -12,6 +12,7 @@ const and_powered_fill = gate_powered_fill;
 class AndGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(and_width, and_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(and_width / 2, (and_height * 0.25)), 
                                         createVector(-(and_width * 0.75), 0), "input1_state");

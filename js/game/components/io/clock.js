@@ -11,6 +11,7 @@ const clock_powered_fill = component_powered_fill;
 class Clock extends Component {
   constructor(pos) {
     super(pos);
+    this.size = createVector(clock_width, clock_height);
     this.last_cycle = millis();
     this.period = 1000;
     this.output1 = new ConnectionOutPoint(this, createVector(clock_width / 2, clock_height / 2), 

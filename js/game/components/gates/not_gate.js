@@ -12,6 +12,7 @@ const not_point_radius = connection_point_radius * 0.75;
 class NotGate extends Gate {
   constructor(pos) {
     super(pos);
+    this.size = createVector(not_width, not_height);
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(this, createVector(not_width / 2, not_height / 2), 
                                         createVector(-(not_width * 0.75), 0), "input1_state");
