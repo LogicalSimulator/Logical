@@ -17,25 +17,6 @@ class Switch extends Component {
     this._powered = false;
   }
 
-  get powered() {
-    return this._powered;
-  }
-
-  set powered(state) {
-    this._powered = state;
-    this.output1.powered = state;
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(switch_width / 2, switch_height / 2));
-  }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            switch_width * zoom, switch_height * zoom);
-  }
-
   on_left_mouse_click() {
     Sounds.play_tap();
     this.powered = !this.powered;

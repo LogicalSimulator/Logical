@@ -28,16 +28,6 @@ class Clock extends Component {
     this._powered = state;
     this.output1.powered = state;
   }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(clock_width / 2, clock_height / 2));
-  }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            clock_width * zoom, clock_height * zoom);
-  }
   
   update() {
     super.update();

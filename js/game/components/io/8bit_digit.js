@@ -38,16 +38,6 @@ class EightBitDigit extends Component {
     this.connect_points = [this.input1, this.input2, this.input3, this.input4, this.input5, this.input6, this.input7, this.input8];
     this.display_digit = "00";
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            eight_bit_digit_width * zoom, eight_bit_digit_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(eight_bit_digit_width / 2, eight_bit_digit_height / 2));
-  }
   
   update() {
     super.update();

@@ -25,16 +25,6 @@ class OrGate extends Gate {
     this.powered = false;
   }
 
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            or_width * zoom, or_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(or_width / 2, or_height / 2));
-  }
-  
   update() {
     super.update();
     

@@ -13,30 +13,4 @@ class Gate extends Component {
     super(pos);
     this.size = createVector(gate_width, gate_height);
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            gate_width * zoom, gate_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(gate_width / 2, gate_height / 2));
-  }
-
-  on_left_mouse_click() {
-    
-  }
-
-  on_right_mouse_click() {
-    
-  }
-  
-  update() {
-    super.update();
-  }
-
-  draw(graphics, outline) {
-    super.draw(graphics, outline);
-  }
 }

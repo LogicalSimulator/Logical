@@ -24,11 +24,11 @@ class Component {
   mouse_overlapping() {
     return collidePointRect(mouseX, mouseY, 
                             (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            component_width * zoom, component_height * zoom);
+                            this.size.x * zoom, this.size.y * zoom);
   }
 
   get center_coord() {
-    return p5.Vector.add(this.pos, createVector(component_width / 2, components_height / 2));
+    return p5.Vector.add(this.pos, p5.Vector.div(this.size, 2));
   }
 
   set_pos_center(p) {

@@ -24,16 +24,6 @@ class AndGate extends Gate {
     this.connect_points = [this.input1, this.input2, this.output1];
     this.powered = false;
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            and_width * zoom, and_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(and_width / 2, and_height / 2));
-  }
   
   update() {
     super.update();

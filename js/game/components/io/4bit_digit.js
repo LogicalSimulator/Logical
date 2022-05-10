@@ -26,16 +26,6 @@ class FourBitDigit extends Component {
     this.connect_points = [this.input1, this.input2, this.input3, this.input4];
     this.display_digit = "0";
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            four_bit_digit_width * zoom, four_bit_digit_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(four_bit_digit_width / 2, four_bit_digit_height / 2));
-  }
   
   update() {
     super.update();

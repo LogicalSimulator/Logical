@@ -21,16 +21,6 @@ class NotGate extends Gate {
     this.connect_points = [this.input1, this.output1];
     this.powered = false;
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            not_width * zoom, not_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(not_width / 2, not_height / 2));
-  }
   
   update() {
     super.update();

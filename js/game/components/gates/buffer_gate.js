@@ -20,16 +20,6 @@ class BufferGate extends Gate {
     this.connect_points = [this.input1, this.output1];
     this.powered = false;
   }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            buffer_width * zoom, buffer_height * zoom);
-  }
-
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(buffer_width / 2, buffer_height / 2));
-  }
   
   update() {
     super.update();

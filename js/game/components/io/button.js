@@ -27,16 +27,6 @@ class Button extends Component {
     this.output1.powered = state;
   }
 
-  get center_coord() {
-    return p5.Vector.add(this.pos, createVector(button_width / 2, button_height / 2));
-  }
-
-  mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            button_width * zoom, button_height * zoom);
-  }
-
   on_left_mouse_click() {
     Sounds.play_tap();
     this.powered = true;
