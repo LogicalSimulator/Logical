@@ -96,7 +96,7 @@ class Game {
     const buttons = [];
 
     for (const key of Object.keys(button_names)) {
-      const button = create_button(key, 0, 0, 0, 0, button_names[key]["callback"]);
+      const button = create_button("", 0, 0, 0, 0, button_names[key]["callback"]);
       button.clickable.cornerRadius = 0;
       button.clickable.strokeWeight = 0;
       button.clickable.image = button_names[key]["image"];
