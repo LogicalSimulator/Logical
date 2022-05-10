@@ -64,7 +64,6 @@ class Game {
   make_gui() {
     let main_group;
     let sub_group;
-    const make_vertical = width > height * 2;
     if (make_vertical) {
       main_group = VerticalWidgetGroup;
       sub_group = HorizontalWidgetGroup;

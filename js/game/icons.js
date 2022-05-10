@@ -1,7 +1,7 @@
 const top_text_size = 12 * 2;
 const top_pad = top_text_size * 2;
-const bottom_pad = 5;
-const x_pad = 100;
+let bottom_pad;
+let x_pad;
 
 const icons = {
   "switch_icon": {"name": "Switch", "class": Switch},
@@ -43,6 +43,13 @@ class Icons {
 }
 
 function preload_icons() {
+  if (make_vertical) {
+    bottom_pad = 5;
+    x_pad = 60;
+  } else {
+    bottom_pad = 5;
+    x_pad = 100;
+  }
   for (const name in icons) {
     const item = new icons[name]["class"](createVector());
     const buf_width = item.size.x + (x_pad * 2);
@@ -56,6 +63,10 @@ function preload_icons() {
       item.pos.y += bottom_pad * 2;
     }
     const buffer = createGraphics(buf_width, buf_height);
+    // buffer.push();
+    // buffer.fill(255, 0, 0);
+    // buffer.rect(0, 0, buf_width, buf_height);
+    // buffer.pop();
     item.draw(buffer);
     buffer.push();
     buffer.fill(0);

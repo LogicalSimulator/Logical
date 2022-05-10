@@ -1,3 +1,5 @@
+let make_vertical;
+
 class Widget {
   constructor() {
     this._x = 0;
