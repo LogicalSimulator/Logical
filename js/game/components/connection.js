@@ -139,7 +139,7 @@ class ConnectionPoint {
     this.pos = p5.Vector.add(p5.Vector.add(this.parent.pos, from), this.offset);
     this.mouse_pressed = false;
     this._powered = false;
-    this.angle = 0
+    this.angle = 0;
   }
 
   get powered() {
@@ -216,13 +216,15 @@ class ConnectionPoint {
   draw(graphics, outline) {
     graphics.push();
 
-    const from_vec = p5.Vector.add(this.parent.pos, this.from);
+    // const from_vec = p5.Vector.add(this.parent.pos, this.from);
+    let from_vec = p5.Vector.add(this.parent.pos, this.from);
     this.pos = p5.Vector.add(from_vec, this.offset);
     
     //graphics.circle(from_vec.x,from_vec.y,30)
     let parent_cen = this.parent.center_coord;
-    // that makes it squish together
-    // this.pos = this.rotate_to_real(parent_cen, this.offset, this.angle);
+    // TODO: FIX THIS MAKES IT SQUISH INWARDS
+    // I THINK YOU NEED TO ROTATE FROM_VEC BUT IDK HOW
+    // from_vec = this.rotate_to_real(from_vec, this.offset, this.angle);
     this.pos = this.rotate_to_real(from_vec, this.offset, this.angle);
     
     graphics.strokeWeight(connection_point_stroke_weight);
@@ -232,8 +234,16 @@ class ConnectionPoint {
     graphics.stroke(outline == undefined ? connection_point_stroke : outline);
     graphics.fill(this._powered ? connection_point_powered_fill : connection_point_fill);
     graphics.circle(this.pos.x, this.pos.y, connection_point_radius);
-    graphics.fill(255,0,0)
+    graphics.fill(255, 0, 0);
     graphics.pop();
+
+    // graphics.push();
+    // graphics.strokeWeight(5);
+    // graphics.stroke(255, 0, 0);
+    // graphics.point(from_vec);
+    // graphics.stroke(255, 255, 0);
+    // graphics.point(this.pos);
+    // graphics.pop();
   }
 }
 
