@@ -372,7 +372,7 @@ class Game {
   key_pressed(code) {
     // backspace or "d" key
     if (code == 8 || code == 68) {
-      if (this.selected_component != undefined) {
+      if (this.delete_button.enabled) {
         destroy_component(this.selected_component);
         this.selected_component = undefined;
       }
@@ -592,7 +592,8 @@ class Game {
         });
       // }
     }
-    this.delete_button.enabled = this.selected_component instanceof Component;
+    this.delete_button.enabled = this.selected_component instanceof Component || 
+                                 this.selected_component instanceof Connection;
     for (const widget of this.gui) {
       widget.update();
     }
