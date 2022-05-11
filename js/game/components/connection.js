@@ -30,6 +30,9 @@ function destroy_connection(connection) {
   connection.powered = false;
   for (const index in connection.from_point.connections) {
     const conn = connection.from_point.connections[index];
+    if (conn !== connection) {
+      continue;
+    }
     // console.log("destroying connection at index " + index);
     connection.from_point.connections[index].destroy_me = true;
     connection.from_point.connections[index] = undefined;
@@ -136,6 +139,7 @@ class ConnectionPoint {
     this.pos = p5.Vector.add(p5.Vector.add(this.parent.pos, from), this.offset);
     this.mouse_pressed = false;
     this._powered = false;
+    this.angle = 0
   }
 
   get powered() {
@@ -196,7 +200,17 @@ class ConnectionPoint {
   }
   
   update() {
+    this.angle = this.parent.angle
     this.handle_mouse();
+  }
+
+  rotate_to_real(pos, off, angle) {
+    let X = pos.x + off.x;
+    let Y = pos.y + off.y;
+  
+    let New_X = pos.x + (X - pos.x) * cos(angle) - (Y - pos.y) * sin(angle);
+    let New_Y = pos.y + (X - pos.x) * sin(angle) + (Y - pos.y) * cos(angle);
+    return createVector(New_X, New_Y);
   }
 
   draw(graphics, outline) {
@@ -205,6 +219,12 @@ class ConnectionPoint {
     const from_vec = p5.Vector.add(this.parent.pos, this.from);
     this.pos = p5.Vector.add(from_vec, this.offset);
     
+    //graphics.circle(from_vec.x,from_vec.y,30)
+    let parent_cen = this.parent.center_coord;
+    // that makes it squish together
+    // this.pos = this.rotate_to_real(parent_cen, this.offset, this.angle);
+    this.pos = this.rotate_to_real(from_vec, this.offset, this.angle);
+    
     graphics.strokeWeight(connection_point_stroke_weight);
     graphics.stroke(connection_point_stroke);
     graphics.line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
@@ -212,7 +232,7 @@ class ConnectionPoint {
     graphics.stroke(outline == undefined ? connection_point_stroke : outline);
     graphics.fill(this._powered ? connection_point_powered_fill : connection_point_fill);
     graphics.circle(this.pos.x, this.pos.y, connection_point_radius);
-    
+    graphics.fill(255,0,0)
     graphics.pop();
   }
 }

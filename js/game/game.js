@@ -156,7 +156,7 @@ class Game {
     }
     this.gui.push(this.button_line);
 
-    this.delete_button = create_button("Delete", 0, 0, 0, 0, this.destroy_selected_component);
+    this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component()});
     this.menu_group = new sub_group(
       [
         this.delete_button,
@@ -223,7 +223,7 @@ class Game {
   
   get_hover_component(distance) {
     let allOverlaps = []
-    for (let comp of this.components) {
+    for (let comp of this.items[2]) {
       if (comp.mouse_overlapping()) {
         allOverlaps.push(comp)
       }
@@ -380,6 +380,10 @@ class Game {
       if (this.delete_button.enabled) {
         this.destroy_selected_component();
       }
+    }
+    // "r" key
+    if (code == 82) {
+      //this.items[2][0].angle += PI / 2;
     }
   }
 
@@ -576,6 +580,7 @@ class Game {
   update() {
     frame_millis = millis();
     hovering.length = 0;
+    this.items[2][0].angle += 0.01
     for (const i in this.items) {
       const group = this.items[i];
       // let did_destroy = false;

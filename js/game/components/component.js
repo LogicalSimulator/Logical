@@ -42,6 +42,7 @@ class Component {
     this.click_activate = true;
     this.mouse_select_pos_diff = createVector();
     this.connect_points = [];
+    this.angle = 0
   }
 
   mouse_overlapping() {
@@ -143,8 +144,10 @@ class Component {
   }
 
   draw(graphics, outline) {
+    graphics.push()
     for (const point of this.connect_points) {
       point.draw(graphics, hovering.indexOf(point) != -1 ? hover_color : undefined);
     }
+    graphics.pop()
   }
 }
