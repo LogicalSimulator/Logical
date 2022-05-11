@@ -340,7 +340,6 @@ class Game {
       }
       if (((this.drag_connection instanceof ConnectionOutPoint) && 
            (hover_con instanceof ConnectionInPoint))) {
-        console.log(this.drag_connection, hover_con);
         this.items[0].push(make_connection(this.drag_connection, hover_con));
       }
     }
