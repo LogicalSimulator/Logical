@@ -156,13 +156,7 @@ class Game {
     }
     this.gui.push(this.button_line);
 
-    this.delete_button = create_button(
-      "Delete", 0, 0, 0, 0, 
-      () => {
-        destroy_component(this.selected_component);
-        this.selected_component = undefined;
-      }
-    );
+    this.delete_button = create_button("Delete", 0, 0, 0, 0, this.destroy_selected_component);
     this.menu_group = new sub_group(
       [
         this.delete_button,
@@ -214,6 +208,17 @@ class Game {
     this.drag_component.pos.sub(p5.Vector.div(this.drag_component.size, 2));
     // mouse_mode = ITEM_MODE;
     this.items[2].push(this.drag_component);
+  }
+
+  destroy_selected_component() {
+    if (this.selected_component instanceof Component) {
+      destroy_component(this.selected_component); 
+    } else if (this.selected_component instanceof Connection) {
+      destroy_connection(this.selected_component);
+    } else {
+      return;
+    }
+    this.selected_component = undefined;
   }
   
   get_hover_component(distance) {
@@ -368,13 +373,12 @@ class Game {
       comp.mouse_clicked();
     }
   }
-
+  
   key_pressed(code) {
     // backspace or "d" key
     if (code == 8 || code == 68) {
       if (this.delete_button.enabled) {
-        destroy_component(this.selected_component);
-        this.selected_component = undefined;
+        this.destroy_selected_component();
       }
     }
   }

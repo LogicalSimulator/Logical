@@ -26,6 +26,16 @@ function make_connection(from_point, to_point) {
   return connection;
 }
 
+function destroy_connection(connection) {
+  connection.powered = false;
+  for (const index in connection.from_point.connections) {
+    const conn = connection.from_point.connections[index];
+    // console.log("destroying connection at index " + index);
+    connection.from_point.connections[index].destroy_me = true;
+    connection.from_point.connections[index] = undefined;
+  }
+}
+
 class Connection {
   constructor(from_point, to_point) {
     this.from_point = from_point;
