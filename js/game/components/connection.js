@@ -1,6 +1,6 @@
 "use strict";
 
-const connection_stroke_weight = component_stroke_weight*2;
+const connection_stroke_weight = component_stroke_weight * 2;
 const connection_stroke = component_stroke;
 const connection_powered_stroke = component_powered_fill;
 
@@ -32,6 +32,7 @@ class Connection {
     this.to_point = to_point;
     this.destroy_me = false;
     this._powered = false;
+    this.hovering = false
   }
 
   get powered() {
@@ -43,18 +44,54 @@ class Connection {
     this.to_point.powered = state;
   }
 
+  mouse_overlapping() {
+    const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
+    const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
+
+    let skip_perc = 1 / 4;
+    let ler_perc = 0;
+    let line_verts = [];
+    for (let i = 0; i < 1 + skip_perc; i += skip_perc) {
+      let px = bezierPoint(this.from_point.pos.x, from_point_offset.x,
+                           to_point_offset.x, this.to_point.pos.x, ler_perc);
+      let py = bezierPoint(this.from_point.pos.y, from_point_offset.y,
+                           to_point_offset.y, this.to_point.pos.y, ler_perc);
+
+      line_verts.push(createVector(px,py));
+      ler_perc += skip_perc;
+    }
+    let mp = createVector(
+      (mouseX - camera.x) / zoom, 
+      (mouseY - camera.y) / zoom
+    );
+    for (let i = 1; i < line_verts.length; i++) {
+      if (collideLineCircle(line_verts[i].x,line_verts[i].y,
+                            line_verts[i-1].x,line_verts[i-1].y,mp.x,mp.y,10)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   update() {
-    
+    if (this.mouse_overlapping()) {
+      hovering.push(this);
+    }
   }
 
-  draw(graphics) {
+  draw(graphics, outline) {
     graphics.push();
 
     const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
     const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
     
     graphics.strokeWeight(connection_stroke_weight);
-    graphics.stroke(this._powered ? connection_powered_stroke : connection_stroke);
+    if (outline != undefined) {
+      graphics.stroke(outline);
+    } else {
+      graphics.stroke(this._powered ? connection_powered_stroke : connection_stroke);
+    }
+    
     graphics.noFill();
 
     graphics.beginShape();
@@ -63,6 +100,7 @@ class Connection {
                           to_point_offset.x, to_point_offset.y,
                           this.to_point.pos.x, this.to_point.pos.y);
     graphics.endShape();
+    
     
     //  graphics.bezier(this.from_point.pos.x, this.from_point.pos.y,
     //                  from_point_offset.x, from_point_offset.y,

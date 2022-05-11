@@ -65,3 +65,7 @@ function mouseReleased() {
 function mouseWheel(event) {
   return game.on_mouse_wheel(event);
 }
+
+function keyPressed(){
+  return game.key_pressed(keyCode)
+}

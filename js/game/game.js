@@ -369,6 +369,16 @@ class Game {
     }
   }
 
+  key_pressed(code) {
+    // backspace or "d" key
+    if (code == 8 || code == 68) {
+      if (this.selected_component != undefined) {
+        destroy_component(this.selected_component);
+        this.selected_component = undefined;
+      }
+    }
+  }
+
   on_mouse_wheel(event) {
     if (hovering_on_button()) {
       
