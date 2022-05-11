@@ -101,7 +101,11 @@ class Component {
           if (this.mouse_overlapping()) {
             let diff = p5.Vector.sub(createVector(mouseX, mouseY), this.old_pos_mouse);
             if (diff.mag() < 1) {
-              this.on_left_mouse_click();
+              if (mouseButton === LEFT) {
+                this.on_left_mouse_click();
+              } else if (mouseButton === RIGHT) {
+                this.on_right_mouse_click();
+              }
             }
           }
         }
