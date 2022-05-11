@@ -21,6 +21,10 @@ function make_connection(from_point, to_point) {
   const connection = new Connection(from_point, to_point);
   from_point.connections.push(connection);
   to_point.connection = connection;
+  to_point.powered = from_point.powered;
+  from_point.parent.powered = from_point.parent.powered;
+  console.log("from: " + from_point.powered);
+  console.log("to: " + to_point.powered);
   return connection;
 }
 
