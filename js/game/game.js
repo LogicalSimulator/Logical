@@ -276,7 +276,7 @@ class Game {
   on_mouse_press() {
     if (mouseButton === LEFT) {
       let hover_con;
-      for (let comp of this.components) {
+      for (let comp of this.items[2]) {
         hover_con = this.get_hover_connect_point(comp);
         if (!(hover_con instanceof ConnectionOutPoint)) {
           hover_con = undefined;
@@ -345,7 +345,7 @@ class Game {
   on_mouse_release() {
     if (this.drag_connection != undefined) {
       let hover_con = undefined;
-      for (let comp of this.components) {
+      for (let comp of this.items[2]) {
         hover_con = this.get_hover_connect_point(comp);
         if (hover_con != undefined) {
           break;

@@ -70,6 +70,7 @@ class Connection {
     //                  this.to_point.pos.x, this.to_point.pos.y);
     
     graphics.pop();
+    
   }
 }
 
