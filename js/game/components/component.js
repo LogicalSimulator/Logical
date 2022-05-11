@@ -8,6 +8,29 @@ const component_stroke = 0;  // black
 const component_fill = 255;  // white
 const component_powered_fill = [0, 255, 255];  // cyan
 
+function destroy_component(comp) {
+  comp.destroy_me = true;
+  for (let i = 1; ; i ++) {
+    const maybe_out = comp["output" + i];
+    if (maybe_out == undefined) {
+      break;
+    }
+    maybe_out.powered = false;
+    for (const conn of maybe_out.connections) {
+      conn.destroy_me = true;
+    }
+  }
+  for (let i = 1; ; i ++) {
+    const maybe_in = comp["input" + i];
+    if (maybe_in == undefined) {
+      break;
+    }
+    if (maybe_in.connection != undefined) {
+      maybe_in.connection.destroy_me = true;
+    }
+  }
+}
+
 class Component {
   constructor(pos) {
     this.pos = pos;

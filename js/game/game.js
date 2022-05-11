@@ -35,6 +35,7 @@ let mouse_mode = PAN_MODE;
 
 const add_item_top_pad = 30;
 const menu_outside_pad = 10;
+const menu_button_width = 100;
 const menu_button_height = 30;
 
 const components = [
@@ -155,24 +156,32 @@ class Game {
     }
     this.gui.push(this.button_line);
 
-    this.menu_group = new main_group(
+    this.delete_button = create_button(
+      "Delete", 0, 0, 0, 0, 
+      () => {
+        destroy_component(this.selected_component);
+        this.selected_component = undefined;
+      }
+    );
+    this.menu_group = new sub_group(
       [
-        create_button("Menu", 0, 0, 0, 0, () => {}),
+        this.delete_button,
+        create_button("Menu", 0, 0, 0, 0, () => {})
       ]
     );
     
     if (make_vertical) {
-      this.menu_group.x = width - 100 - menu_outside_pad;
-      this.menu_group.y = this.side_group.y + menu_outside_pad;
-      this.menu_group.width = 100;
-      this.menu_group.height = (menu_button_height + 5) * 1;
-      this.menu_group.y_pad = 5;
-    } else {
-      this.menu_group.x = this.side_group.x + menu_outside_pad;
-      this.menu_group.y = height - menu_button_height - menu_outside_pad;
-      this.menu_group.width = 100;
-      this.menu_group.height = menu_button_height;
       this.menu_group.x_pad = 5;
+      this.menu_group.width = menu_button_width * this.menu_group.widgets.length;
+      this.menu_group.height = menu_button_height;
+      this.menu_group.x = width - this.menu_group.width - menu_outside_pad + this.menu_group.x_pad;
+      this.menu_group.y = this.side_group.y + menu_outside_pad;
+    } else {
+      this.menu_group.y_pad = 5;
+      this.menu_group.width = menu_button_width;
+      this.menu_group.height = menu_button_height * this.menu_group.widgets.length;
+      this.menu_group.x = this.side_group.x + menu_outside_pad;
+      this.menu_group.y = height - this.menu_group.height - menu_outside_pad + this.menu_group.y_pad;
     }
 
     this.gui.push(this.menu_group);
@@ -265,7 +274,6 @@ class Game {
   }
 
   on_mouse_press() {
-    this.selected_component = undefined;
     if (mouseButton === LEFT) {
       let hover_con;
       for (let comp of this.components) {
@@ -274,28 +282,33 @@ class Game {
           hover_con = undefined;
         }
         if (hover_con != undefined) {
-          break
+          break;
         } 
       }
       if (hovering_on_button()) {
         mouse_mode = ADD_MODE;
       } else if (hover_con != undefined) {
         this.drag_connection = hover_con;
+        this.selected_component = undefined;
         mouse_mode = CONNECT_MODE;
       } else if (hovering.length > 0) {
         mouse_mode = ITEM_MODE;
         // this.drag_component = this.get_hover_component(30);
         this.drag_component = hovering[0];
+        this.selected_component = undefined;
         //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
         //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
         //this.drag_component.pos = mp;
         //console.log(this.drag_component.mouse_select_pos_diff)
       } else {
         mouse_mode = PAN_MODE;
+        this.selected_component = undefined;
       }
     } else if (mouseButton === RIGHT) {
       if (this.drag_component !== hovering[0]) {
         this.selected_component = hovering[0];
+      } else {
+        this.selected_component = undefined;
       }
     }
     return false;
@@ -551,23 +564,25 @@ class Game {
     hovering.length = 0;
     for (const i in this.items) {
       const group = this.items[i];
-      let did_destroy = false;
+      // let did_destroy = false;
       for (const index in group) {
         const item = group[index];
         if (item.destroy_me != undefined && item.destroy_me) {
+          console.log("destroying item " + item);
           group[index] = undefined;
-          did_destroy = true;
+          // did_destroy = true;
           continue;
         }
         item.update();
       }
       this.items[i] = group;
-      if (did_destroy) {
+      // if (did_destroy) {
         this.items[i] = this.items[i].filter((element) => {
           return element != undefined;
         });
-      }
+      // }
     }
+    this.delete_button.enabled = this.selected_component instanceof Component;
     for (const widget of this.gui) {
       widget.update();
     }
