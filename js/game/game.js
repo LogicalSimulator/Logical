@@ -47,10 +47,10 @@ const components = [
   NandGate, XorGate, XnorGate
 ];
 
+// afk
 /* TODO:
 - Smooth scrolling
 - Import/export to compressed JSON via menu button
-- Be able to read compressed JSON from query parameters for "fast import"
 - MULTI SELECT SYSTEM
   - MULTI-DRAG
   - MULTI-DELETE
@@ -242,6 +242,19 @@ class Game {
     if (this.selected_component instanceof Component) {
       this.selected_component.angle += rads;
     }
+  }
+
+  destroy_all_components() {
+    this.connections.length = 0;
+    this.connect_points.length = 0;
+    this.components.length = 0;
+    this.items = [this.connections, this.connect_points, this.components];
+    this.drag_component = undefined;
+    this.selected_component = undefined;
+    this.creating_new_component = false;
+    this.new_component = undefined;
+    this.drag_connection = undefined;
+    hovering.length = 0;
   }
   
   get_hover_component(distance) {

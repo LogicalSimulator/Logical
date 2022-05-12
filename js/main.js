@@ -17,10 +17,11 @@ function preload() {
 function setup() {
   createCanvas(windowWidth - window_diff, windowHeight - window_diff);
   frameRate(desired_fps);
+  
   make_vertical = width > height * 2;
   preload_icons();  // generates images so can't be in preload
+  
   game = new Game();
-
 }
 
 function draw() {
