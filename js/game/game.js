@@ -335,7 +335,7 @@ class Game {
     } else if (hovering.length > 0) {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
-          this.drag_component != undefined) {
+          this.drag_component instanceof Component) {
         // let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
         // this.drag_component.set_pos_center(mp)
         // this.drag_component.pos = mp;
