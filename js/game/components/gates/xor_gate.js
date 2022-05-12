@@ -38,11 +38,15 @@ class XorGate extends Gate {
     
     graphics.push();
 
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const xor_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+    
     graphics.strokeWeight(xor_stroke_weight);
     graphics.stroke(outline == undefined ? xor_stroke : outline);
     graphics.fill(this.powered ? xor_powered_fill : xor_fill);
     
-    const top_left = this.pos;
+    const top_left = xor_pos;
     const bottom_left = p5.Vector.add(top_left, createVector(0, xor_height));
     const top_right = p5.Vector.add(top_left, createVector(xor_width, 0));
     const bottom_right = p5.Vector.add(top_left, createVector(xor_width, xor_height));

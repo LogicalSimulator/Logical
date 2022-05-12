@@ -38,13 +38,17 @@ class XnorGate extends Gate {
     
     graphics.push();
 
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const xnor_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+
     graphics.strokeWeight(xnor_stroke_weight);
     graphics.stroke(outline == undefined ? xnor_stroke : outline);
     graphics.fill(this.powered ? xnor_powered_fill : xnor_fill);
 
     const tip_sub = (xnor_point_radius / 2);
     
-    const top_left = this.pos;
+    const top_left = xnor_pos;
     const bottom_left = p5.Vector.add(top_left, createVector(0, xnor_height));
     const top_right = p5.Vector.add(top_left, createVector(xnor_width, 0));
     const bottom_right = p5.Vector.add(top_left, createVector(xnor_width, xnor_height));

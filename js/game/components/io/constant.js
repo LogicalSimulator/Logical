@@ -52,9 +52,11 @@ class TrueConstant extends Constant {
     
     graphics.push();
 
-    const constant_center = this.center_coord;
-    const constant_x = this.pos.x;
-    const constant_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const constant_x = -this.size.x / 2;
+    const constant_y = -this.size.y / 2
+    const constant_center = createVector(0, 0);
     
     graphics.strokeWeight(constant_stroke_weight);
     graphics.stroke(outline == undefined ? constant_stroke : outline);
@@ -86,9 +88,11 @@ class FalseConstant extends Constant {
     
     graphics.push();
 
-    const constant_center = this.center_coord;
-    const constant_x = this.pos.x;
-    const constant_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const constant_x = -this.size.x / 2;
+    const constant_y = -this.size.y / 2
+    const constant_center = createVector(0, 0);
     
     graphics.strokeWeight(constant_stroke_weight);
     graphics.stroke(outline == undefined ? constant_stroke : outline);

@@ -37,13 +37,17 @@ class NorGate extends Gate {
     
     graphics.push();
 
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const nor_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+    
     graphics.strokeWeight(nor_stroke_weight);
     graphics.stroke(outline == undefined ? nor_stroke : outline);
     graphics.fill(this.powered ? nor_powered_fill : nor_fill);
 
     const tip_sub = (nor_point_radius / 2);
     
-    const top_left = this.pos;
+    const top_left = nor_pos;
     const bottom_left = p5.Vector.add(top_left, createVector(0, nor_height));
     const top_right = p5.Vector.add(top_left, createVector(nor_width, 0));
     const bottom_right = p5.Vector.add(top_left, createVector(nor_width, nor_height));

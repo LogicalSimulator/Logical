@@ -34,14 +34,18 @@ class NotGate extends Gate {
     
     graphics.push();
 
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const not_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+    
     graphics.strokeWeight(buffer_stroke_weight);
     graphics.stroke(outline == undefined ? buffer_stroke : outline);
     graphics.fill(this.powered ? buffer_powered_fill : buffer_fill);
 
-    const bottom_point = p5.Vector.add(this.pos, createVector(0, buffer_height));
-    const right_point = p5.Vector.add(this.pos, createVector(buffer_width, buffer_height / 2));
+    const bottom_point = p5.Vector.add(not_pos, createVector(0, buffer_height));
+    const right_point = p5.Vector.add(not_pos, createVector(buffer_width, buffer_height / 2));
     
-    graphics.triangle(this.pos.x, this.pos.y,
+    graphics.triangle(not_pos.x, not_pos.y,
                       bottom_point.x, bottom_point.y,
                       right_point.x, right_point.y);
 

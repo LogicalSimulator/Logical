@@ -158,9 +158,11 @@ class Game {
     }
     this.gui.push(this.button_line);
 
-    this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component()});
+    this.rotate_button = create_button("Rotate", 0, 0, 0, 0, () => {this.rotate_selected_component(PI / 2);});
+    this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component();});
     this.menu_group = new sub_group(
       [
+        this.rotate_button,
         this.delete_button,
         create_button("Menu", 0, 0, 0, 0, () => {})
       ]
@@ -221,6 +223,12 @@ class Game {
       return;
     }
     this.selected_component = undefined;
+  }
+
+  rotate_selected_component(rads) {
+    if (this.selected_component instanceof Component) {
+      this.selected_component.angle += rads;
+    }
   }
   
   get_hover_component(distance) {
@@ -375,19 +383,6 @@ class Game {
       comp.mouse_clicked();
     }
   }
-  
-  key_pressed(code) {
-    // backspace or "d" key
-    if (code == 8 || code == 68) {
-      if (this.delete_button.enabled) {
-        this.destroy_selected_component();
-      }
-    }
-    // "r" key
-    if (code == 82) {
-      //this.items[2][0].angle += PI / 2;
-    }
-  }
 
   on_mouse_wheel(event) {
     if (hovering_on_button()) {
@@ -412,9 +407,30 @@ class Game {
         camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
         camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
       }
+    
     }
     
     return false;
+  }
+
+  key_pressed(code) {
+    // backspace or "d" key
+    if (code == 8 || code == 68) {
+      if (this.delete_button.enabled) {
+        this.destroy_selected_component();
+      }
+    }
+    if (this.rotate_button.enabled) {
+      // "r" key
+      if (code == 82) {
+        // shift key
+        if (keyIsDown(16)) {
+          this.rotate_selected_component(-PI / 2);
+        } else {
+          this.rotate_selected_component(PI / 2);
+        }
+      }
+    }
   }
 
   make_testing_objects() {
@@ -582,7 +598,6 @@ class Game {
   update() {
     frame_millis = millis();
     hovering.length = 0;
-    this.items[2][0].angle += 0.01
     for (const i in this.items) {
       const group = this.items[i];
       // let did_destroy = false;
@@ -605,6 +620,7 @@ class Game {
     }
     this.delete_button.enabled = this.selected_component instanceof Component || 
                                  this.selected_component instanceof Connection;
+    this.rotate_button.enabled = this.selected_component instanceof Component;
     for (const widget of this.gui) {
       widget.update();
     }

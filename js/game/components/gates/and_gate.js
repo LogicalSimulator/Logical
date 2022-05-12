@@ -36,15 +36,19 @@ class AndGate extends Gate {
     super.draw(graphics, outline);
     
     graphics.push();
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const and_x = -this.size.x / 2;
+    const and_y = -this.size.y / 2
     
     graphics.strokeWeight(and_stroke_weight);
     graphics.stroke(outline == undefined ? and_stroke : outline);
     graphics.fill(this.powered ? and_powered_fill : and_fill);
 
-    graphics.rect(this.pos.x, this.pos.y, and_width / 2, and_height);
+    graphics.rect(and_x, and_y, and_width / 2, and_height);
     
     graphics.ellipseMode(CORNER);
-    graphics.arc(this.pos.x - (and_stroke_weight + 1), this.pos.y, 
+    graphics.arc(and_x - (and_stroke_weight + 1), and_y, 
                  and_width, and_height, 
                  -HALF_PI, HALF_PI);
     

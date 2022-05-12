@@ -39,10 +39,10 @@ class Switch extends Component {
     super.draw(graphics, outline);
     
     graphics.push();
-    graphics.translate(this.pos.x + switch_width / 2, this.pos.y + switch_height / 2);
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
     graphics.rotate(this.angle);
-    const switch_x = -switch_width / 2;
-    const switch_y = -switch_height / 2
+    const switch_x = -this.size.x / 2;
+    const switch_y = -this.size.y / 2
 
     graphics.strokeWeight(switch_stroke_weight);
     graphics.stroke(outline == undefined ? switch_stroke : outline);

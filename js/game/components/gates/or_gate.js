@@ -37,11 +37,15 @@ class OrGate extends Gate {
     
     graphics.push();
 
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const or_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+    
     graphics.strokeWeight(or_stroke_weight);
     graphics.stroke(outline == undefined ? or_stroke : outline);
     graphics.fill(this.powered ? or_powered_fill : or_fill);
 
-    const top_left = this.pos;
+    const top_left = or_pos;
     const bottom_left = p5.Vector.add(top_left, createVector(0, or_height));
     const top_right = p5.Vector.add(top_left, createVector(or_width, 0));
     const bottom_right = p5.Vector.add(top_left, createVector(or_width, or_height));

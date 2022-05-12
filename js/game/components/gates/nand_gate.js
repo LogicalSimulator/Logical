@@ -36,22 +36,26 @@ class NandGate extends Gate {
     super.draw(graphics, outline);
     
     graphics.push();
-
+    
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const nand_pos = createVector(-this.size.x / 2, -this.size.y / 2)
+    
     graphics.strokeWeight(nand_stroke_weight);
     graphics.stroke(outline == undefined ? nand_stroke : outline);
     graphics.fill(this.powered ? nand_powered_fill : nand_fill);
 
-    graphics.rect(this.pos.x, this.pos.y, nand_width / 2, nand_height);
+    graphics.rect(nand_pos.x, nand_pos.y, nand_width / 2, nand_height);
 
     const tip_sub = (nand_point_radius / 2);
     
     graphics.ellipseMode(CORNER);
-    graphics.arc(this.pos.x - (nand_stroke_weight + 1), this.pos.y, 
+    graphics.arc(nand_pos.x - (nand_stroke_weight + 1), nand_pos.y, 
                  nand_width, nand_height, 
                  -HALF_PI, HALF_PI);
 
     graphics.ellipseMode(CENTER);
-    const output_point = p5.Vector.add(this.pos, createVector(nand_width - tip_sub + (nand_point_radius / 2), nand_height / 2));
+    const output_point = p5.Vector.add(nand_pos, createVector(nand_width - tip_sub + (nand_point_radius / 2), nand_height / 2));
     graphics.circle(output_point.x, output_point.y, nand_point_radius);
     
     graphics.pop();

@@ -65,9 +65,11 @@ class EightBitDigit extends Component {
     
     graphics.push();
 
-    const eight_bit_center = this.center_coord;
-    const eight_bit_digit_x = this.pos.x;
-    const eight_bit_digit_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const eight_bit_digit_x = -this.size.x / 2;
+    const eight_bit_digit_y = -this.size.y / 2
+    const eight_bit_center = createVector(0, 0);
 
     graphics.strokeWeight(eight_bit_digit_stroke_weight);
     graphics.stroke(outline == undefined ? eight_bit_digit_stroke : outline);

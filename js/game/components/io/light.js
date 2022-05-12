@@ -27,12 +27,13 @@ class Light extends Component {
     super.draw(graphics, outline);
     
     graphics.push();
-
-    const light_x = this.pos.x;
-    const light_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const light_x = -this.size.x / 2;
+    const light_y = -this.size.y / 2
 
     const light_bulb_height = light_height * 0.75;
-
+    
     graphics.strokeWeight(light_stroke_weight);
     graphics.stroke(outline == undefined ? light_stroke : outline);
     graphics.fill(this.powered ? light_powered_fill : light_fill);

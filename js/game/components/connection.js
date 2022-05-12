@@ -62,27 +62,30 @@ class Connection {
     const to_point_offset = rotate_to_real(this.to_point.pos, this.to_point.offset, this.to_point.angle);
 
     let skip_perc = 1 / 4;
-    let ler_perc = 0;
+    let ler_perc = skip_perc;
     let line_verts = [];
-    for (let i = 0; i < 1 + skip_perc; i += skip_perc) {
-      let px = bezierPoint(this.from_point.pos.x, from_point_offset.x,
-                           to_point_offset.x, this.to_point.pos.x, ler_perc);
-      let py = bezierPoint(this.from_point.pos.y, from_point_offset.y,
-                           to_point_offset.y, this.to_point.pos.y, ler_perc);
-
-      line_verts.push(createVector(px,py));
-      ler_perc += skip_perc;
-    }
     let mp = createVector(
       (mouseX - camera.x) / zoom, 
       (mouseY - camera.y) / zoom
     );
-    for (let i = 1; i < line_verts.length; i++) {
-      if (collideLineCircle(line_verts[i].x, line_verts[i].y,
-                            line_verts[i - 1].x, line_verts[i - 1].y,
+
+    for (let i = 0; i < 1 ; i += skip_perc) {
+      let px = bezierPoint(this.from_point.pos.x, from_point_offset.x,
+                           to_point_offset.x, this.to_point.pos.x, ler_perc);
+      let py = bezierPoint(this.from_point.pos.y, from_point_offset.y,
+                           to_point_offset.y, this.to_point.pos.y, ler_perc);
+      let bx = bezierPoint(this.from_point.pos.x, from_point_offset.x,
+                           to_point_offset.x, this.to_point.pos.x, ler_perc-skip_perc)
+      let by = bezierPoint(this.from_point.pos.y, from_point_offset.y,
+                           to_point_offset.y, this.to_point.pos.y, ler_perc-skip_perc);
+      
+      line_verts.push(createVector(px,py));
+      if (collideLineCircle(bx, by,
+                            px, py,
                             mp.x, mp.y, 10)) {
         return true;
       }
+      ler_perc += skip_perc;
     }
     return false;
   }

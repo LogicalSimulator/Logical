@@ -43,9 +43,11 @@ class Clock extends Component {
     
     graphics.push();
 
-    const clock_center = this.center_coord;
-    const clock_x = this.pos.x;
-    const clock_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const clock_x = -this.size.x / 2;
+    const clock_y = -this.size.y / 2
+    const clock_center = createVector(0, 0);
     
     graphics.strokeWeight(clock_stroke_weight);
     graphics.stroke(outline == undefined ? clock_stroke : outline);

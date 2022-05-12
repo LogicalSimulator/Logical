@@ -45,9 +45,11 @@ class Button extends Component {
     
     graphics.push();
 
-    const button_center = this.center_coord;
-    const button_x = this.pos.x;
-    const button_y = this.pos.y;
+    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.rotate(this.angle);
+    const button_x = -this.size.x / 2;
+    const button_y = -this.size.y / 2
+    const button_center = createVector(0, 0);
     
     graphics.strokeWeight(button_stroke_weight);
     graphics.stroke(outline == undefined ? button_stroke : outline);
