@@ -58,8 +58,8 @@ class Connection {
   }
 
   mouse_overlapping() {
-    const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
-    const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
+    const from_point_offset = rotate_to_real(this.from_point.pos, this.from_point.offset, this.from_point.angle);
+    const to_point_offset = rotate_to_real(this.to_point.pos, this.to_point.offset, this.to_point.angle);
 
     let skip_perc = 1 / 4;
     let ler_perc = 0;
@@ -78,8 +78,9 @@ class Connection {
       (mouseY - camera.y) / zoom
     );
     for (let i = 1; i < line_verts.length; i++) {
-      if (collideLineCircle(line_verts[i].x,line_verts[i].y,
-                            line_verts[i-1].x,line_verts[i-1].y,mp.x,mp.y,10)) {
+      if (collideLineCircle(line_verts[i].x, line_verts[i].y,
+                            line_verts[i - 1].x, line_verts[i - 1].y,
+                            mp.x, mp.y, 10)) {
         return true;
       }
     }
@@ -95,8 +96,11 @@ class Connection {
   draw(graphics, outline) {
     graphics.push();
 
-    const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
-    const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
+    // const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
+    // const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
+
+    const from_point_offset = rotate_to_real(this.from_point.pos, this.from_point.offset, this.from_point.angle);
+    const to_point_offset = rotate_to_real(this.to_point.pos, this.to_point.offset, this.to_point.angle);
     
     graphics.strokeWeight(connection_stroke_weight);
     if (outline != undefined) {
@@ -113,6 +117,14 @@ class Connection {
                           to_point_offset.x, to_point_offset.y,
                           this.to_point.pos.x, this.to_point.pos.y);
     graphics.endShape();
+
+    // graphics.push();
+    // graphics.strokeWeight(5);
+    // graphics.stroke(255, 0, 0);
+    // graphics.point(from_point_offset.x, from_point_offset.y);
+    // graphics.stroke(255, 255, 0);
+    // graphics.point(to_point_offset.x, to_point_offset.y);
+    // graphics.pop();
     
     
     //  graphics.bezier(this.from_point.pos.x, this.from_point.pos.y,
@@ -204,33 +216,25 @@ class ConnectionPoint {
     this.handle_mouse();
   }
 
-  rotate_to_real(pos, off, angle) {
-    let X = pos.x + off.x;
-    let Y = pos.y + off.y;
-  
-    let New_X = pos.x + (X - pos.x) * cos(angle) - (Y - pos.y) * sin(angle);
-    let New_Y = pos.y + (X - pos.x) * sin(angle) + (Y - pos.y) * cos(angle);
-    return createVector(New_X, New_Y);
-  }
-
   draw(graphics, outline) {
     graphics.push();
 
+    const parent_cen = this.parent.center_coord;
     // const from_vec = p5.Vector.add(this.parent.pos, this.from);
     let from_vec = p5.Vector.add(this.parent.pos, this.from);
-    this.pos = p5.Vector.add(from_vec, this.offset);
+    from_vec = rotate_to_real(parent_cen, p5.Vector.sub(from_vec, parent_cen), this.angle);
+    // from_vec = this.rotate_to_real(this.parent.pos, this.from, this.angle);
+    // this.pos = p5.Vector.add(from_vec, this.offset);
     
-    //graphics.circle(from_vec.x,from_vec.y,30)
-    let parent_cen = this.parent.center_coord;
+    //graphics.circle(this.parent.pos.x,this.parent.pos.y,30)
     // TODO: FIX THIS MAKES IT SQUISH INWARDS
     // I THINK YOU NEED TO ROTATE FROM_VEC BUT IDK HOW
     // from_vec = this.rotate_to_real(from_vec, this.offset, this.angle);
-    this.pos = this.rotate_to_real(from_vec, this.offset, this.angle);
+    this.pos = rotate_to_real(from_vec, this.offset, this.angle);
     
     graphics.strokeWeight(connection_point_stroke_weight);
     graphics.stroke(connection_point_stroke);
     graphics.line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
-
     graphics.stroke(outline == undefined ? connection_point_stroke : outline);
     graphics.fill(this._powered ? connection_point_powered_fill : connection_point_fill);
     graphics.circle(this.pos.x, this.pos.y, connection_point_radius);
