@@ -47,6 +47,19 @@ const components = [
   NandGate, XorGate, XnorGate
 ];
 
+/* TODO:
+- Smooth scrolling
+- Import/export to compressed JSON via menu button
+- Be able to read compressed JSON from query parameters for "fast import"
+- MULTI SELECT SYSTEM
+  - MULTI-DRAG
+  - MULTI-DELETE
+  - MULTI-ROTATE
+  - MULTI-COPY
+  - MULTI-PASTE
+- Website and move this to /editor path
+*/
+
 class Game {
   constructor() {
     this.graphics = createGraphics(width, height);
@@ -391,10 +404,10 @@ class Game {
       let scale_factor;
       if (event.deltaY > 0) {
         scale_factor = (zoom - zoom_diff) / zoom;
-        // scale_factor = 1 - zoom_diff;
+        //scale_factor = 0.9;
       } else {
         scale_factor = (zoom + zoom_diff) / zoom;
-        // scale_factor = 1 + zoom_diff;
+        //scale_factor = 1.1;
       }
   
       // https://stackoverflow.com/a/70660569/10291933
@@ -404,6 +417,7 @@ class Game {
       zoom = Math.round(zoom * 10) / 10;
   
       if (zoom != previous) {
+        let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom)
         camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
         camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
       }

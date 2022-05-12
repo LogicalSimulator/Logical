@@ -20,6 +20,7 @@ function setup() {
   make_vertical = width > height * 2;
   preload_icons();  // generates images so can't be in preload
   game = new Game();
+
 }
 
 function draw() {
@@ -50,12 +51,12 @@ function mousePressed() {
   return game.on_mouse_press();
 }
 
-function mouseDragged() {
-  return game.on_mouse_drag();
+function mouseClicked() {
+  return game.mouse_clicked();
 }
 
-function mouseClicked() {
-  game.mouse_clicked()
+function mouseDragged() {
+  return game.on_mouse_drag();
 }
 
 function mouseReleased() {
@@ -66,6 +67,6 @@ function mouseWheel(event) {
   return game.on_mouse_wheel(event);
 }
 
-function keyPressed(){
-  return game.key_pressed(keyCode)
+function keyPressed() {
+  return game.key_pressed(keyCode);
 }
