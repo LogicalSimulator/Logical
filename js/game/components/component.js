@@ -42,13 +42,43 @@ class Component {
     this.click_activate = true;
     this.mouse_select_pos_diff = createVector();
     this.connect_points = [];
-    this.angle = 0
+    this.angle = 0;
   }
 
   mouse_overlapping() {
-    return collidePointRect(mouseX, mouseY, 
-                            (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                            this.size.x * zoom, this.size.y * zoom);
+    // return collidePointRect(mouseX, mouseY, 
+    //                         (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+    //                         this.size.x * zoom, this.size.y * zoom);
+    const center = this.center_coord;
+    const top_left_offset = p5.Vector.sub(this.pos, center);
+    const top_right_offset = top_left_offset.copy();
+    top_right_offset.x += this.size.x;
+    const bottom_right_offset = p5.Vector.sub(center, this.pos);
+    const bottom_left_offset = bottom_right_offset.copy();
+    bottom_left_offset.x -= this.size.x;
+    // wait above commented out
+    // it doesn't scale mousex and mousey
+    // only scales and translates this.pos and this.size
+    // const mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+    const top_left = rotate_to_real(center, top_left_offset, this.angle);
+    const top_right = rotate_to_real(center, top_right_offset, this.angle);
+    const bottom_right = rotate_to_real(center, bottom_right_offset, this.angle);
+    const bottom_left = rotate_to_real(center, bottom_left_offset, this.angle);
+    top_left.mult(zoom);
+    top_left.add(camera);
+    top_right.mult(zoom);
+    top_right.add(camera);
+    bottom_right.mult(zoom);
+    bottom_right.add(camera);
+    bottom_left.mult(zoom);
+    bottom_left.add(camera);
+    return collidePointPoly(mouseX, mouseY, 
+                            [
+                              top_left, 
+                              top_right, 
+                              bottom_right, 
+                              bottom_left
+                            ]);
   }
 
   get center_coord() {
@@ -144,10 +174,31 @@ class Component {
   }
 
   draw(graphics, outline) {
-    graphics.push()
+    graphics.push();
     for (const point of this.connect_points) {
       point.draw(graphics, hovering.indexOf(point) != -1 ? hover_color : undefined);
     }
-    graphics.pop()
+    graphics.pop();
+
+    if (draw_component_bounds) {
+      graphics.push();
+      graphics.stroke(255, 0, 0);
+      graphics.strokeWeight(5);
+      graphics.noFill();
+      const center = this.center_coord;
+      const top_left_offset = p5.Vector.sub(this.pos, center);
+      const top_right_offset = top_left_offset.copy();
+      top_right_offset.x += this.size.x;
+      const bottom_right_offset = p5.Vector.sub(center, this.pos);
+      const bottom_left_offset = bottom_right_offset.copy();
+      bottom_left_offset.x -= this.size.x;
+      graphics.beginShape();
+      graphics.vertex(rotate_to_real(center, top_left_offset, this.angle).x, rotate_to_real(center, top_left_offset, this.angle).y);
+      graphics.vertex(rotate_to_real(center, top_right_offset, this.angle).x, rotate_to_real(center, top_right_offset, this.angle).y);
+      graphics.vertex(rotate_to_real(center, bottom_right_offset, this.angle).x, rotate_to_real(center, bottom_right_offset, this.angle).y);
+      graphics.vertex(rotate_to_real(center, bottom_left_offset, this.angle).x, rotate_to_real(center, bottom_left_offset, this.angle).y);
+      graphics.endShape(CLOSE);
+      graphics.pop();
+    }
   }
 }

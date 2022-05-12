@@ -11,6 +11,8 @@ const right_click_color = [255, 127, 80];
 const grid_size = 20;
 
 const make_testing_objs = true;
+const draw_component_bounds = false;
+
 const show_mouse_coords = true;
 const zoom_diff = 0.1;
 const zoom_min = 0.1;
