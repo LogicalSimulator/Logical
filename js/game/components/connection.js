@@ -147,10 +147,11 @@ const connection_point_powered_fill = component_powered_fill;
 const connection_point_radius = 10;
 
 class ConnectionPoint {
-  constructor(parent, from, offset) {
+  constructor(parent, from, offset, assign_name) {
     this.parent = parent;
     this.from = from;
     this.offset = offset;
+    this.assign_name = assign_name;
     this.pos = p5.Vector.add(p5.Vector.add(this.parent.pos, from), this.offset);
     this.mouse_pressed = false;
     this._powered = false;
@@ -255,8 +256,8 @@ class ConnectionPoint {
 }
 
 class ConnectionInPoint extends ConnectionPoint {  
-  constructor(parent, from, offset, set_name) {
-    super(parent, from, offset);
+  constructor(parent, from, offset, set_name, assign_name) {
+    super(parent, from, offset, assign_name);
     this.set_name = set_name;
     this.connection = undefined;
   }
@@ -268,8 +269,8 @@ class ConnectionInPoint extends ConnectionPoint {
 }
 
 class ConnectionOutPoint extends ConnectionPoint {
-  constructor(parent, from, offset) {
-    super(parent, from, offset);
+  constructor(parent, from, offset, assign_name) {
+    super(parent, from, offset, assign_name);
     this.connections = [];
   }
 

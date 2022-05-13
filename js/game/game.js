@@ -20,7 +20,7 @@ const zoom_max = 5;
 
 const hovering = [];
 
-// let right_clicked = undefined;
+let right_clicked = undefined;
 
 let frame_millis = 0;
 
@@ -47,10 +47,10 @@ const components = [
   NandGate, XorGate, XnorGate
 ];
 
-// afk
 /* TODO:
 - Smooth scrolling
 - Import/export to compressed JSON via menu button
+- A "comment" component that you can use to comment on things
 - MULTI SELECT SYSTEM
   - MULTI-DRAG
   - MULTI-DELETE
@@ -76,6 +76,9 @@ class Game {
     this.creating_new_component = false;
     this.new_component = undefined;
     this.drag_connection = undefined;
+    this.multi_selections = []
+    this.multi_selecting = false
+    this.multi_select_origin = undefined
     
     frame_millis = millis();
 
@@ -88,6 +91,8 @@ class Game {
     if (make_testing_objs) {
       this.make_testing_objects();  
     }
+
+    console.log(export_game(this.connections, this.connect_points, this.components));
   }
 
   make_gui() {
@@ -316,6 +321,7 @@ class Game {
 
   on_mouse_press() {
     if (mouseButton === LEFT) {
+      let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       let hover_con;
       for (let comp of this.items[2]) {
         hover_con = this.get_hover_connect_point(comp);
@@ -328,6 +334,12 @@ class Game {
       }
       if (hovering_on_button()) {
         mouse_mode = ADD_MODE;
+      } else if (keyIsDown(17)){
+        this.multi_select_origin = mp.copy()
+        console.log(this.multi_select_origin)
+        
+      } else if (this.multi_select_origin != undefined){
+        
       } else if (hover_con != undefined) {
         this.drag_connection = hover_con;
         this.selected_component = undefined;
@@ -362,7 +374,7 @@ class Game {
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
     // }
-    if (mouse_mode === ADD_MODE) {
+    if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
       if (this.drag_component != undefined) {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
       }
@@ -376,7 +388,7 @@ class Game {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
       }
     } else {
-      if (mouse_mode === PAN_MODE) {
+      if (mouse_mode === PAN_MODE && this.multi_select_origin == undefined) {
         camera.add(createVector(movedX, movedY));
       }
     }
@@ -397,6 +409,7 @@ class Game {
         this.items[0].push(make_connection(this.drag_connection, hover_con));
       }
     }
+    this.multi_select_origin = undefined
     this.drag_connection = undefined;
     this.creating_new_component = false;
     this.drag_component = undefined;
@@ -689,10 +702,29 @@ class Game {
 
     this.graphics.push();
     this.graphics.translate(camera);
+    
     this.graphics.scale(zoom);
-
     this.draw_grid(grid_size, camera);
+    const m_pos = createVector(mouseX, mouseY);
+    m_pos.sub(camera);
+    m_pos.div(zoom);
 
+    if (this.multi_select_origin != undefined){
+      this.graphics.rectMode(CORNER)
+      this.graphics.fill(3, 227, 252, 100)
+      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30)
+      let diff = p5.Vector.sub(m_pos,this.multi_select_origin)
+      this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
+                        diff.x,diff.y)
+      for (let comp of this.items[2]){
+        let verts = comp.get_poly_verts()
+
+        if (collideRectPoly(this.multi_select_origin.x,this.multi_select_origin.y,diff.x,diff.y,
+                           verts)){
+          this.graphics.circle(verts[0].x,verts[0].y,20)
+        }
+      }
+    }
     if (this.drag_connection != undefined) {
       this.graphics.push();
       this.graphics.strokeWeight(1);
@@ -705,9 +737,9 @@ class Game {
       // this.graphics.stroke(255, 0, 0);
       // this.graphics.point(from_point.x, from_point.y);
       // this.graphics.pop();
-      const m_pos = createVector(mouseX, mouseY);
-      m_pos.sub(camera);
-      m_pos.div(zoom);
+      
+
+      
       // this.graphics.push();
       // this.graphics.strokeWeight(5);
       // this.graphics.stroke(255, 255, 0);
@@ -732,6 +764,7 @@ class Game {
       }
     }
     this.graphics.pop();
+    
     
     image(this.graphics, 0, 0);
 

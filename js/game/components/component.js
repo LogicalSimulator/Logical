@@ -44,7 +44,29 @@ class Component {
     this.connect_points = [];
     this.angle = 0;
   }
-
+  get_poly_verts(){
+    const center = this.center_coord;
+    const top_left_offset = p5.Vector.sub(this.pos, center);
+    const top_right_offset = top_left_offset.copy();
+    top_right_offset.x += this.size.x;
+    const bottom_right_offset = p5.Vector.sub(center, this.pos);
+    const bottom_left_offset = bottom_right_offset.copy();
+    bottom_left_offset.x -= this.size.x;
+    // wait above commented out
+    // it doesn't scale mousex and mousey
+    // only scales and translates this.pos and this.size
+    // const mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+    const top_left = rotate_to_real(center, top_left_offset, this.angle);
+    const top_right = rotate_to_real(center, top_right_offset, this.angle);
+    const bottom_right = rotate_to_real(center, bottom_right_offset, this.angle);
+    const bottom_left = rotate_to_real(center, bottom_left_offset, this.angle);
+    return [
+                              top_left, 
+                              top_right, 
+                              bottom_right, 
+                              bottom_left
+                            ]
+  }
   mouse_overlapping() {
     // return collidePointRect(mouseX, mouseY, 
     //                         (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 

@@ -5,7 +5,7 @@
 // Example script include tag: <script src="/on_page_console.js"></script>
 
 // Set false to do nothing
-const show_on_page_console = false;
+const show_on_page_console = true;
 
 // Code reviewed: https://codereview.stackexchange.com/a/275550/206220
 

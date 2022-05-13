@@ -45,29 +45,50 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth - window_diff, windowHeight - window_diff);
+  if (game == undefined) {
+    return;
+  }
   game.on_resize();
 }
 
 function mousePressed() {
+  if (game == undefined) {
+    return;
+  }
   return game.on_mouse_press();
 }
 
 function mouseClicked() {
+  if (game == undefined) {
+    return;
+  }
   return game.mouse_clicked();
 }
 
 function mouseDragged() {
+  if (game == undefined) {
+    return;
+  }
   return game.on_mouse_drag();
 }
 
 function mouseReleased() {
+  if (game == undefined) {
+    return;
+  }
   return game.on_mouse_release();
 }
 
 function mouseWheel(event) {
+  if (game == undefined) {
+    return;
+  }
   return game.on_mouse_wheel(event);
 }
 
 function keyPressed() {
+  if (game == undefined) {
+    return;
+  }
   return game.key_pressed(keyCode);
 }
