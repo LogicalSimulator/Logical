@@ -1,5 +1,8 @@
 "use strict";
 
+const product = "Logical";
+const version = 1;
+
 p5.disableFriendlyErrors = true;
 
 const window_diff = 20;

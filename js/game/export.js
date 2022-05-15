@@ -1,3 +1,5 @@
+"use strict";
+
 const pls_compress = true;
 
 const component_indices = [
@@ -99,8 +101,8 @@ function export_game(conns, conn_pts, comps) {
   }
   
   const json_state = {
-    "product": "Logical",
-    "version": "1",
+    "product": product,
+    "version": version,
     "state": {
       "components": json_comps
     }
@@ -109,5 +111,14 @@ function export_game(conns, conn_pts, comps) {
 }
 
 function import_game(s) {
-  
+  const json_obj = JSON.parse(s);
+  if (json_obj["product"] !== product) {
+    console.error("Incorrect product: " + json_obj["product"] + " != " + product);
+    return;
+  }
+  if (json_obj["version"] !== version) {
+    console.warn("Different version: " + json_obj["version"] + " != " + version);
+  }
+  const json_state = json_obj["state"];
+  const json_comps = json_state["components"];
 }

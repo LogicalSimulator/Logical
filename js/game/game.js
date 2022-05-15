@@ -709,22 +709,7 @@ class Game {
     m_pos.sub(camera);
     m_pos.div(zoom);
 
-    if (this.multi_select_origin != undefined){
-      this.graphics.rectMode(CORNER)
-      this.graphics.fill(3, 227, 252, 100)
-      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30)
-      let diff = p5.Vector.sub(m_pos,this.multi_select_origin)
-      this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
-                        diff.x,diff.y)
-      for (let comp of this.items[2]){
-        let verts = comp.get_poly_verts()
-
-        if (collideRectPoly(this.multi_select_origin.x,this.multi_select_origin.y,diff.x,diff.y,
-                           verts)){
-          this.graphics.circle(verts[0].x,verts[0].y,20)
-        }
-      }
-    }
+    
     if (this.drag_connection != undefined) {
       this.graphics.push();
       this.graphics.strokeWeight(1);
@@ -761,6 +746,29 @@ class Game {
         // if (item === this.drag_component) {
         //   console.log("look it's me " + item);
         // }
+      }
+    }
+    if (this.multi_select_origin != undefined){
+      this.graphics.rectMode(CORNER)
+      this.graphics.fill(3, 227, 252, 30)
+      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30)
+      let diff = p5.Vector.sub(m_pos,this.multi_select_origin)
+      this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
+                        diff.x,diff.y)
+      let rect_verts = [this.multi_select_origin,
+                       p5.Vector.add(this.multi_select_origin,createVector(diff.x,0)),
+                       p5.Vector.add(this.multi_select_origin,createVector(diff.x,diff.y)),
+                       p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))]
+      for (let comp of this.items[2]){
+        let verts = comp.get_poly_verts()
+        this.graphics.beginShape()
+        this.graphics.endShape()
+        if (collidePolyPoly(verts,rect_verts,true)){
+          this.graphics.fill(0,255,255,100)
+          this.graphics.beginShape();
+          for (const { x, y } of verts)  vertex(x, y);
+          this.graphics.endShape(CLOSE);
+        }
       }
     }
     this.graphics.pop();
