@@ -15,7 +15,7 @@ const test_export_import = true;
 const draw_component_bounds = false;
 
 const show_mouse_coords = true;
-const zoom_diff = 0.1;
+const zoom_sensitivity = 0.1;
 const zoom_min = 0.1;
 const zoom_max = 5;
 
@@ -49,9 +49,9 @@ const components = [
 ];
 
 /* TODO:
-- Smooth scrolling
-- Import/export to compressed JSON via menu button
 - A "comment" component that you can use to comment on things
+- Pause/resume/step/reset simulation
+- Delete everything
 - MULTI SELECT SYSTEM
   - MULTI-DRAG
   - MULTI-DELETE
@@ -474,26 +474,24 @@ class Game {
       
     } else {
       let scale_factor;
+      
       if (event.deltaY > 0) {
-        scale_factor = (zoom - zoom_diff) / zoom;
-        //scale_factor = 0.9;
+        scale_factor = 1 - zoom_sensitivity;
       } else {
-        scale_factor = (zoom + zoom_diff) / zoom;
-        //scale_factor = 1.1;
+        scale_factor = 1 + zoom_sensitivity;
       }
   
       // https://stackoverflow.com/a/70660569/10291933
-      const previous = zoom;
-      zoom *= scale_factor;
-      zoom = Math.min(Math.max(zoom, zoom_min), zoom_max);
-      zoom = Math.round(zoom * 10) / 10;
+
+      const new_zoom = zoom * scale_factor;
+      if (new_zoom > zoom_min && new_zoom < zoom_max) {
+        zoom *= scale_factor;
+        zoom = Math.min(Math.max(zoom, zoom_min), zoom_max);
   
-      if (zoom != previous) {
         let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom)
         camera.x = mouseX - (mouseX * scale_factor) + (camera.x * scale_factor);
         camera.y = mouseY - (mouseY * scale_factor) + (camera.y * scale_factor);
       }
-    
     }
     
     return false;
@@ -836,7 +834,7 @@ class Game {
       textSize(12 / zoom);
       let string = Math.round((mouseX - camera.x) / zoom) + ", " + Math.round((mouseY - camera.y) / zoom);
       if (zoom !== 1) {
-        string += " at " + zoom + "x";
+        string += " at " + (Math.round(zoom * 10) / 10) + "x";
       }
       // string += " hovering " + hovering.length;
       text(string, (mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
