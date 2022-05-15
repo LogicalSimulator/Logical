@@ -50,7 +50,6 @@ const components = [
 
 /* TODO:
 - A "comment" component that you can use to comment on things
-- Pause/resume/step/reset simulation
 - Delete everything
 - MULTI SELECT SYSTEM
   - MULTI-DRAG
