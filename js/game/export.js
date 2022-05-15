@@ -119,11 +119,23 @@ function export_game(conns, conn_pts, comps) {
       "components": json_comps
     }
   };
-  return JSON.stringify(json_state);
+
+  let full_json = JSON.stringify(json_state);
+  
+  if (pls_compress) {
+    full_json = zip(full_json);
+  }
+
+  return full_json;
 }
 
 function import_game(s) {
+  if (s[0] !== "{") {
+    s = unzip(s);
+  }
+  
   const json_obj = JSON.parse(s);
+  
   if (json_obj["product"] !== product) {
     console.error("Incorrect product: " + json_obj["product"] + " != " + product);
     return;
