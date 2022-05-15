@@ -11,6 +11,7 @@ const right_click_color = [255, 127, 80];
 const grid_size = 20;
 
 const make_testing_objs = true;
+const test_export_import = true;
 const draw_component_bounds = false;
 
 const show_mouse_coords = true;
@@ -92,7 +93,16 @@ class Game {
       this.make_testing_objects();  
     }
 
-    console.log(export_game(this.connections, this.connect_points, this.components));
+    if (test_export_import) {
+      const json = export_game(this.connections, this.connect_points, this.components);
+      console.log(JSON.stringify(JSON.parse(json), undefined, 2));
+      console.log(JSON.parse(json));
+      const import_obj = import_game(json);
+      this.connections = import_obj["connections"];
+      this.connect_points = import_obj["connection_points"];
+      this.components = import_obj["components"];
+      this.items = [this.connections, this.connect_points, this.components];
+    }
   }
 
   make_gui() {

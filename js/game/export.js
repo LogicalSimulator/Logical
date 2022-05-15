@@ -59,6 +59,10 @@ function vector_to_json(vec) {
   };
 }
 
+function json_to_vector(json) {
+  return createVector(json["x"], json["y"]);
+}
+
 function export_game(conns, conn_pts, comps) {
   let id = 0;
   for (const group of [conns, conn_pts, comps]) {
@@ -121,4 +125,21 @@ function import_game(s) {
   }
   const json_state = json_obj["state"];
   const json_comps = json_state["components"];
+
+  const connections = [];
+  const connection_points = [];
+  const components = [];
+  
+  for (const json_comp of json_comps) {
+    const new_comp = new component_indices[json_comp["type"]](json_to_vector(json_comp["pos"]));
+    new_comp.id = json_comp["id"];
+    new_comp.angle = json_comp["angle"];
+    components.push(new_comp);
+  }
+  
+  return {
+    "connections": connections,
+    "connection_points": connection_points,
+    "components": components
+  };
 }
