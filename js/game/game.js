@@ -204,6 +204,47 @@ class Game {
     }
 
     this.gui.push(this.menu_group);
+
+    const menu_line = new WidgetLine();
+    menu_line.stroke = 0;
+    if (make_vertical) {
+      menu_line.x = this.menu_group.x - 5;
+      menu_line.y = this.menu_group.y;
+      menu_line.width = 0;
+      menu_line.height = this.menu_group.height;
+    } else {
+      menu_line.x = this.menu_group.x;
+      menu_line.y = this.menu_group.y - 5;
+      menu_line.width = this.menu_group.width;
+      menu_line.height = 0;
+    }
+    this.gui.push(menu_line);
+
+    this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {});
+    this.step_button = create_button("Step", 0, 0, 0, 0, () => {});
+    this.reset_button = create_button("Reset", 0, 0, 0, 0, () => {});
+    this.control_group = new sub_group(
+      [
+        this.play_pause_button,
+        this.step_button,
+        this.reset_button
+      ]
+    );
+    
+    if (make_vertical) {
+      this.control_group.x_pad = 5;
+      this.control_group.width = menu_button_width * this.menu_group.widgets.length;
+      this.control_group.height = menu_button_height;
+      this.control_group.x = width - this.menu_group.width - menu_outside_pad + this.menu_group.x_pad - 5 - menu_line.stroke_weight - this.menu_group.width;
+      this.control_group.y = this.side_group.y + menu_outside_pad;
+    } else {
+      this.control_group.y_pad = 5;
+      this.control_group.width = menu_button_width;
+      this.control_group.height = menu_button_height * this.menu_group.widgets.length;
+      this.control_group.x = this.side_group.x + menu_outside_pad;
+      this.control_group.y = height - this.menu_group.height - menu_outside_pad + this.menu_group.y_pad - 5 - menu_line.stroke_weight - this.menu_group.height;
+    }
+    this.gui.push(this.control_group);
   }
   
   resize_gui() {
