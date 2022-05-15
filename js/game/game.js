@@ -77,9 +77,12 @@ class Game {
     this.creating_new_component = false;
     this.new_component = undefined;
     this.drag_connection = undefined;
-    this.multi_selections = []
-    this.multi_selecting = false
-    this.multi_select_origin = undefined
+    this.multi_selections = [];
+    this.multi_selecting = false;
+    this.multi_select_origin = undefined;
+    this.play = true;
+    this.can_reset = true;
+    this.update_cycles_left = -1;
     
     frame_millis = millis();
 
@@ -220,9 +223,9 @@ class Game {
     }
     this.gui.push(menu_line);
 
-    this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {});
-    this.step_button = create_button("Step", 0, 0, 0, 0, () => {});
-    this.reset_button = create_button("Reset", 0, 0, 0, 0, () => {});
+    this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {this.toggle_play_pause_simulation();});
+    this.step_button = create_button("Step", 0, 0, 0, 0, () => {this.step_simulation();});
+    this.reset_button = create_button("Reset", 0, 0, 0, 0, () => {this.reset_simulation();});
     this.control_group = new sub_group(
       [
         this.play_pause_button,
@@ -293,6 +296,22 @@ class Game {
     }
   }
 
+  toggle_play_pause_simulation() {
+    this.play = !this.play;
+  }
+
+  step_simulation() {
+    this.update_cycles_left = 1;
+  }
+
+  reset_simulation() {
+    if (!this.can_reset) {
+      return;
+    }
+    this.import_game_state(this.export_game_state());
+    this.can_reset = false;
+  }
+  
   destroy_all_components() {
     this.connections.length = 0;
     this.connect_points.length = 0;
@@ -723,29 +742,41 @@ class Game {
   update() {
     frame_millis = millis();
     hovering.length = 0;
-    for (const i in this.items) {
-      const group = this.items[i];
-      // let did_destroy = false;
-      for (const index in group) {
-        const item = group[index];
-        if (item.destroy_me != undefined && item.destroy_me) {
-          console.log("destroying item " + item);
-          group[index] = undefined;
-          // did_destroy = true;
-          continue;
+    if (this.update_cycles_left === -1 || this.update_cycles_left > 0) {
+      for (const i in this.items) {
+        const group = this.items[i];
+        // let did_destroy = false;
+        for (const index in group) {
+          const item = group[index];
+          if (item.destroy_me != undefined && item.destroy_me) {
+            console.log("destroying item " + item);
+            group[index] = undefined;
+            // did_destroy = true;
+            continue;
+          }
+          item.update();
         }
-        item.update();
+        this.items[i] = group;
+        // if (did_destroy) {
+          this.items[i] = this.items[i].filter((element) => {
+            return element != undefined;
+          });
+        // }
       }
-      this.items[i] = group;
-      // if (did_destroy) {
-        this.items[i] = this.items[i].filter((element) => {
-          return element != undefined;
-        });
-      // }
+      this.update_cycles_left --;
+      this.can_reset = true;
     }
     this.delete_button.enabled = this.selected_component instanceof Component || 
                                  this.selected_component instanceof Connection;
     this.rotate_button.enabled = this.selected_component instanceof Component;
+    this.play_pause_button.clickable.text = this.play ? "Pause" : "Play";
+    if (this.play) {
+      this.update_cycles_left = -1;
+    } else {
+      this.update_cycles_left = 0;
+    }
+    this.step_button.enabled = !this.play && this.update_cycles_left === 0;
+    this.reset_button.enabled = this.can_reset;
     for (const widget of this.gui) {
       widget.update();
     }
