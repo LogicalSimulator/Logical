@@ -94,14 +94,7 @@ class Game {
     }
 
     if (test_export_import) {
-      const json = export_game(this.connections, this.connect_points, this.components);
-      console.log(JSON.stringify(JSON.parse(json), undefined, 2));
-      console.log(JSON.parse(json));
-      const import_obj = import_game(json);
-      this.connections = import_obj["connections"];
-      this.connect_points = import_obj["connection_points"];
-      this.components = import_obj["components"];
-      this.items = [this.connections, this.connect_points, this.components];
+      this.import_game_state(this.export_game_state());
     }
   }
 
@@ -271,6 +264,25 @@ class Game {
     this.drag_connection = undefined;
     hovering.length = 0;
   }
+
+  export_game_state() {
+    this.connections = this.items[0];
+    this.connect_points = this.items[1];
+    this.components = this.items[2];
+    this.items = [this.connections, this.connect_points, this.components];
+    return export_game(this.connections, this.connect_points, this.components);
+  }
+
+  import_game_state(json) {
+    const import_obj = import_game(json);
+    this.connections = import_obj["connections"];
+    this.connect_points = import_obj["connection_points"];
+    this.components = import_obj["components"];
+    this.items = [this.connections, this.connect_points, this.components];
+    this.connections = this.items[0];
+    this.connect_points = this.items[1];
+    this.components = this.items[2];
+  }
   
   get_hover_component(distance) {
     let allOverlaps = []
@@ -345,9 +357,7 @@ class Game {
       if (hovering_on_button()) {
         mouse_mode = ADD_MODE;
       } else if (keyIsDown(17)){
-        this.multi_select_origin = mp.copy()
-        console.log(this.multi_select_origin)
-        
+        this.multi_select_origin = mp.copy()        
       } else if (this.multi_select_origin != undefined){
         
       } else if (hover_con != undefined) {
@@ -366,6 +376,10 @@ class Game {
       } else {
         mouse_mode = PAN_MODE;
         this.selected_component = undefined;
+      }
+
+      if (this.multi_select_origin == undefined){
+        this.multi_selections = []
       }
     } else if (mouseButton === RIGHT) {
       if (this.drag_component !== hovering[0]) {
@@ -387,7 +401,7 @@ class Game {
     if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
       if (this.drag_component != undefined) {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
-      }
+      }      
     } else if (hovering.length > 0) {
       if (mouse_mode === ITEM_MODE && 
           mouseIsPressed && 
@@ -406,6 +420,28 @@ class Game {
   }
 
   on_mouse_release() {
+    const m_pos = createVector(mouseX, mouseY);
+    m_pos.sub(camera);
+    m_pos.div(zoom);
+    if (this.multi_select_origin != undefined){
+      for (let comp of this.multi_selections){
+        
+      }
+      this.multi_selections = []
+      if (this.multi_select_origin != undefined){
+        let diff = p5.Vector.sub(m_pos,this.multi_select_origin)
+        let rect_verts = [this.multi_select_origin,
+                         p5.Vector.add(this.multi_select_origin,createVector(diff.x,0)),
+                         p5.Vector.add(this.multi_select_origin,createVector(diff.x,diff.y)),
+                         p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))]
+        for (let comp of this.items[2]){
+          let verts = comp.get_poly_verts()
+          if (collidePolyPoly(verts,rect_verts,true)){
+            this.multi_selections.push(comp)
+          }
+        }
+      }
+    }
     if (this.drag_connection != undefined) {
       let hover_con = undefined;
       for (let comp of this.items[2]) {

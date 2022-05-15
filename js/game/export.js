@@ -39,6 +39,15 @@ function get_component_index(comp, all_comps) {
   return undefined;
 }
 
+function get_component_from_id(id, all_comps) {
+  for (let i = 0; i < all_comps.length; i ++) {
+    if (all_comps[i].id === id) {
+      return all_comps[i];
+    }
+  }
+  return undefined;
+}
+
 function get_component_output_connect_point_names(comp) {
   const points = [];
   for (let i = 1; ; i ++) {
@@ -65,11 +74,9 @@ function json_to_vector(json) {
 
 function export_game(conns, conn_pts, comps) {
   let id = 0;
-  for (const group of [conns, conn_pts, comps]) {
-    for (const item of group) {
-      item.id = id;
-      id ++;
-    }
+  for (const item of comps) {
+    item.id = id;
+    id ++;
   }
 
   const json_comps = [];
@@ -99,6 +106,7 @@ function export_game(conns, conn_pts, comps) {
       "type": get_component_type(comp),
       "pos": vector_to_json(comp.pos),
       "angle": comp.angle,
+      "period": comp.period,
       "out_connect_points": json_conn_pts
     };
     json_comps.push(json_comp);
@@ -134,7 +142,24 @@ function import_game(s) {
     const new_comp = new component_indices[json_comp["type"]](json_to_vector(json_comp["pos"]));
     new_comp.id = json_comp["id"];
     new_comp.angle = json_comp["angle"];
+    new_comp.period = json_comp["period"];
     components.push(new_comp);
+  }
+  
+  for (const json_comp of json_comps) {
+    const json_from_id = json_comp["id"];
+    const json_out_points = json_comp["out_connect_points"];
+    for (const json_out_point of Object.keys(json_out_points)) {
+      const json_from = json_out_point;
+      const json_tos = json_out_points[json_from]
+      for (const json_to of json_tos) {
+        const json_to_id = json_to["id"];
+        const json_to_point = json_to["name"];
+        const from_comp = get_component_from_id(json_from_id, components);
+        const to_comp = get_component_from_id(json_to_id, components);
+        connections.push(make_connection(from_comp[json_from], to_comp[json_to_point]));
+      }
+    }
   }
   
   return {
