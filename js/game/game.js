@@ -207,20 +207,20 @@ class Game {
 
     this.gui.push(this.menu_group);
 
-    const menu_line = new WidgetLine();
-    menu_line.stroke = 0;
+    this.menu_line = new WidgetLine();
+    this.menu_line.stroke = 0;
     if (make_vertical) {
-      menu_line.x = this.menu_group.x - 5;
-      menu_line.y = this.menu_group.y;
-      menu_line.width = 0;
-      menu_line.height = this.menu_group.height;
+      this.menu_line.x = this.menu_group.x - 5;
+      this.menu_line.y = this.menu_group.y;
+      this.menu_line.width = 0;
+      this.menu_line.height = this.menu_group.height;
     } else {
-      menu_line.x = this.menu_group.x;
-      menu_line.y = this.menu_group.y - 5;
-      menu_line.width = this.menu_group.width;
-      menu_line.height = 0;
+      this.menu_line.x = this.menu_group.x;
+      this.menu_line.y = this.menu_group.y - 5;
+      this.menu_line.width = this.menu_group.width;
+      this.menu_line.height = 0;
     }
-    this.gui.push(menu_line);
+    this.gui.push(this.menu_line);
 
     this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {this.toggle_play_pause_simulation();});
     this.step_button = create_button("Step", 0, 0, 0, 0, () => {this.step_simulation();});
@@ -237,14 +237,14 @@ class Game {
       this.control_group.x_pad = 5;
       this.control_group.width = menu_button_width * this.menu_group.widgets.length;
       this.control_group.height = menu_button_height;
-      this.control_group.x = width - this.menu_group.width - menu_outside_pad + this.menu_group.x_pad - 5 - menu_line.stroke_weight - this.menu_group.width;
+      this.control_group.x = this.menu_group.x - 5 - this.menu_line.stroke_weight - this.control_group.width;
       this.control_group.y = this.side_group.y + menu_outside_pad;
     } else {
       this.control_group.y_pad = 5;
       this.control_group.width = menu_button_width;
       this.control_group.height = menu_button_height * this.menu_group.widgets.length;
       this.control_group.x = this.side_group.x + menu_outside_pad;
-      this.control_group.y = height - this.menu_group.height - menu_outside_pad + this.menu_group.y_pad - 5 - menu_line.stroke_weight - this.menu_group.height;
+      this.control_group.y = this.menu_group.y - 5 - this.menu_line.stroke_weight - this.control_group.height;
     }
     this.gui.push(this.control_group);
   }
@@ -254,11 +254,21 @@ class Game {
     if (this.side_group instanceof VerticalWidgetGroup) {
       this.side_group.height = height;
       this.button_line.height = this.side_group.height;
-      this.menu_group.x = width - 100 - menu_outside_pad;
+      this.menu_group.x = width - this.menu_group.width - menu_outside_pad + this.menu_group.x_pad;
+      this.menu_group.y = this.side_group.y + menu_outside_pad;
+      this.menu_line.x = this.menu_group.x - 5;
+      this.menu_line.y = this.menu_group.y;
+      this.control_group.x = this.menu_group.x - 5 - this.menu_line.stroke_weight - this.control_group.width;
+      this.control_group.y = this.side_group.y + menu_outside_pad;
     } else {
       this.side_group.width = width;
       this.button_line.width = this.side_group.width;
-      this.menu_group.y = height - menu_button_height - menu_outside_pad;
+      this.menu_group.x = this.side_group.x + menu_outside_pad;
+      this.menu_group.y = height - this.menu_group.height - menu_outside_pad + this.menu_group.y_pad;
+      this.menu_line.x = this.menu_group.x;
+      this.menu_line.y = this.menu_group.y - 5;
+      this.control_group.x = this.side_group.x + menu_outside_pad;
+      this.control_group.y = this.menu_group.y - 5 - this.menu_line.stroke_weight - this.control_group.height;
     }
   }
 
