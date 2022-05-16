@@ -568,20 +568,32 @@ class Game {
 
   key_pressed(code) {
     // backspace or "d" key
-    if (code == 8 || code == 68) {
+    if (code === 8 || code === 68) {
       if (this.delete_button.enabled) {
         this.destroy_selected_component();
       }
     }
     if (this.rotate_button.enabled) {
       // "r" key
-      if (code == 82) {
+      if (code === 82) {
         // shift key
         if (keyIsDown(16)) {
           this.rotate_selected_component(-PI / 2);
         } else {
           this.rotate_selected_component(PI / 2);
         }
+      }
+    }
+    if (this.play_pause_button.enabled) {
+      // "p" key
+      if (code === 80) {
+        this.toggle_play_pause_simulation();
+      }
+    }
+    if (this.step_button.enabled) {
+      // "s" key
+      if (code === 83) {
+        this.step_simulation();
       }
     }
   }
