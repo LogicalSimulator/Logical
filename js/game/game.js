@@ -50,7 +50,6 @@ const components = [
 ];
 
 /* TODO:
-- GUI and keyboard shortcuts to copy, paste, and delete
 - Can edit clock's period
 - A "comment" component that you can use to comment on things
 - Website and move this to /editor path
@@ -183,8 +182,12 @@ class Game {
 
     this.rotate_button = create_button("Rotate", 0, 0, 0, 0, () => {this.rotate_selected_component(PI / 2);});
     this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component();});
+    this.copy_button = create_button("Copy", 0, 0, 0, 0, () => {this.copy_selection();});
+    this.paste_button = create_button("Paste", 0, 0, 0, 0, () => {this.paste_selection();});
     this.menu_group = new sub_group(
       [
+        this.copy_button, 
+        this.paste_button,
         this.rotate_button,
         this.delete_button,
         create_button("Menu", 0, 0, 0, 0, () => {})
@@ -235,14 +238,14 @@ class Game {
     
     if (make_vertical) {
       this.control_group.x_pad = 5;
-      this.control_group.width = menu_button_width * this.menu_group.widgets.length;
+      this.control_group.width = menu_button_width * this.control_group.widgets.length;
       this.control_group.height = menu_button_height;
       this.control_group.x = this.menu_group.x - 5 - this.menu_line.stroke_weight - this.control_group.width;
       this.control_group.y = this.side_group.y + menu_outside_pad;
     } else {
       this.control_group.y_pad = 5;
       this.control_group.width = menu_button_width;
-      this.control_group.height = menu_button_height * this.menu_group.widgets.length;
+      this.control_group.height = menu_button_height * this.control_group.widgets.length;
       this.control_group.x = this.side_group.x + menu_outside_pad;
       this.control_group.y = this.menu_group.y - 5 - this.menu_line.stroke_weight - this.control_group.height;
     }
@@ -437,8 +440,8 @@ class Game {
     for (let comp of this.multi_selections){
       //this.copy_selected.push(new comp.constructor(comp.pos))
     }
-    if (this.selected_component instanceof Component){
-      this.copy_selected.push(this.selected_component)
+    if (this.selected_component instanceof Component) {
+      this.copy_selected.push(this.selected_component);
     }
   }
 
@@ -465,10 +468,9 @@ class Game {
           // console.log(to_new_comp);
           // console.log(to_new_comp_name);
           //console.log(name,to_new_comp_name)
-          try{
+          try {
             this.items[1].push(make_connection(new_comp[name], to_new_comp[to_new_comp_name]));
-          }
-          catch{
+          } catch {
             
           }
         }
@@ -478,6 +480,13 @@ class Game {
   }
 
   on_mouse_press() {
+    let mouse_on_multi = false;
+      for (let comp of this.multi_selections){
+        if (comp.mouse_overlapping()){
+          mouse_on_multi = true
+          break
+        }
+      }
     if (mouseButton === LEFT) {
       this.panned_prev = camera.copy()
       let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
@@ -492,13 +501,7 @@ class Game {
         } 
       }
       //--
-      let mouse_on_multi = false;
-      for (let comp of this.multi_selections){
-        if (comp.mouse_overlapping()){
-          mouse_on_multi = true
-          break
-        }
-      }
+      
       //console.log(mouse_on_multi)
       if (hovering_on_button()) {
         mouse_mode = ADD_MODE;
@@ -517,6 +520,11 @@ class Game {
         mouse_mode = ITEM_MODE;
         // this.drag_component = this.get_hover_component(30);
         this.drag_component = hovering[0];
+        for (let comp of hovering){
+          if (comp instanceof Component){
+            this.drag_component = comp
+          }
+        }
         this.selected_component = undefined;
         this.multi_selections = [];
         //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
@@ -549,6 +557,7 @@ class Game {
         this.selected_component = undefined;
         this.multi_selections = [];
       }
+      
     }
     return false;
   }
@@ -919,9 +928,14 @@ class Game {
       this.update_cycles_left --;
       this.can_reset = true;
     }
+    this.copy_button.enabled = this.selected_component instanceof Component ||
+                               this.multi_selections.length > 0;
+    this.paste_button.enabled = this.copy_selected.length > 0;
     this.delete_button.enabled = this.selected_component instanceof Component || 
-                                 this.selected_component instanceof Connection || this.multi_selections.length > 0;
-    this.rotate_button.enabled = this.multi_selections.length > 0 || this.selected_component instanceof Component;
+                                 this.selected_component instanceof Connection || 
+                                 this.multi_selections.length > 0;
+    this.rotate_button.enabled = this.multi_selections.length > 0 || 
+                                 this.selected_component instanceof Component;
     this.play_pause_button.clickable.text = this.play ? "Pause" : "Play";
     if (this.play) {
       this.update_cycles_left = -1;
