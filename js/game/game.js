@@ -535,11 +535,16 @@ class Game {
       }
     } else if (mouseButton === RIGHT) {
       if (this.drag_component !== hovering[0]) {
-        // if (keyIsDown(16) && hovering[0] instanceof Component) {
-          // this.multi_selections.push(hovering[0])
-        // } else {
+        if (keyIsDown(16) && hovering[0] instanceof Component) {
+          const index_multi_selections = this.multi_selections.indexOf(hovering[0]);
+          if (index_multi_selections != -1) {
+            this.multi_selections.splice(index_multi_selections, 1);
+          } else {
+            this.multi_selections.push(hovering[0]);
+          }
+        } else {
         this.selected_component = hovering[0];
-        // }
+        }
       } else {
         this.selected_component = undefined;
         this.multi_selections = [];
