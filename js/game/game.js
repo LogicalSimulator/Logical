@@ -434,7 +434,14 @@ class Game {
   }
 
   copy_selection() {
+    this.copy_selected = []
     this.copy_selected = [...this.multi_selections];
+    for (let comp of this.multi_selections){
+      //this.copy_selected.push(new comp.constructor(comp.pos))
+    }
+    if (this.selected_component instanceof Component){
+      this.copy_selected.push(this.selected_component)
+    }
   }
 
   paste_selection() {
@@ -442,6 +449,7 @@ class Game {
     for (const comp of this.copy_selected) {
       const new_comp = new comp.constructor(p5.Vector.add(comp.pos, createVector(30, 30)));
       this.items[2].push(new_comp);
+      this.items[2][this.items[2].length-1].angle = comp.angle
       this.multi_selections.push(this.items[2][this.items[2].length-1]);
     }
     for (const i in this.multi_selections) {
@@ -449,7 +457,6 @@ class Game {
       const new_comp = this.multi_selections[i];
 
       const conn_out_pt_names = get_component_output_connect_point_names(old_comp);
-
       for (const name of conn_out_pt_names) {
         for (const conn of old_comp[name].connections) {
           if (conn == undefined) {
@@ -457,12 +464,19 @@ class Game {
           }
           const to_new_comp = this.multi_selections[this.copy_selected.indexOf(conn.to_point.parent)];
           const to_new_comp_name = conn.to_point.set_name.replace("_state", "");
-          console.log(to_new_comp);
-          console.log(to_new_comp_name);
-          this.items[1].push(make_connection(new_comp[name], to_new_comp[to_new_comp_name]));
+          // console.log(to_new_comp);
+          // console.log(to_new_comp_name);
+          //console.log(name,to_new_comp_name)
+          try{
+            this.items[1].push(make_connection(new_comp[name], to_new_comp[to_new_comp_name]));
+          }
+          catch{
+            
+          }
         }
       }
     }
+    //this.copy_selected = [...this.multi_selections]
   }
 
   on_mouse_press() {
@@ -520,7 +534,12 @@ class Game {
       }
     } else if (mouseButton === RIGHT) {
       if (this.drag_component !== hovering[0]) {
-        this.selected_component = hovering[0];
+        if (keyIsDown(16) && hovering[0] instanceof Component){
+          this.multi_selections.push(hovering[0])
+        }
+        else{
+          this.selected_component = hovering[0];
+        }
       } else {
         this.selected_component = undefined;
       }
@@ -563,7 +582,7 @@ class Game {
   }
 
   on_mouse_release() {
-    if (camera.x != this.panned_prev.x || camera.y != this.panned_prev.y || this.rotate_button_pressed){
+    if (camera.x != this.panned_prev.x || camera.y != this.panned_prev.y || this.rotate_button_pressed || keyIsDown(16)){
       this.rotate_button_pressed = false
     }
     else if (mouse_mode != ITEM_MODE){
@@ -589,6 +608,9 @@ class Game {
             this.multi_selections.push(comp)
           }
         }
+        if (this.selected_component != undefined){
+          this.multi_selections.push(this.selected_component)
+        }
       }
     }
     if (this.drag_connection != undefined) {
@@ -605,6 +627,9 @@ class Game {
       }
     }
     //console.log(this.multi_selections.length)
+    if (this.drag_component != undefined){
+      this.selected_component = this.drag_component
+    }
     this.multi_select_origin = undefined
     this.drag_connection = undefined;
     this.creating_new_component = false;
@@ -671,6 +696,30 @@ class Game {
       // "s" key
       if (code === 83) {
         this.step_simulation();
+      }
+    }
+
+    //Copy-paste
+    if (code == 67){
+      if (keyIsDown(17)){
+        console.log("COPY")
+        this.copy_selection()
+      }
+    }
+    else if (code == 86){
+      if (keyIsDown(17)){
+        console.log("PASTE")
+        this.paste_selection()
+      }
+    }
+    else if (code == 83){
+      navigator.clipboard.writeText(this.export_game_state())
+    }
+    else if (code == 65){
+      if (keyIsDown(17)){
+        for (let comp of this.items[2]){
+          this.multi_selections.push(comp)
+        }
       }
     }
   }
