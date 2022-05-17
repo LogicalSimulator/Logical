@@ -100,7 +100,7 @@ class Component {
                               top_right, 
                               bottom_right, 
                               bottom_left
-                            ]);
+                            ],true);
   }
 
   get center_coord() {

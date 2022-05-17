@@ -11,6 +11,8 @@ const desired_fps = 60;
 let last_fps_time = 0;
 let last_fps = 0;
 
+let mouseShift;
+
 let game;
 
 function preload() {
@@ -23,7 +25,9 @@ function setup() {
   
   make_vertical = width > height * 2;
   preload_icons();  // generates images so can't be in preload
-  
+  zoom = (width+height)/2000
+  zoom_min += zoom-1
+  zoom_max += zoom-1
   game = new Game();
 }
 
@@ -52,6 +56,7 @@ function windowResized() {
     return;
   }
   game.on_resize();
+  console.log(width,height)
 }
 
 function mousePressed() {
