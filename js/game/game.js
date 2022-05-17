@@ -50,8 +50,7 @@ const components = [
 ];
 
 /* TODO:
-- GUI and keyboard shortcuts to copy, cut, paste, and delete
-- CTRL-A selects everything
+- GUI and keyboard shortcuts to copy, paste, and delete
 - Can edit clock's period
 - A "comment" component that you can use to comment on things
 - Website and move this to /editor path
@@ -303,27 +302,26 @@ class Game {
   }
 
   rotate_selected_component(rads) {
-    this.rotate_button_pressed = true
-    let rev = keyIsDown(16) ? 1 : -1
-    if (this.multi_selections.length > 0){
-      let avg = createVector()
-      let center_avg = createVector()
-      for (let comp of this.multi_selections){
-        avg.add(comp.pos)
-        center_avg.add(comp.center_coord)
-        comp.angle += -1*rev * rads
+    this.rotate_button_pressed = true;
+    // Shift
+    let rev = keyIsDown(16) ? -1 : 1;
+    if (this.multi_selections.length > 0) {
+      let avg = createVector();
+      let center_avg = createVector();
+      for (let comp of this.multi_selections) {
+        avg.add(comp.pos);
+        center_avg.add(comp.center_coord);
+        comp.angle += rev * rads;
       }
-      avg.div(this.multi_selections.length)
-      center_avg.div(this.multi_selections.length)
-      for (let comp of this.multi_selections){
-        let diff = p5.Vector.sub(comp.pos,avg)
-        let center_diff = p5.Vector.sub(comp.center_coord,center_avg)
-        let off_center = p5.Vector.sub(comp.center_coord,comp.get_poly_verts()[0])
-        comp.pos = rotate_to_real(avg,diff,-1*rev*PI/2)
+      avg.div(this.multi_selections.length);
+      center_avg.div(this.multi_selections.length);
+      for (let comp of this.multi_selections) {
+        let diff = p5.Vector.sub(comp.pos, avg);
+        // const center_diff = p5.Vector.sub(comp.center_coord, center_avg);
+        // const off_center = p5.Vector.sub(comp.center_coord,comp.get_poly_verts()[0])
+        comp.pos = rotate_to_real(avg, diff, rev * PI / 2);
       }
-      
-    }
-    else if (this.selected_component instanceof Component) {
+    } else if (this.selected_component instanceof Component) {
       this.selected_component.angle += rev * rads;
     }
   }
