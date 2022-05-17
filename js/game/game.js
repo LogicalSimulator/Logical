@@ -511,12 +511,14 @@ class Game {
       } else if (hover_con != undefined) {
         this.drag_connection = hover_con;
         this.selected_component = undefined;
+        this.multi_selections = [];
         mouse_mode = CONNECT_MODE;
       } else if (hovering.length > 0 && this.multi_selections.length == 0) {
         mouse_mode = ITEM_MODE;
         // this.drag_component = this.get_hover_component(30);
         this.drag_component = hovering[0];
         this.selected_component = undefined;
+        this.multi_selections = [];
         //let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
         //this.drag_component.mouse_select_pos_diff = p5.Vector.sub(this.drag_component.center_coord, mp);
         //this.drag_component.pos = mp;
@@ -525,21 +527,22 @@ class Game {
         //console.log("panMode"+mouse_on_multi)
         mouse_mode = PAN_MODE;
         this.selected_component = undefined;
+        this.multi_selections = [];
       }
 
       if (this.multi_select_origin == undefined && !mouse_on_multi){
-        //this.multi_selections = []
+        // this.multi_selections = []
       }
     } else if (mouseButton === RIGHT) {
       if (this.drag_component !== hovering[0]) {
-        if (keyIsDown(16) && hovering[0] instanceof Component){
-          this.multi_selections.push(hovering[0])
-        }
-        else{
-          this.selected_component = hovering[0];
-        }
+        // if (keyIsDown(16) && hovering[0] instanceof Component) {
+          // this.multi_selections.push(hovering[0])
+        // } else {
+        this.selected_component = hovering[0];
+        // }
       } else {
         this.selected_component = undefined;
+        this.multi_selections = [];
       }
     }
     return false;
