@@ -41,6 +41,7 @@ const menu_outside_pad = 10;
 const menu_button_width = 100;
 const menu_button_height = 30;
 
+let snap_to_grid = false
 
 const components = [
   Switch, Button, Clock, TrueConstant, FalseConstant,
@@ -480,6 +481,7 @@ class Game {
   }
 
   on_mouse_press() {
+    let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     let mouse_on_multi = false;
       for (let comp of this.multi_selections){
         if (comp.mouse_overlapping()){
@@ -489,7 +491,7 @@ class Game {
       }
     if (mouseButton === LEFT) {
       this.panned_prev = camera.copy()
-      let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
+      
       let hover_con;
       for (let comp of this.items[2]) {
         hover_con = this.get_hover_connect_point(comp);
@@ -553,7 +555,9 @@ class Game {
         } else {
         this.selected_component = hovering[0];
         }
-      } else {
+      } 
+      else {
+        this.multi_select_origin = mp.copy()
         this.selected_component = undefined;
         this.multi_selections = [];
       }
@@ -623,7 +627,7 @@ class Game {
             this.multi_selections.push(comp)
           }
         }
-        if (this.selected_component != undefined){
+        if (this.selected_component != undefined && this.selected_component instanceof Component){
           this.multi_selections.push(this.selected_component)
         }
       }
@@ -902,29 +906,40 @@ class Game {
   }
   
   update() {
+    const update = this.update_cycles_left === -1 || this.update_cycles_left > 0;
     frame_millis = millis();
     hovering.length = 0;
-    if (this.update_cycles_left === -1 || this.update_cycles_left > 0) {
-      for (const i in this.items) {
-        const group = this.items[i];
-        // let did_destroy = false;
-        for (const index in group) {
-          const item = group[index];
-          if (item.destroy_me != undefined && item.destroy_me) {
-            console.log("destroying item " + item);
-            group[index] = undefined;
-            // did_destroy = true;
-            continue;
-          }
-          item.update();
+    for (const i in this.items) {
+      const group = this.items[i];
+      // let did_destroy = false;
+      for (const index in group) {
+        const item = group[index];
+        if (item.destroy_me != undefined && item.destroy_me) {
+          console.log("destroying item " + item);
+          group[index] = undefined;
+          // did_destroy = true;
+          continue;
         }
-        this.items[i] = group;
-        // if (did_destroy) {
-          this.items[i] = this.items[i].filter((element) => {
-            return element != undefined;
-          });
-        // }
+        if (update) {
+          item.update();
+        } else {
+          if (item.handle_mouse != undefined) {
+            item.handle_mouse();
+          }
+        }
+        if (item instanceof Component){
+          if (snap_to_grid){
+            item.pos.x = round(item.pos.x / grid_size) * grid_size
+            item.pos.y = round(item.pos.y / grid_size) * grid_size
+          }
+        }
       }
+      this.items[i] = group;
+      // if (did_destroy) {
+        this.items[i] = this.items[i].filter((element) => {
+          return element != undefined;
+        });
+      // }
       this.update_cycles_left --;
       this.can_reset = true;
     }
