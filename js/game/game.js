@@ -24,6 +24,8 @@ const hovering = [];
 let right_clicked = undefined;
 
 let frame_millis = 0;
+let frame_sub = 0;
+let last_frame_sub = 0;
 
 let camera;
 let zoom = 1; // 1 For 1280:720 resolutions
@@ -84,6 +86,8 @@ class Game {
     this.copy_selected = []
     
     frame_millis = millis();
+    frame_sub = millis();
+    last_frame_sub = millis();
 
     camera = createVector(0, 0);
     
@@ -907,7 +911,11 @@ class Game {
   
   update() {
     const update = this.update_cycles_left === -1 || this.update_cycles_left > 0;
-    frame_millis = millis();
+    frame_millis = millis() - frame_sub;
+    if (!update) {
+      frame_sub += millis() - last_frame_sub;
+    }
+    last_frame_sub = millis();
     hovering.length = 0;
     for (const i in this.items) {
       const group = this.items[i];
@@ -927,10 +935,10 @@ class Game {
             item.handle_mouse();
           }
         }
-        if (item instanceof Component){
-          if (snap_to_grid){
-            item.pos.x = round(item.pos.x / grid_size) * grid_size
-            item.pos.y = round(item.pos.y / grid_size) * grid_size
+        if (item instanceof Component) {
+          if (snap_to_grid) {
+            item.pos.x = round(item.pos.x / grid_size) * grid_size;
+            item.pos.y = round(item.pos.y / grid_size) * grid_size;
           }
         }
       }
@@ -1095,6 +1103,7 @@ class Game {
       if (zoom !== 1) {
         string += " at " + (Math.round(zoom * 10) / 10) + "x";
       }
+      string += " at frame " + Math.round(frame_millis) + " sub " + Math.round(frame_sub);
       // string += " hovering " + hovering.length;
       text(string, (mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       pop();
