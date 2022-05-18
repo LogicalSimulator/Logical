@@ -53,7 +53,6 @@ const components = [
 ];
 
 /* TODO:
-- Can edit clock's period
 - A "comment" component that you can use to comment on things
 - Website and move this to /editor path
 */
@@ -230,11 +229,13 @@ class Game {
     }
     this.gui.push(this.menu_line);
 
+    this.set_period_button = create_button("Set period", 0, 0, 0, 0, () => {this.set_period_of_selected_component();});
     this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {this.toggle_play_pause_simulation();});
     this.step_button = create_button("Step", 0, 0, 0, 0, () => {this.step_simulation();});
     this.reset_button = create_button("Reset", 0, 0, 0, 0, () => {this.reset_simulation();});
     this.control_group = new sub_group(
       [
+        this.set_period_button,
         this.play_pause_button,
         this.step_button,
         this.reset_button
@@ -334,6 +335,27 @@ class Game {
     }
   }
 
+  set_period_of_selected_component() {
+    while (true) {
+      const result = prompt("Set the period of the clock: (milliseconds)", 
+                          this.selected_component.period);
+      if (result != null && result.length > 0) {
+        const int_result = parseInt(result, 10);
+        if (isNaN(int_result)) {
+          alert("Period must be a number greater than 0!");
+        } else if (int_result <= 0) {
+          alert("Period can not be less than or equal to 0!");
+        } else {
+          this.selected_component.period = int_result;
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+    this.selected_component = undefined;
+  }
+  
   toggle_play_pause_simulation() {
     this.play = !this.play;
   }
@@ -951,6 +973,7 @@ class Game {
       this.update_cycles_left --;
       this.can_reset = true;
     }
+    this.set_period_button.invisible = !(this.selected_component instanceof Clock);
     this.copy_button.enabled = this.selected_component instanceof Component ||
                                this.multi_selections.length > 0;
     this.paste_button.enabled = this.copy_selected.length > 0;

@@ -7,6 +7,7 @@ class Widget {
     this._width = 0;
     this._height = 0;
     this._enabled = true;
+    this.invisible = false;
     this.destroy_me = false;
   }
 
@@ -141,6 +142,7 @@ class WidgetGroup {
     this._x_pad = 0;
     this._y_pad = 0;
     this._enabled = true;
+    this.invisible = false;
     this.resize_widgets();
   }
 
@@ -220,7 +222,13 @@ class WidgetGroup {
   }
 
   draw() {
+    if (this.invisible) {
+      return;
+    }
     for (let widget of this.widgets) {
+      if (widget.invisible) {
+        continue;
+      }
       widget.draw();
     }
   }
