@@ -96,6 +96,7 @@ class Game {
     hovering.length = 0;
 
     this.make_gui();
+    this.initalize_dom();
 
     if (make_testing_objs) {
       this.make_testing_objects();  
@@ -201,7 +202,7 @@ class Game {
         this.paste_button,
         this.rotate_button,
         this.delete_button,
-        create_button("Menu", 0, 0, 0, 0, () => {})
+        create_button("Menu", 0, 0, 0, 0, () => {this.show_menu();})
       ]
     );
     
@@ -295,6 +296,21 @@ class Game {
   //   this.export_box.size(size.x,size.y)
   //   this.export_box.position(width/2-size.x/2,height/2-size.y/2)
   // }
+
+  initalize_dom() {
+    this.dialog_menu = document.getElementById("dialog_menu");
+    this.dialog_menu.addEventListener("close", () => {this.hide_menu();});
+  }
+
+  show_menu() {
+    this.dialog_menu.showModal();
+    this.grey_out = true;
+  }
+
+  hide_menu() {
+    this.dialog_menu.close();
+    this.grey_out = false;
+  }
   
   add_component(c) {
     if (mouse_mode != ADD_MODE) {
