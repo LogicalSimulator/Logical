@@ -83,6 +83,9 @@ class Game {
     this.panned_prev = createVector()
     this.rotate_button_pressed = false
     this.copy_selected = []
+    this.export_box = undefined
+    this.import_box = undefined
+    this.grey_out = false
     
     frame_millis = millis();
     frame_sub = millis();
@@ -188,8 +191,12 @@ class Game {
     this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component();});
     this.copy_button = create_button("Copy", 0, 0, 0, 0, () => {this.copy_selection();});
     this.paste_button = create_button("Paste", 0, 0, 0, 0, () => {this.paste_selection();});
+    // this.export_button = create_button("Export", 0, 0, 0, 0, () => {this.make_export_box()});
+    // this.import_button = create_button("Import", 0, 0, 0, 0, () => {});
     this.menu_group = new sub_group(
       [
+        // this.export_button,
+        // this.import_button,
         this.copy_button, 
         this.paste_button,
         this.rotate_button,
@@ -281,6 +288,14 @@ class Game {
     }
   }
 
+  // make_export_box() {
+  //   this.grey_out = true
+  //   let size = createVector(width/3,20)
+  //   this.export_box = createInput(this.export_game_state())
+  //   this.export_box.size(size.x,size.y)
+  //   this.export_box.position(width/2-size.x/2,height/2-size.y/2)
+  // }
+  
   add_component(c) {
     if (mouse_mode != ADD_MODE) {
       return;
@@ -507,6 +522,15 @@ class Game {
   }
 
   on_mouse_press() {
+    // if (this.grey_out){
+    //   if (!collidePointRect(mouseX,mouseY,
+    //                       this.export_button.x,this.export_button.y,
+    //                       this.export_button.width,this.export_button.height)){
+    //     this.grey_out = false
+    //     this.export_button.remove()
+    //   }
+    //   return
+    // }
     let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     let mouse_on_multi = false;
       for (let comp of this.multi_selections){
@@ -599,7 +623,9 @@ class Game {
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
     // }
-    if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
+    if (this.grey_out){
+      
+    } else if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
       if (this.drag_component != undefined) {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
       }      
@@ -627,6 +653,9 @@ class Game {
   }
 
   on_mouse_release() {
+    if (this.grey_out){
+      return
+    }
     if (camera.x != this.panned_prev.x || camera.y != this.panned_prev.y || this.rotate_button_pressed || keyIsDown(16)){
       this.rotate_button_pressed = false
     }
@@ -684,13 +713,20 @@ class Game {
   }
   
   mouse_clicked() {
-    for (let comp of this.components) {
-      comp.mouse_clicked();
+    if (this.grey_out){
+      
+    }
+    else {
+      for (let comp of this.components) {
+        comp.mouse_clicked();
+      }
     }
   }
 
   on_mouse_wheel(event) {
-    if (hovering_on_button()) {
+    if (this.grey_out){
+    
+    } else if (hovering_on_button()) {
       
     } else {
       let scale_factor;
@@ -719,51 +755,53 @@ class Game {
 
   key_pressed(code) {
     // backspace or "d" key
-    if (code === 8 || code === 68) {
-      if (this.delete_button.enabled) {
-        this.destroy_selected_component();
+    if (!this.grey_out){
+      if (code === 8 || code === 68) {
+        if (this.delete_button.enabled) {
+          this.destroy_selected_component();
+        }
       }
-    }
-    if (this.rotate_button.enabled) {
-      // "r" key
-      if (code === 82) {
-        // shift key
-        this.rotate_selected_component(PI/2)
+      if (this.rotate_button.enabled) {
+        // "r" key
+        if (code === 82) {
+          // shift key
+          this.rotate_selected_component(PI/2)
+        }
       }
-    }
-    if (this.play_pause_button.enabled) {
-      // "p" key
-      if (code === 80) {
-        this.toggle_play_pause_simulation();
+      if (this.play_pause_button.enabled) {
+        // "p" key
+        if (code === 80) {
+          this.toggle_play_pause_simulation();
+        }
       }
-    }
-    if (this.step_button.enabled) {
-      // "s" key
-      if (code === 83) {
-        this.step_simulation();
+      if (this.step_button.enabled) {
+        // "s" key
+        if (code === 83) {
+          this.step_simulation();
+        }
       }
-    }
-
-    //Copy-paste
-    if (code == 67){
-      if (keyIsDown(17)){
-        console.log("COPY")
-        this.copy_selection()
+  
+      //Copy-paste
+      if (code == 67){
+        if (keyIsDown(17)){
+          console.log("COPY")
+          this.copy_selection()
+        }
       }
-    }
-    else if (code == 86){
-      if (keyIsDown(17)){
-        console.log("PASTE")
-        this.paste_selection()
+      else if (code == 86){
+        if (keyIsDown(17)){
+          console.log("PASTE")
+          this.paste_selection()
+        }
       }
-    }
-    else if (code == 83){
-      navigator.clipboard.writeText(this.export_game_state())
-    }
-    else if (code == 65){
-      if (keyIsDown(17)){
-        for (let comp of this.items[2]){
-          this.multi_selections.push(comp)
+      else if (code == 83){
+        navigator.clipboard.writeText(this.export_game_state())
+      }
+      else if (code == 65){
+        if (keyIsDown(17)){
+          for (let comp of this.items[2]){
+            this.multi_selections.push(comp)
+          }
         }
       }
     }
@@ -932,7 +970,8 @@ class Game {
   }
   
   update() {
-    const update = this.update_cycles_left === -1 || this.update_cycles_left > 0;
+    const update = this.update_cycles_left === -1 || 
+                   this.update_cycles_left > 0;
     frame_millis = millis() - frame_sub;
     if (!update) {
       frame_sub += millis() - last_frame_sub;
@@ -950,12 +989,12 @@ class Game {
           // did_destroy = true;
           continue;
         }
-        if (update) {
+        if (this.grey_out) {
+          
+        } else if (update) {
           item.update();
-        } else {
-          if (item.handle_mouse != undefined) {
-            item.handle_mouse();
-          }
+        } else if (item.handle_mouse != undefined) {
+          item.handle_mouse();
         }
         if (item instanceof Component) {
           if (snap_to_grid) {
@@ -1110,11 +1149,13 @@ class Game {
     
     image(this.graphics, 0, 0);
 
-    push();
-    for (const widget of this.gui) {
-      widget.draw();
+    if (!this.grey_out) {
+      push();
+      for (const widget of this.gui) {
+        widget.draw();
+      }
+      pop();
     }
-    pop();
 
     if (show_mouse_coords) {
       push();
@@ -1130,6 +1171,12 @@ class Game {
       // string += " hovering " + hovering.length;
       text(string, (mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
       pop();
+    }
+    if (this.grey_out){
+      push()
+      fill(100,100,100,150)
+      rect(0,0,width,height)
+      pop()
     }
   }
 }
