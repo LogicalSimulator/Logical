@@ -300,6 +300,10 @@ class Game {
   initalize_dom() {
     this.dialog_menu = document.getElementById("dialog_menu");
     this.dialog_menu.addEventListener("close", () => {this.hide_menu();});
+    this.dialog_import = document.getElementById("dialog_import");
+    this.dialog_import.addEventListener("close", () => {this.hide_import_menu();});
+    this.dialog_export = document.getElementById("dialog_export");
+    this.dialog_export.addEventListener("close", () => {this.hide_export_menu();});
   }
 
   show_menu() {
@@ -310,6 +314,34 @@ class Game {
   hide_menu() {
     this.dialog_menu.close();
     this.grey_out = false;
+    console.log(this.dialog_menu.returnValue);
+    if (this.dialog_menu.returnValue === "import") {
+      this.show_import_menu();
+    } else if (this.dialog_menu.returnValue === "export") {
+      this.show_export_menu();
+    }
+  }
+
+  show_import_menu() {
+    this.dialog_import.showModal();
+    this.grey_out = true;
+  }
+
+  hide_import_menu() {
+    this.dialog_import.close();
+    this.grey_out = false;
+    console.log(this.dialog_import.returnValue);
+  }
+
+  show_export_menu() {
+    this.dialog_export.showModal();
+    this.grey_out = true;
+  }
+
+  hide_export_menu() {
+    this.dialog_export.close();
+    this.grey_out = false;
+    console.log(this.dialog_export.returnValue);
   }
   
   add_component(c) {
