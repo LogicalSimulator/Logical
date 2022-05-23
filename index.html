@@ -40,6 +40,7 @@
       <br>
       <button value="cancel" class="dialogbutton">Close</button>
       <button value="import" class="dialogbutton">Import</button>
+      <button type="button" id="copy_import_button" class="dialogbutton">Read from clipboard</button>
     </form>
   </dialog>
   <!-- The export dialog -->
@@ -50,6 +51,7 @@
       <br>
       <br>
       <button value="cancel" class="dialogbutton">Close</button>
+      <button type="button" id="copy_export_button" class="dialogbutton">Copy</button>
     </form>
   </dialog>
   <!-- Libraries -->
@@ -62,6 +64,7 @@
   <script src="/js/util/text_utils.js" defer></script>
   <script src="/js/util/ui.js" defer></script>
   <script src="/js/util/compress.js" defer></script>
+  <script src="/js/util/clipboard.js" defer></script>
   <!-- Game files -->
   <script src="/js/game/components/component.js" defer></script>
   <script src="/js/game/components/connection.js" defer></script>
@@ -90,8 +93,6 @@
   <script src="/js/main.js" defer></script>
   <!-- Shows a console on the web page itself, for easier debugging on restricted computers -->
   <script src="/js/util/on_page_console.js" defer></script>
-
-  
 </body>
 
 </html>

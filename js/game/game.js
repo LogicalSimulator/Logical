@@ -304,6 +304,18 @@ class Game {
     this.dialog_import.addEventListener("close", () => {this.hide_import_menu();});
     this.dialog_export = document.getElementById("dialog_export");
     this.dialog_export.addEventListener("close", () => {this.hide_export_menu();});
+    this.input_code = document.getElementById("input_code");
+    this.output_code = document.getElementById("output_code");
+    this.copy_export_button = document.getElementById("copy_export_button");
+    this.copy_export_button.addEventListener("click", (event) => {
+      copyTextToClipboard(this.output_code.value);
+    });
+    this.copy_import_button = document.getElementById("copy_import_button");
+    this.copy_import_button.addEventListener("click", (event) => {
+      readTextFromClipboard((text) => {
+        this.input_code.value = text;
+      });
+    });
   }
 
   show_menu() {
@@ -314,7 +326,7 @@ class Game {
   hide_menu() {
     this.dialog_menu.close();
     this.grey_out = false;
-    console.log(this.dialog_menu.returnValue);
+    // console.log(this.dialog_menu.returnValue);
     if (this.dialog_menu.returnValue === "import") {
       this.show_import_menu();
     } else if (this.dialog_menu.returnValue === "export") {
@@ -323,6 +335,7 @@ class Game {
   }
 
   show_import_menu() {
+    this.input_code.value = "";
     this.dialog_import.showModal();
     this.grey_out = true;
   }
@@ -330,18 +343,27 @@ class Game {
   hide_import_menu() {
     this.dialog_import.close();
     this.grey_out = false;
-    console.log(this.dialog_import.returnValue);
+    if (this.dialog_import.returnValue === "import") {
+      try {
+        this.import_game_state(this.input_code.value);
+        alert("Import successful!");
+      } catch {
+        alert("Failed to import!");
+      }
+    }
+    // console.log(this.dialog_import.returnValue);
   }
 
   show_export_menu() {
     this.dialog_export.showModal();
     this.grey_out = true;
+    this.output_code.value = this.export_game_state();
   }
 
   hide_export_menu() {
     this.dialog_export.close();
     this.grey_out = false;
-    console.log(this.dialog_export.returnValue);
+    // console.log(this.dialog_export.returnValue);
   }
   
   add_component(c) {
@@ -579,6 +601,9 @@ class Game {
     //   }
     //   return
     // }
+    if (this.grey_out){
+      return
+    }
     let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     let mouse_on_multi = false;
       for (let comp of this.multi_selections){
@@ -672,7 +697,7 @@ class Game {
     //   }
     // }
     if (this.grey_out){
-      
+      return
     } else if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
       if (this.drag_component != undefined) {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
