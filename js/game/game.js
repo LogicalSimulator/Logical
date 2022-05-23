@@ -53,7 +53,6 @@ const components = [
 ];
 
 /* TODO:
-- Can export and import comments
 - Website and move this to /editor path
 */
 
@@ -304,10 +303,13 @@ class Game {
     this.dialog_import.addEventListener("close", () => {this.hide_import_menu();});
     this.dialog_export = document.getElementById("dialog_export");
     this.dialog_export.addEventListener("close", () => {this.hide_export_menu();});
+    this.dialog_clock_period = document.getElementById("dialog_clock_period");
+    this.dialog_clock_period.addEventListener("close", () => {this.hide_clock_period_menu();});
     this.dialog_note = document.getElementById("dialog_note");
     this.dialog_note.addEventListener("close", () => {this.hide_note_menu();});
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
+    this.clock_period_code = document.getElementById("clock_period_code");
     this.note_code = document.getElementById("note_code");
     this.copy_export_button = document.getElementById("copy_export_button");
     this.copy_export_button.addEventListener("click", (event) => {
@@ -373,6 +375,22 @@ class Game {
     // console.log(this.dialog_export.returnValue);
   }
 
+  show_clock_period_menu() {
+    this.clock_period_code.value = this.selected_component.period;
+    this.dialog_clock_period.showModal();
+    this.grey_out = true;
+  }
+
+  hide_clock_period_menu() {
+    this.dialog_clock_period.close();
+    this.grey_out = false;
+    if (this.dialog_clock_period.returnValue === "submit") {
+      this.selected_component.period = this.clock_period_code.value;
+    }
+    this.selected_component = undefined;
+    // console.log(this.dialog_note.returnValue);
+  }
+  
   show_note_menu() {
     this.note_code.value = this.selected_component.note_text;
     this.dialog_note.showModal();
@@ -444,24 +462,25 @@ class Game {
   }
 
   set_period_of_selected_component() {
-    while (true) {
-      const result = prompt("Set the period of the clock: (milliseconds)", 
-                          this.selected_component.period);
-      if (result != null && result.length > 0) {
-        const int_result = parseInt(result, 10);
-        if (isNaN(int_result)) {
-          alert("Period must be a number greater than 0!");
-        } else if (int_result <= 0) {
-          alert("Period can not be less than or equal to 0!");
-        } else {
-          this.selected_component.period = int_result;
-          break;
-        }
-      } else {
-        break;
-      }
-    }
-    this.selected_component = undefined;
+    this.show_clock_period_menu();
+    // while (true) {
+    //   const result = prompt("Set the period of the clock: (milliseconds)", 
+    //                       this.selected_component.period);
+    //   if (result != null && result.length > 0) {
+    //     const int_result = parseInt(result, 10);
+    //     if (isNaN(int_result)) {
+    //       alert("Period must be a number greater than 0!");
+    //     } else if (int_result <= 0) {
+    //       alert("Period can not be less than or equal to 0!");
+    //     } else {
+    //       this.selected_component.period = int_result;
+    //       break;
+    //     }
+    //   } else {
+    //     break;
+    //   }
+    // }
+    // this.selected_component = undefined;
   }
 
   set_note_value() {

@@ -38,7 +38,7 @@
       <br>
       <textarea type="text" id="input_code" name="code" rows="10" cols="100" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
       <br>
-      <button value="cancel">Close</button>
+      <button value="cancel">Cancel</button>
       <button value="import">Import</button>
       <button type="button" id="copy_import_button">Read from clipboard</button>
     </form>
@@ -53,6 +53,17 @@
       <br>
       <button value="cancel">Close</button>
       <button type="button" id="copy_export_button" >Copy</button>
+    </form>
+  </dialog>
+  <!-- The clock period dialog -->
+  <dialog id="dialog_clock_period">
+    <form method="dialog">
+      <label for="code">Set clock period:</label>
+      <br>
+      <input type="number" id="clock_period_code" name="code" min=1 autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+      <br>
+      <button value="cancel">Cancel</button>
+      <button value="submit">Submit</button>
     </form>
   </dialog>
   <!-- The note dialog -->
