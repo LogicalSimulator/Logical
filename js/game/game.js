@@ -351,8 +351,11 @@ class Game {
         this.import_game_state(this.input_code.value);
         alert("Import successful!");
       } catch {
+        this.show_import_menu();
         alert("Failed to import!");
       }
+    } else {
+      this.show_menu();
     }
     // console.log(this.dialog_import.returnValue);
   }
@@ -366,6 +369,7 @@ class Game {
   hide_export_menu() {
     this.dialog_export.close();
     this.grey_out = false;
+    this.show_menu();
     // console.log(this.dialog_export.returnValue);
   }
 
