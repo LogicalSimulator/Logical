@@ -41,7 +41,8 @@ dialog {
 }
 
 .mainmenubutton {
-  width: 10vw;
+  width: 25vw;
+  margin: 1px;
 }
 
 .quarterscreentextarea {
