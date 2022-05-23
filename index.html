@@ -40,6 +40,9 @@
                 autocomplete="off" autocorrect="off" spellcheck="false"
                 class="quarterscreentextarea"></textarea>
       <br>
+      <p id="message_dialog_import_success_clipboard" hidden>Successfully read from clipboard!</p>
+      <p id="message_dialog_import_failed_clipboard" class="error" hidden>Failed to read from clipboard! Make sure you have given us permission to read the clipboard!</p>
+      <p id="message_dialog_import_failed_import" class="error" hidden>Failed to import! Make sure you pasted in the <i>entire</i> code without any extra characters!</p>
       <button value="import">Import</button>
       <button type="button" id="copy_import_button">Read from clipboard</button>
       <button value="cancel">Cancel</button>
@@ -55,6 +58,8 @@
                 autocomplete="off" autocorrect="off" spellcheck="false" 
                 readonly="true" class="quarterscreentextarea"></textarea>
       <br>
+      <p id="message_dialog_export_success_clipboard" hidden>Successfully copied to clipboard!</p>
+      <p id="message_dialog_export_failed_clipboard" class="error" hidden>Failed to copy to clipboard!</p>
       <button type="button" id="copy_export_button">Copy all to clipboard</button>
       <button value="cancel">Close</button>
     </form>

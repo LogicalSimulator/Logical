@@ -39,8 +39,12 @@ p, a, label, button {
   font-family: sans-serif;
 }
 
-a, label {
+p, a, label {
   font-size: 0.8em;
+}
+
+.error {
+  color: #FF0000
 }
 
 input {

@@ -52,6 +52,14 @@ const components = [
   NandGate, XorGate, XnorGate, Note
 ];
 
+const dialog_message_names = [
+  "message_dialog_import_success_clipboard",
+  "message_dialog_import_failed_clipboard",
+  "message_dialog_import_failed_import",
+  "message_dialog_export_success_clipboard",
+  "message_dialog_export_failed_clipboard"
+]
+
 /* TODO:
 - Website and move this to /editor path
 */
@@ -311,19 +319,44 @@ class Game {
     this.output_code = document.getElementById("output_code");
     this.clock_period_code = document.getElementById("clock_period_code");
     this.note_code = document.getElementById("note_code");
+    this.dialog_messages = {};
+    for (name of dialog_message_names) {
+      this.dialog_messages[name] = document.getElementById(name);
+    }
     this.copy_export_button = document.getElementById("copy_export_button");
     this.copy_export_button.addEventListener("click", (event) => {
-      copyTextToClipboard(this.output_code.value);
+      copyTextToClipboard(
+        this.output_code.value, 
+        () => {  // success
+          this.show_message("message_dialog_export_success_clipboard");
+        },
+        () => {  // fail
+          this.show_message("message_dialog_export_failed_clipboard");
+        }
+      );
     });
     this.copy_import_button = document.getElementById("copy_import_button");
     this.copy_import_button.addEventListener("click", (event) => {
-      readTextFromClipboard((text) => {
-        this.input_code.value = text;
-      });
+      readTextFromClipboard(
+        (text) => {  // success
+          this.input_code.value = text;
+          this.show_message("message_dialog_import_success_clipboard");
+        }, 
+        () => {  // fail
+          this.show_message("message_dialog_import_failed_clipboard");
+        }
+      );
     });
   }
 
+  show_message(show_name) {
+    for (key in this.dialog_messages) {
+      this.dialog_messages[key].hidden = key !== show_name;
+    }
+  }
+
   show_menu() {
+    this.show_message(undefined);
     this.dialog_menu.showModal();
     this.grey_out = true;
   }
@@ -343,6 +376,7 @@ class Game {
     this.input_code.value = "";
     this.dialog_import.showModal();
     this.grey_out = true;
+    this.show_message(undefined);
   }
 
   hide_import_menu() {
@@ -351,10 +385,11 @@ class Game {
     if (this.dialog_import.returnValue === "import") {
       try {
         this.import_game_state(this.input_code.value);
-        alert("Import successful!");
+        // alert("Import successful!");
       } catch {
         this.show_import_menu();
-        alert("Failed to import!");
+        this.show_message("message_dialog_import_failed_import");
+        // alert("Failed to import!");
       }
     } else {
       this.show_menu();
@@ -365,6 +400,7 @@ class Game {
   show_export_menu() {
     this.dialog_export.showModal();
     this.grey_out = true;
+    this.show_message(undefined);
     this.output_code.value = this.export_game_state();
   }
 
