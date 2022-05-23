@@ -35,25 +35,42 @@
   <dialog id="dialog_import">
     <form method="dialog">
       <label for="code">Import code:</label>
-      <input type="text" id="input_code" name="code">
       <br>
+      <textarea type="text" id="input_code" name="code" rows="10" cols="100" autocomplete="off" autocorrect="off" spellcheck="false" required="true"></textarea>
       <br>
-      <button value="cancel" class="dialogbutton">Close</button>
-      <button value="import" class="dialogbutton">Import</button>
-      <button type="button" id="copy_import_button" class="dialogbutton">Read from clipboard</button>
+      <button value="cancel">Close</button>
+      <button value="import">Import</button>
+      <button type="button" id="copy_import_button">Read from clipboard</button>
     </form>
   </dialog>
   <!-- The export dialog -->
   <dialog id="dialog_export">
     <form method="dialog">
       <label for="code">Export code:</label>
-      <input type="text" id="output_code" name="code">
+      <a>(Don't forget to scroll to see the rest of the code!)</a>
       <br>
+      <textarea type="text" id="output_code" name="code" rows="10" cols="100" autocomplete="off" autocorrect="off" spellcheck="false" readonly="true"></textarea>
       <br>
-      <button value="cancel" class="dialogbutton">Close</button>
-      <button type="button" id="copy_export_button" class="dialogbutton">Copy</button>
+      <button value="cancel">Close</button>
+      <button type="button" id="copy_export_button" >Copy</button>
     </form>
   </dialog>
+  <!-- The note dialog -->
+  <dialog id="dialog_note">
+    <form method="dialog">
+      <label for="code">Your note:</label>
+      <br>
+      <textarea type="text" id="note_code" name="code" rows="10" cols="100" autocomplete="on" autocorrect="on" spellcheck="true" required="true"></textarea>
+      <br>
+      <button value="cancel">Close</button>
+      <button type="button" id="submit_note">Submit</button>
+    </form>
+  </dialog>
+  <!-- Screw the enter key ->
+  <script>
+  window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+  </script>
+  -->
   <!-- Libraries -->
   <script src="/js/libs/p5.min.js" defer></script>
   <script src="/js/libs/p5.sound.min.js" defer></script>
