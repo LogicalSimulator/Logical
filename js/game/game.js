@@ -304,8 +304,11 @@ class Game {
     this.dialog_import.addEventListener("close", () => {this.hide_import_menu();});
     this.dialog_export = document.getElementById("dialog_export");
     this.dialog_export.addEventListener("close", () => {this.hide_export_menu();});
+    this.dialog_note = document.getElementById("dialog_note");
+    this.dialog_note.addEventListener("close", () => {this.hide_note_menu();});
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
+    this.note_code = document.getElementById("note_code");
     this.copy_export_button = document.getElementById("copy_export_button");
     this.copy_export_button.addEventListener("click", (event) => {
       copyTextToClipboard(this.output_code.value);
@@ -364,6 +367,22 @@ class Game {
     this.dialog_export.close();
     this.grey_out = false;
     // console.log(this.dialog_export.returnValue);
+  }
+
+  show_note_menu() {
+    this.note_code.value = this.selected_component.note_text;
+    this.dialog_note.showModal();
+    this.grey_out = true;
+  }
+
+  hide_note_menu() {
+    this.dialog_note.close();
+    this.grey_out = false;
+    if (this.dialog_note.returnValue === "submit") {
+      this.selected_component.note_text = this.note_code.value;
+    }
+    this.selected_component = undefined;
+    // console.log(this.dialog_note.returnValue);
   }
   
   add_component(c) {
@@ -442,17 +461,18 @@ class Game {
   }
 
   set_note_value() {
-    while (true) {
-      const result = prompt("Set the text of the note", 
-                            this.selected_component.note_text);
-      if (result != null && result.length > 0) {
-        this.selected_component.note_text = result;
-        break;
-      } else {
-        break;
-      }
-    }
-    this.selected_component = undefined;
+    this.show_note_menu();
+    // while (true) {
+    //   const result = prompt("Set the text of the note", 
+    //                         this.selected_component.note_text);
+    //   if (result != null && result.length > 0) {
+    //     this.selected_component.note_text = result;
+    //     break;
+    //   } else {
+    //     break;
+    //   }
+    // }
+    // this.selected_component = undefined;
   }
   
   toggle_play_pause_simulation() {
