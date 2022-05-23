@@ -40,9 +40,11 @@ dialog {
   padding: 5px;
 }
 
-.dialogbutton {
-  width: 100px;
-  /*
-  padding: 5px;
-  */
+.mainmenubutton {
+  width: 10vw;
+}
+
+.quarterscreentextarea {
+  width: 50vw;
+  height: 25vh;
 }

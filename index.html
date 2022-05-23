@@ -24,11 +24,11 @@
   <!-- The menu dialog -->
   <dialog id="dialog_menu">
     <form method="dialog">
-      <button value="cancel" class="dialogbutton">Close</button>
+      <button value="cancel" class="mainmenubutton">Close</button>
       <br>
-      <button value="import" class="dialogbutton">Import</button>
+      <button value="import" class="mainmenubutton">Import</button>
       <br>
-      <button value="export" class="dialogbutton">Export</button>
+      <button value="export" class="mainmenubutton">Export</button>
     </form>
   </dialog>
   <!-- The import dialog -->
@@ -36,7 +36,9 @@
     <form method="dialog">
       <label for="code">Import code:</label>
       <br>
-      <textarea type="text" id="input_code" name="code" rows="10" cols="100" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+      <textarea type="text" id="input_code" name="code" 
+                autocomplete="off" autocorrect="off" spellcheck="false"
+                class="quarterscreentextarea"></textarea>
       <br>
       <button value="cancel">Cancel</button>
       <button value="import">Import</button>
@@ -49,10 +51,12 @@
       <label for="code">Export code:</label>
       <a>(Don't forget to scroll to see the rest of the code!)</a>
       <br>
-      <textarea type="text" id="output_code" name="code" rows="10" cols="100" autocomplete="off" autocorrect="off" spellcheck="false" readonly="true"></textarea>
+      <textarea type="text" id="output_code" name="code" 
+                autocomplete="off" autocorrect="off" spellcheck="false" 
+                readonly="true" class="quarterscreentextarea"></textarea>
       <br>
       <button value="cancel">Close</button>
-      <button type="button" id="copy_export_button" >Copy</button>
+      <button type="button" id="copy_export_button">Copy all to clipboard</button>
     </form>
   </dialog>
   <!-- The clock period dialog -->
@@ -60,7 +64,8 @@
     <form method="dialog">
       <label for="code">Set clock period:</label>
       <br>
-      <input type="number" id="clock_period_code" name="code" min=1 autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+      <input type="number" id="clock_period_code" name="code" min=1 
+             autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
       <br>
       <button value="cancel">Cancel</button>
       <button value="submit">Submit</button>
@@ -71,7 +76,9 @@
     <form method="dialog">
       <label for="code">Your note:</label>
       <br>
-      <textarea type="text" id="note_code" name="code" rows="10" cols="100" autocomplete="on" autocorrect="on" spellcheck="true"></textarea>
+      <textarea type="text" id="note_code" name="code" 
+                autocomplete="on" autocorrect="on" spellcheck="true"
+                class="quarterscreentextarea"></textarea>
       <br>
       <button value="cancel">Close</button>
       <button value="submit">Submit</button>
