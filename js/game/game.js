@@ -351,8 +351,11 @@ class Game {
 
   show_message(show_name) {
     for (key in this.dialog_messages) {
-      this.dialog_messages[key].hidden = key !== show_name;
+      this.dialog_messages[key].hidden = true;
     }
+    setTimeout(() => {
+      this.dialog_messages[show_name].hidden = false;
+    }, 100);
   }
 
   show_menu() {
