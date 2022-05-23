@@ -18,7 +18,8 @@ const component_indices = [
   TrueConstant,
   FalseConstant,
   Light,
-  Switch
+  Switch,
+  Note
 ];
 
 function get_component_type(comp) {

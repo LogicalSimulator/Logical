@@ -8,7 +8,7 @@ const dark_grid_color = 100;
 const hover_color = [127, 255, 0];
 const right_click_color = [255, 127, 80];
 
-let grid_size = 20;
+const grid_size = 20;
 
 const make_testing_objs = true;
 const test_export_import = true;
@@ -43,17 +43,17 @@ const menu_outside_pad = 10;
 const menu_button_width = 100;
 const menu_button_height = 30;
 
-let snap_to_grid = false
+let snap_to_grid = false;
 
 const components = [
   Switch, Button, Clock, TrueConstant, FalseConstant,
   Light, FourBitDigit, EightBitDigit, BufferGate,
   NotGate, OrGate, NorGate, AndGate, 
-  NandGate, XorGate, XnorGate
+  NandGate, XorGate, XnorGate, Note
 ];
 
 /* TODO:
-- A "comment" component that you can use to comment on things
+- Can export and import comments
 - Website and move this to /editor path
 */
 
@@ -237,13 +237,21 @@ class Game {
     }
     this.gui.push(this.menu_line);
 
-    this.set_period_button = create_button("Set period", 0, 0, 0, 0, () => {this.set_period_of_selected_component();});
+    this.set_specific_button = create_button("Set specific", 0, 0, 0, 0, () => {
+      if (this.selected_component instanceof Clock) {
+        this.set_period_of_selected_component();
+      } else if (this.selected_component instanceof Note) {
+        this.set_note_value();
+      }
+    });
+    this.create_comment_button = create_button("Make note", 0, 0, 0, 0, () => {this.add_component(16)});
     this.play_pause_button = create_button("Pause", 0, 0, 0, 0, () => {this.toggle_play_pause_simulation();});
     this.step_button = create_button("Step", 0, 0, 0, 0, () => {this.step_simulation();});
     this.reset_button = create_button("Reset", 0, 0, 0, 0, () => {this.reset_simulation();});
     this.control_group = new sub_group(
       [
-        this.set_period_button,
+        this.set_specific_button,
+        this.create_comment_button,
         this.play_pause_button,
         this.step_button,
         this.reset_button
@@ -288,14 +296,6 @@ class Game {
       this.control_group.y = this.menu_group.y - 5 - this.menu_line.stroke_weight - this.control_group.height;
     }
   }
-
-  // make_export_box() {
-  //   this.grey_out = true
-  //   let size = createVector(width/3,20)
-  //   this.export_box = createInput(this.export_game_state())
-  //   this.export_box.size(size.x,size.y)
-  //   this.export_box.position(width/2-size.x/2,height/2-size.y/2)
-  // }
 
   initalize_dom() {
     this.dialog_menu = document.getElementById("dialog_menu");
@@ -434,6 +434,20 @@ class Game {
           this.selected_component.period = int_result;
           break;
         }
+      } else {
+        break;
+      }
+    }
+    this.selected_component = undefined;
+  }
+
+  set_note_value() {
+    while (true) {
+      const result = prompt("Set the text of the note", 
+                            this.selected_component.note_text);
+      if (result != null && result.length > 0) {
+        this.selected_component.note_text = result;
+        break;
       } else {
         break;
       }
@@ -601,8 +615,8 @@ class Game {
     //   }
     //   return
     // }
-    if (this.grey_out){
-      return
+    if (this.grey_out) {
+      return;
     }
     let mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     let mouse_on_multi = false;
@@ -696,8 +710,8 @@ class Game {
     //     this.items[1][this.items[1].length-1].set_pos_center(mp)
     //   }
     // }
-    if (this.grey_out){
-      return
+    if (this.grey_out) {
+      return;
     } else if (mouse_mode === ADD_MODE && this.multi_select_origin == undefined) {
       if (this.drag_component != undefined) {
         this.drag_component.pos.add(createVector(movedX / zoom, movedY / zoom));
@@ -726,8 +740,8 @@ class Game {
   }
 
   on_mouse_release() {
-    if (this.grey_out){
-      return
+    if (this.grey_out) {
+      return;
     }
     if (camera.x != this.panned_prev.x || camera.y != this.panned_prev.y || this.rotate_button_pressed || keyIsDown(16)){
       this.rotate_button_pressed = false
@@ -786,10 +800,9 @@ class Game {
   }
   
   mouse_clicked() {
-    if (this.grey_out){
-      
-    }
-    else {
+    if (this.grey_out) {
+      return;
+    } else {
       for (let comp of this.components) {
         comp.mouse_clicked();
       }
@@ -797,8 +810,8 @@ class Game {
   }
 
   on_mouse_wheel(event) {
-    if (this.grey_out){
-    
+    if (this.grey_out) {
+      return;
     } else if (hovering_on_button()) {
       
     } else {
@@ -828,7 +841,7 @@ class Game {
 
   key_pressed(code) {
     // backspace or "d" key
-    if (!this.grey_out){
+    if (!this.grey_out) {
       if (code === 8 || code === 68) {
         if (this.delete_button.enabled) {
           this.destroy_selected_component();
@@ -854,26 +867,23 @@ class Game {
         }
       }
   
-      //Copy-paste
-      if (code == 67){
-        if (keyIsDown(17)){
-          console.log("COPY")
-          this.copy_selection()
+      // Copy-paste
+      if (code == 67) {
+        if (keyIsDown(17)) {
+          console.log("COPY");
+          this.copy_selection();
         }
-      }
-      else if (code == 86){
-        if (keyIsDown(17)){
-          console.log("PASTE")
-          this.paste_selection()
+      } else if (code == 86) {
+        if (keyIsDown(17)) {
+          console.log("PASTE");
+          this.paste_selection();
         }
-      }
-      else if (code == 83){
-        navigator.clipboard.writeText(this.export_game_state())
-      }
-      else if (code == 65){
-        if (keyIsDown(17)){
-          for (let comp of this.items[2]){
-            this.multi_selections.push(comp)
+      } else if (code == 83) {
+        navigator.clipboard.writeText(this.export_game_state());
+      } else if (code == 65) {
+        if (keyIsDown(17)) {
+          for (let comp of this.items[2]) {
+            this.multi_selections.push(comp);
           }
         }
       }
@@ -1039,6 +1049,8 @@ class Game {
     for (let i = 0; i < 8; i ++) {
       this.connections.push(make_connection(this.components[55 + i].output1, this.components[54]["input" + (i + 1)]));
     }
+    this.components.push(new Note(createVector(150, 140)))
+
     console.log("done with test objects");
   }
   
@@ -1085,7 +1097,6 @@ class Game {
       this.update_cycles_left --;
       this.can_reset = true;
     }
-    this.set_period_button.invisible = !(this.selected_component instanceof Clock);
     this.copy_button.enabled = this.selected_component instanceof Component ||
                                this.multi_selections.length > 0;
     this.paste_button.enabled = this.copy_selected.length > 0;
@@ -1102,6 +1113,16 @@ class Game {
     }
     this.step_button.enabled = !this.play && this.update_cycles_left === 0;
     this.reset_button.enabled = this.can_reset;
+    this.create_comment_button.enabled = this.selected_component == undefined;
+    if (this.selected_component instanceof Clock) {
+      this.set_specific_button.invisible = false;
+      this.set_specific_button.clickable.text = "Set clock period";
+    } else if (this.selected_component instanceof Note) {
+      this.set_specific_button.invisible = false;
+      this.set_specific_button.clickable.text = "Set note text";
+    } else {
+      this.set_specific_button.invisible = true;
+    }
     for (const widget of this.gui) {
       widget.update();
     }
