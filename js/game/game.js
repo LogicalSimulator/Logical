@@ -353,9 +353,11 @@ class Game {
     for (key in this.dialog_messages) {
       this.dialog_messages[key].hidden = true;
     }
-    setTimeout(() => {
-      this.dialog_messages[show_name].hidden = false;
-    }, 100);
+    if (show_name != undefined){
+      setTimeout(() => {
+        this.dialog_messages[show_name].hidden = false;
+      }, 100);
+    }
   }
 
   show_menu() {
@@ -1253,7 +1255,6 @@ class Game {
     m_pos.sub(camera);
     m_pos.div(zoom);
 
-    
     if (this.drag_connection != undefined) {
       this.graphics.push();
       this.graphics.strokeWeight(1);
@@ -1266,8 +1267,6 @@ class Game {
       // this.graphics.stroke(255, 0, 0);
       // this.graphics.point(from_point.x, from_point.y);
       // this.graphics.pop();
-      
-
       
       // this.graphics.push();
       // this.graphics.strokeWeight(5);
@@ -1292,29 +1291,31 @@ class Game {
         // }
       }
     }
-    if (this.multi_select_origin != undefined){
-      this.graphics.rectMode(CORNER)
-      this.graphics.fill(3, 227, 252, 30)
-      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30)
-      let diff = p5.Vector.sub(m_pos,this.multi_select_origin)
+    if (this.multi_select_origin != undefined) {
+      this.graphics.rectMode(CORNER);
+      this.graphics.fill(3, 227, 252, 30);
+      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30);
+      let diff = p5.Vector.sub(m_pos,this.multi_select_origin);
       this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
-                        diff.x,diff.y)
+                        diff.x,diff.y);
       let rect_verts = [this.multi_select_origin,
                        p5.Vector.add(this.multi_select_origin,createVector(diff.x,0)),
                        p5.Vector.add(this.multi_select_origin,createVector(diff.x,diff.y)),
-                       p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))]
-      for (let comp of this.items[2]){
-        let verts = comp.get_poly_verts()
-        if (collidePolyPoly(verts,rect_verts,true)){
-          this.graphics.fill(0,255,255,100)
+                       p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))];
+      for (let comp of this.items[2]) {
+        let verts = comp.get_poly_verts();
+        if (collidePolyPoly(verts,rect_verts,true)) {
+          this.graphics.fill(0,255,255,100);
           this.graphics.beginShape();
-          for (const { x, y } of verts)  vertex(x, y);
+          for (const { x, y } of verts) {
+            vertex(x, y)
+          }
           this.graphics.endShape(CLOSE);
         }
       }
     }
-    for (let comp of this.multi_selections){
-      let verts = comp.get_poly_verts()
+    for (let comp of this.multi_selections) {
+      let verts = comp.get_poly_verts();
       this.graphics.fill(255,0,0,100)
       this.graphics.beginShape();
       //for (const { x, y } of verts)  vertex(x, y);
