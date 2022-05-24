@@ -12,7 +12,7 @@ function destroy_component(comp) {
   comp.destroy_me = true;
   let execs = []
   for (let conn of comp.connect_points){
-    if (conn instanceof ConnectionInPoint){
+    if (conn instanceof ConnectionInPoint && conn.connection.from_point != undefined){
       let connect = conn.connection.from_point
       for (let nested of connect.connections){
         if (nested.to_point.parent === comp){

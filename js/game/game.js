@@ -61,6 +61,8 @@ const dialog_message_names = [
 ]
 
 /* TODO:
+- On import teleport camera to (0, 0)
+- Set notes to have monospaced font
 - Format this code base with some tool
 - Website and move this to /editor path
 */
@@ -683,7 +685,8 @@ class Game {
           try {
             this.items[1].push(make_connection(new_comp[name], to_new_comp[to_new_comp_name]));
           } catch {
-            console.error("Error connecting from " + new_comp[name] + " to " + to_new_comp[to_new_comp_name]);
+            console.log("Error connecting")
+            //console.error("Error connecting from " + new_comp[name] + " to " + to_new_comp[to_new_comp_name]);
           }
         }
       }

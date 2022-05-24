@@ -56,9 +56,6 @@ function windowResized() {
   if (game == undefined) {
     return;
   }
-  zoom = (width + height) / 2000;
-  zoom_min += zoom - 1;
-  zoom_max += zoom - 1;
   game.on_resize();
   // console.log(width, height);
 }
