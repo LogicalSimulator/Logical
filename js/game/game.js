@@ -62,6 +62,7 @@ const dialog_message_names = [
 
 /* TODO:
 - Dialog to access examples
+- Cinematic checkbutton in main menu which only draws the menu button
 - try/catch in main and show dialog with export of current circuit on exception
 - Save the user's circuit to local storage
 - Save to and open from file
