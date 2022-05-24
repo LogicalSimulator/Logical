@@ -2,6 +2,7 @@
 
 const note_width = component_width
 const note_height = component_height
+const note_font = "monospace";
 
 class Note extends Component {
   constructor(pos) {
@@ -26,6 +27,8 @@ class Note extends Component {
     super.draw(graphics, outline);
 
     graphics.push();
+
+    graphics.textFont(note_font);
 
     let mild_mult = 0.7;
     this.size.x = graphics.textWidth(this.findLongestWord(this.note_text)) * 1.3;

@@ -61,7 +61,6 @@ const dialog_message_names = [
 ]
 
 /* TODO:
-- Set notes to have monospaced font
 - Format this code base with some tool
 - Website and move this to /editor path
 */
