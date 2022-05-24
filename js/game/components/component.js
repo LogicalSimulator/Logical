@@ -10,6 +10,34 @@ const component_powered_fill = [0, 255, 255];  // cyan
 
 function destroy_component(comp) {
   comp.destroy_me = true;
+  let execs = []
+  for (let conn of comp.connect_points){
+    if (conn instanceof ConnectionInPoint){
+      let connect = conn.connection.from_point
+      for (let nested of connect.connections){
+        if (nested.to_point.parent === comp){
+          nested.destroy_me = true
+          execs.push(nested.from_point.parent)
+        }
+      }
+    }
+  }
+  for (let ex of execs){
+    for (let conn of ex.connect_points){
+      if (conn instanceof ConnectionOutPoint){
+        for (let conne of conn.connections){
+          let connect = conne.to_point
+          //console.log(conne)
+          if (conne.to_point.parent === comp){
+            conne.destroy_me = true
+            console.log(conn)
+            conn.connections.splice(conn.connections.indexOf(conne),1)
+          }
+        }
+      }
+    }
+  }
+  
   for (let i = 1; ; i ++) {
     const maybe_out = comp["output" + i];
     if (maybe_out == undefined) {

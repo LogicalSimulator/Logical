@@ -1,4 +1,4 @@
-"use strict";
+  "use strict";
 
 const bg_color = 220;
 const dark_bg_color = 56;
@@ -62,7 +62,6 @@ const dialog_message_names = [
 
 /* TODO:
 - Fix icon file's weird transparency (set to 1 bit alpha???)
-- Give padding to icon
 - Format this code base with some tool
 - Website and move this to /editor path
 */
@@ -690,7 +689,7 @@ class Game {
         }
       }
     }
-    //this.copy_selected = [...this.multi_selections]
+    this.copy_selected = [...this.multi_selections]
   }
 
   on_mouse_press() {
