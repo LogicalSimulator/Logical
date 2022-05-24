@@ -1,4 +1,4 @@
-  "use strict";
+"use strict";
 
 const bg_color = 220;
 const dark_bg_color = 56;
@@ -61,7 +61,6 @@ const dialog_message_names = [
 ]
 
 /* TODO:
-- On import teleport camera to (0, 0)
 - Set notes to have monospaced font
 - Format this code base with some tool
 - Website and move this to /editor path
@@ -588,6 +587,13 @@ class Game {
     this.connections = this.items[0];
     this.connect_points = this.items[1];
     this.components = this.items[2];
+    if (make_vertical) {
+      camera.x = this.side_group.width;
+      camera.y = 0;
+    } else {
+      camera.x = 0;
+      camera.y = this.side_group.height;
+    }
   }
   
   get_hover_component(distance) {
@@ -763,7 +769,7 @@ class Game {
         //console.log("panMode"+mouse_on_multi)
         mouse_mode = PAN_MODE;
         this.selected_component = undefined;
-        this.multi_selections = [];
+        //this.multi_selections = [];
       }
 
       if (this.multi_select_origin == undefined && !mouse_on_multi){
@@ -1220,24 +1226,36 @@ class Game {
   draw_grid(cell_size, cam) {
     this.graphics.push();
     if (this.dark_mode) {
-      this.graphics.stroke(dark_grid_color) 
+      this.graphics.stroke(dark_grid_color);
     } else {
       this.graphics.stroke(grid_color);
     }
+    const axis_color = color(128, 128, 128, 100);
     
     const shift = p5.Vector.div(cam, zoom);
     const shift_x = shift.x % cell_size;
     const shift_y = shift.y % cell_size;
     const add_some = cell_size * 3 * zoom;
+    
     for (let y = shift_y - shift.y; 
          y < ((height + add_some) / zoom) + (shift_y - shift.y); 
          y += cell_size) {
+      if (y === 0) {
+        this.graphics.stroke(axis_color);
+      } else {
+        this.graphics.stroke(grid_color);
+      }
       this.graphics.line(-shift.x, y, 
                         ((width + add_some) / zoom) + (shift_x - shift.x), y);
     }
     for (let x = shift_x - shift.x; 
          x < ((width + add_some) / zoom) + (shift_x - shift.x); 
          x += cell_size) {
+      if (x === 0) {
+        this.graphics.stroke(axis_color);
+      } else {
+        this.graphics.stroke(grid_color);
+      }
       this.graphics.line(x, -shift.y, x, 
                         ((height + add_some) / zoom) + (shift_y - shift.y));
     }
