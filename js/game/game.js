@@ -61,7 +61,6 @@ const dialog_message_names = [
 ]
 
 /* TODO:
-- Copy/paste notes
 - Fix icon file's weird transparency (set to 1 bit alpha???)
 - Give padding to icon
 - Format this code base with some tool
@@ -651,9 +650,9 @@ class Game {
   copy_selection() {
     this.copy_selected = []
     this.copy_selected = [...this.multi_selections];
-    for (let comp of this.multi_selections){
-      //this.copy_selected.push(new comp.constructor(comp.pos))
-    }
+    // for (let comp of this.multi_selections) {
+    //   this.copy_selected.push(new comp.constructor(comp.pos))
+    // }
     if (this.selected_component instanceof Component) {
       this.copy_selected.push(this.selected_component);
     }
@@ -664,8 +663,9 @@ class Game {
     for (const comp of this.copy_selected) {
       const new_comp = new comp.constructor(p5.Vector.add(comp.pos, createVector(30, 30)));
       this.items[2].push(new_comp);
-      this.items[2][this.items[2].length-1].angle = comp.angle
-      this.multi_selections.push(this.items[2][this.items[2].length-1]);
+      this.items[2][this.items[2].length - 1].angle = comp.angle;
+      this.items[2][this.items[2].length - 1].note_text = comp.note_text;
+      this.multi_selections.push(this.items[2][this.items[2].length - 1]);
     }
     for (const i in this.multi_selections) {
       const old_comp = this.copy_selected[i];
@@ -685,7 +685,7 @@ class Game {
           try {
             this.items[1].push(make_connection(new_comp[name], to_new_comp[to_new_comp_name]));
           } catch {
-            
+            console.error("Error connecting from " + new_comp[name] + " to " + to_new_comp[to_new_comp_name]);
           }
         }
       }
