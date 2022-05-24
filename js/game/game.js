@@ -61,6 +61,7 @@ const dialog_message_names = [
 ]
 
 /* TODO:
+- Copy/paste notes
 - Fix icon file's weird transparency (set to 1 bit alpha???)
 - Give padding to icon
 - Format this code base with some tool
