@@ -914,11 +914,14 @@ class Game {
       }
     }
     //console.log(this.multi_selections.length)
-    if (hovering_on_button()){
-      this.drag_component.destroy_me = true
-    }
-    else if (this.drag_component != undefined){
-      this.selected_component = this.drag_component
+    
+    if (this.drag_component != undefined){
+      if (hovering_on_button()){
+        this.drag_component.destroy_me = true
+      }
+      else{
+        this.selected_component = this.drag_component
+      }
     }
     
     this.multi_select_origin = undefined
@@ -1257,8 +1260,10 @@ class Game {
       this.set_specific_button.invisible = true;
     }
     if (pls_align) {
-      this.set_specific_button.clickable.x = (this.selected_component.pos.x*zoom+camera.x) - this.set_specific_button.clickable.width;
-      this.set_specific_button.clickable.y = (this.selected_component.pos.y*zoom+camera.y) - this.set_specific_button.clickable.height;
+      this.set_specific_button.clickable.x = (this.selected_component.pos.x * zoom + camera.x) - (this.set_specific_button.clickable.width / 2);
+      this.set_specific_button.clickable.y = (this.selected_component.pos.y * zoom + camera.y) - (this.set_specific_button.clickable.height / 2);
+      this.set_specific_button.clickable.x = Math.max(this.set_specific_button.clickable.x, 0);
+      this.set_specific_button.clickable.y = Math.max(this.set_specific_button.clickable.y, 0);
     }
     for (const widget of this.gui) {
       widget.update();
