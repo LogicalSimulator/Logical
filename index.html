@@ -42,10 +42,10 @@
         <br>
         as importing an example will overwrite it!
       </p>
-      <div>
+      <div id="example_div" class="quarterscreendiv">
         
       </div>
-      <button value="cancel">Close</button>
+      <button value="cancel" style="margin-top: 5px;">Close</button>
     </form>
   </dialog>
   <!-- The import dialog -->
@@ -55,7 +55,7 @@
       <br>
       <textarea type="text" id="input_code" name="code" 
                 autocomplete="off" autocorrect="off" spellcheck="false"
-                class="quarterscreentextarea"></textarea>
+                class="quarterscreen"></textarea>
       <br>
       <p id="message_dialog_import_success_clipboard" hidden>Successfully read from clipboard!</p>
       <p id="message_dialog_import_failed_clipboard" class="error" hidden>Failed to read from clipboard! Make sure you have given us permission to read the clipboard!</p>
@@ -73,7 +73,7 @@
       <br>
       <textarea type="text" id="output_code" name="code" 
                 autocomplete="off" autocorrect="off" spellcheck="false" 
-                readonly="true" class="quarterscreentextarea"></textarea>
+                readonly="true" class="quarterscreen"></textarea>
       <br>
       <p id="message_dialog_export_success_clipboard" hidden>Successfully copied to clipboard!</p>
       <p id="message_dialog_export_failed_clipboard" class="error" hidden>Failed to copy to clipboard!</p>
@@ -100,7 +100,7 @@
       <br>
       <textarea type="text" id="note_code" name="code" 
                 autocomplete="on" autocorrect="on" spellcheck="true"
-                class="quarterscreentextarea"></textarea>
+                class="quarterscreen"></textarea>
       <br>
       <button value="submit">Submit</button>
       <button value="cancel">Cancel</button>

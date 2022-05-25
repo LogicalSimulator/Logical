@@ -62,7 +62,6 @@ const dialog_message_names = [
 ]
 
 /* TODO:
-- Dialog to access examples
 - Cinematic checkbutton in main menu which only draws the menu button
 - try/catch in main and show dialog with export of current circuit on exception
 - Save the user's circuit to local storage
@@ -329,10 +328,16 @@ class Game {
     this.dialog_clock_period.addEventListener("close", () => {this.hide_clock_period_menu();});
     this.dialog_note = document.getElementById("dialog_note");
     this.dialog_note.addEventListener("close", () => {this.hide_note_menu();});
+    this.example_div = document.getElementById("example_div");
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
     this.clock_period_code = document.getElementById("clock_period_code");
     this.note_code = document.getElementById("note_code");
+    for (save of example_saves) {
+      this.example_div.innerHTML += `<button value="${save["title"]}">${save["title"]}</button>\n`;
+      this.example_div.innerHTML += `<p>${save["description"]}</p>\n`;
+      this.example_div.innerHTML += `<br>\n`;
+    }
     this.dialog_messages = {};
     for (name of dialog_message_names) {
       this.dialog_messages[name] = document.getElementById(name);
@@ -402,12 +407,17 @@ class Game {
   hide_example_menu() {
     this.dialog_example.close();
     this.grey_out = false;
+    console.log(this.dialog_example.returnValue);
     if (this.dialog_example.returnValue === "cancel") {
-      
+      this.show_menu();
     } else {
-      
+      for (save of example_saves) {
+        if (save["title"] === this.dialog_example.returnValue) {
+          this.import_game_state(save["save"]);
+          break;
+        }
+      }
     }
-    this.show_menu();
   }
   
   show_import_menu() {

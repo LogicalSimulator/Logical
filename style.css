@@ -62,7 +62,17 @@ dialog {
   margin: 1px;
 }
 
-.quarterscreentextarea {
+.quarterscreen {
   width: 50vw;
   height: 25vh;
+}
+
+.quarterscreendiv {
+  border: 2px solid #000000;
+  border-radius: 5px;
+  padding: 5px;
+  width: 50vw;
+  height: 25vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
