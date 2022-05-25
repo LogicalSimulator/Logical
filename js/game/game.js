@@ -340,10 +340,14 @@ class Game {
     this.output_code = document.getElementById("output_code");
     this.clock_period_code = document.getElementById("clock_period_code");
     this.note_code = document.getElementById("note_code");
+    let i = 0;
     for (save of example_saves) {
+      i ++;
       this.example_div.innerHTML += `<button value="${save["title"]}">${save["title"]}</button>\n`;
       this.example_div.innerHTML += `<p>${save["description"]}</p>\n`;
-      this.example_div.innerHTML += `<br>\n`;
+      if (i < example_saves.length) {
+        this.example_div.innerHTML += `<hr>\n`;
+      }
     }
     this.dialog_messages = {};
     for (name of dialog_message_names) {
