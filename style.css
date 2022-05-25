@@ -43,10 +43,6 @@ p, a, label {
   font-size: 0.8em;
 }
 
-.big_a {
-  font_size: 2em;
-}
-
 .error {
   color: #FF0000
 }
@@ -94,7 +90,7 @@ button:hover {
 }
 
 
-/* The Close Button */
+/* /* The Close Button 
 .close {
   color: #aaa;
   float: right;
@@ -107,4 +103,4 @@ button:hover {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
+} */
