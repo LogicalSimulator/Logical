@@ -7,13 +7,15 @@ const constant_stroke = component_stroke;
 const constant_fill = component_fill;
 const constant_powered_fill = component_powered_fill;
 
-
 class Constant extends Component {
   constructor(pos) {
     super(pos);
     this.size = createVector(constant_width, constant_height);
-    this.output1 = new ConnectionOutPoint(this, createVector(constant_width / 2, constant_height / 2), 
-                                          createVector(component_width * 0.75, 0));
+    this.output1 = new ConnectionOutPoint(
+      this,
+      createVector(constant_width / 2, constant_height / 2),
+      createVector(component_width * 0.75, 0)
+    );
     this.connect_points = [this.output1];
     this._powered = false;
   }
@@ -26,7 +28,7 @@ class Constant extends Component {
     this._powered = state;
     this.output1.powered = state;
   }
-  
+
   update() {
     super.update();
 
@@ -49,15 +51,18 @@ class TrueConstant extends Constant {
 
   draw(graphics, outline) {
     super.draw(graphics, outline);
-    
+
     graphics.push();
 
-    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.translate(
+      this.pos.x + this.size.x / 2,
+      this.pos.y + this.size.y / 2
+    );
     graphics.rotate(this.angle);
     const constant_x = -this.size.x / 2;
-    const constant_y = -this.size.y / 2
+    const constant_y = -this.size.y / 2;
     const constant_center = createVector(0, 0);
-    
+
     graphics.strokeWeight(constant_stroke_weight);
     graphics.stroke(outline == undefined ? constant_stroke : outline);
     graphics.fill(constant_fill);
@@ -67,11 +72,17 @@ class TrueConstant extends Constant {
     graphics.stroke(constant_stroke);
 
     const str = "1";
-    
+
     graphics.textAlign(CENTER, CENTER);
-    graphics.textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
-    graphics.text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
-    
+    graphics.textSize(
+      get_text_size(str, constant_width * 0.75, constant_height * 0.75)
+    );
+    graphics.text(
+      str,
+      constant_center.x,
+      constant_center.y + constant_height * 0.05
+    );
+
     graphics.pop();
   }
 }
@@ -85,15 +96,18 @@ class FalseConstant extends Constant {
 
   draw(graphics, outline) {
     super.draw(graphics, outline);
-    
+
     graphics.push();
 
-    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.translate(
+      this.pos.x + this.size.x / 2,
+      this.pos.y + this.size.y / 2
+    );
     graphics.rotate(this.angle);
     const constant_x = -this.size.x / 2;
-    const constant_y = -this.size.y / 2
+    const constant_y = -this.size.y / 2;
     const constant_center = createVector(0, 0);
-    
+
     graphics.strokeWeight(constant_stroke_weight);
     graphics.stroke(outline == undefined ? constant_stroke : outline);
     graphics.fill(constant_fill);
@@ -103,11 +117,17 @@ class FalseConstant extends Constant {
     graphics.stroke(constant_stroke);
 
     const str = "0";
-    
+
     graphics.textAlign(CENTER, CENTER);
-    graphics.textSize(get_text_size(str, constant_width * 0.75, constant_height * 0.75));
-    graphics.text(str, constant_center.x, constant_center.y + (constant_height * 0.05));
-    
+    graphics.textSize(
+      get_text_size(str, constant_width * 0.75, constant_height * 0.75)
+    );
+    graphics.text(
+      str,
+      constant_center.x,
+      constant_center.y + constant_height * 0.05
+    );
+
     graphics.pop();
   }
 }

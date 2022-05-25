@@ -11,11 +11,14 @@ class Button extends Component {
   constructor(pos) {
     super(pos);
     this.size = createVector(button_width, button_height);
-    this.output1 = new ConnectionOutPoint(this, createVector(button_width / 2, button_height / 2), 
-                                          createVector(component_width * 0.75, 0));
+    this.output1 = new ConnectionOutPoint(
+      this,
+      createVector(button_width / 2, button_height / 2),
+      createVector(component_width * 0.75, 0)
+    );
     this.connect_points = [this.output1];
     this._powered = false;
-    this.click_activate = false
+    this.click_activate = false;
   }
 
   get powered() {
@@ -35,22 +38,25 @@ class Button extends Component {
   on_left_mouse_release() {
     this.powered = false;
   }
-  
+
   update() {
     super.update();
   }
 
   draw(graphics, outline) {
     super.draw(graphics, outline);
-    
+
     graphics.push();
 
-    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.translate(
+      this.pos.x + this.size.x / 2,
+      this.pos.y + this.size.y / 2
+    );
     graphics.rotate(this.angle);
     const button_x = -this.size.x / 2;
-    const button_y = -this.size.y / 2
+    const button_y = -this.size.y / 2;
     const button_center = createVector(0, 0);
-    
+
     graphics.strokeWeight(button_stroke_weight);
     graphics.stroke(outline == undefined ? button_stroke : outline);
     graphics.fill(button_fill);
@@ -65,7 +71,7 @@ class Button extends Component {
 
     graphics.fill(button_fill);
     graphics.circle(button_center.x, button_center.y, button_inner_radius);
-    
+
     graphics.pop();
   }
 }

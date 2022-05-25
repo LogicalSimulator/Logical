@@ -6,7 +6,7 @@ const alert_on_paste = false;
 function fallbackCopyTextToClipboard(text) {
   var textArea = document.createElement("textarea");
   textArea.value = text;
-  
+
   // Avoid scrolling to bottom
   textArea.style.top = "0";
   textArea.style.left = "0";
@@ -32,7 +32,7 @@ function fallbackCopyTextToClipboard(text) {
   } catch (err) {
     console.error("Fallback: Oops, unable to copy", err);
     if (alert_on_copy) {
-      alert("Unable to copy!");   
+      alert("Unable to copy!");
     }
   }
 
@@ -44,40 +44,44 @@ function copyTextToClipboard(text, success, fail) {
     fallbackCopyTextToClipboard(text);
     return;
   }
-  navigator.clipboard.writeText(text).then(() => {
-    if (success != undefined) {
-      success();
+  navigator.clipboard.writeText(text).then(
+    () => {
+      if (success != undefined) {
+        success();
+      }
+      if (alert_on_copy) {
+        alert("Successfully copied!");
+      }
+    },
+    (err) => {
+      console.error("Async: Could not copy text: ", err);
+      if (fail != undefined) {
+        fail();
+      }
+      if (alert_on_copy) {
+        alert("Unable to copy!");
+      }
     }
-    if (alert_on_copy) {
-      alert("Successfully copied!");
-    }
-  }, (err) => {
-    console.error("Async: Could not copy text: ", err);
-    if (fail != undefined) {
-      fail();
-    }
-    if (alert_on_copy) {
-      alert("Unable to copy!");
-    }
-  });
+  );
 }
 
 function readTextFromClipboard(callback, fail_calback) {
-  navigator.clipboard.readText()
-  .then(text => {
-    console.log("Pasted content: ", text);
-    callback(text);
-    if (alert_on_paste) {
-      alert("Successfully pasted!");
-    }
-  })
-  .catch(err => {
-    console.error("Failed to read clipboard contents: ", err);
-    if (fail_calback != undefined) {
-      fail_calback();
-    }
-    if (alert_on_paste) {
-      alert("Unable to paste!");
-    }
-  });
-} 
+  navigator.clipboard
+    .readText()
+    .then((text) => {
+      console.log("Pasted content: ", text);
+      callback(text);
+      if (alert_on_paste) {
+        alert("Successfully pasted!");
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to read clipboard contents: ", err);
+      if (fail_calback != undefined) {
+        fail_calback();
+      }
+      if (alert_on_paste) {
+        alert("Unable to paste!");
+      }
+    });
+}

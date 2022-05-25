@@ -14,7 +14,7 @@ function get_text_size(string, max_width, max_height) {
 }
 
 function get_text_size_no_cache(string, max_width, max_height) {
-  for (let s = 1; s < max_height; s ++) {
+  for (let s = 1; s < max_height; s++) {
     textSize(s);
     if (textWidth(string) > max_width) {
       return s - 1;

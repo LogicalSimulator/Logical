@@ -1,6 +1,5 @@
-
 //Takes in a point and an offset
-// and returns the point 
+// and returns the point
 function rotate_to_real(pos, off, angle) {
   const x = pos.x + off.x;
   const y = pos.y + off.y;

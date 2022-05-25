@@ -22,13 +22,13 @@ function preload() {
 function setup() {
   createCanvas(windowWidth - window_diff, windowHeight - window_diff);
   frameRate(desired_fps);
-  
+
   make_vertical = width > height * 2;
-  preload_icons();  // generates images so can't be in preload
+  preload_icons(); // generates images so can't be in preload
   zoom = (width + height) / 2000;
   zoom_min += zoom - 1;
   zoom_max += zoom - 1;
-  
+
   game = new Game();
 }
 
@@ -37,7 +37,7 @@ function draw() {
   game.update();
   game.draw();
   pop();
-  
+
   if (millis() - last_fps_time > 1000) {
     last_fps_time = millis();
     last_fps = Math.round(frameRate());

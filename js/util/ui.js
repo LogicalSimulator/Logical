@@ -51,13 +51,9 @@ class Widget {
     this._enabled = e;
   }
 
-  update() {
-    
-  }
+  update() {}
 
-  draw(graphics) {
-    
-  }
+  draw(graphics) {}
 }
 
 class WidgetButton extends Widget {
@@ -106,7 +102,7 @@ class WidgetButton extends Widget {
     this._enabled = e;
     this.clickable.enabled = e;
   }
-  
+
   draw() {
     this.clickable.draw();
   }
@@ -118,7 +114,7 @@ class WidgetLine extends Widget {
     this.stroke = 0;
     this.stroke_weight = 1;
   }
-  
+
   draw() {
     push();
     strokeWeight(this.stroke_weight);
@@ -210,7 +206,7 @@ class WidgetGroup {
       w.enabled = e;
     }
   }
-  
+
   resize_widgets() {
     // override in subclasses to order widgets
   }
@@ -236,10 +232,11 @@ class WidgetGroup {
 
 class HorizontalWidgetGroup extends WidgetGroup {
   resize_widgets() {
-    const new_width = (this.width - (this.widgets.length * this.x_pad)) / this.widgets.length;
+    const new_width =
+      (this.width - this.widgets.length * this.x_pad) / this.widgets.length;
     const new_height = this.height;
     let cur_x = this.x;
-    for (let i = 0; i < this.widgets.length; i ++) {
+    for (let i = 0; i < this.widgets.length; i++) {
       const widget = this.widgets[i];
       widget.x = cur_x;
       cur_x += new_width + this.x_pad;
@@ -253,9 +250,10 @@ class HorizontalWidgetGroup extends WidgetGroup {
 class VerticalWidgetGroup extends WidgetGroup {
   resize_widgets() {
     const new_width = this.width;
-    const new_height = (this.height - (this.widgets.length * this.y_pad)) / this.widgets.length;
+    const new_height =
+      (this.height - this.widgets.length * this.y_pad) / this.widgets.length;
     let cur_y = this.y;
-    for (let i = 0; i < this.widgets.length; i ++) {
+    for (let i = 0; i < this.widgets.length; i++) {
       const widget = this.widgets[i];
       widget.y = cur_y;
       cur_y += new_height + this.y_pad;
@@ -275,7 +273,7 @@ class RadiobuttonGroup {
     }
     this._enabled = true;
   }
-  
+
   get enabled() {
     return this._enabled;
   }
@@ -287,13 +285,9 @@ class RadiobuttonGroup {
     }
   }
 
-  update() {
-    
-  }
+  update() {}
 
-  draw() {
-    
-  }
+  draw() {}
 }
 
 const button_color = "#FFFFFF";

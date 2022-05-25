@@ -4,24 +4,23 @@ let bottom_pad;
 let x_pad;
 
 const icons = {
-  "switch_icon": {"name": "Switch", "class": Switch},
-  "button_icon": {"name": "Button", "class": Button},
-  "clock_icon": {"name": "Clock", "class": Clock},
-  "true_constant_icon": {"name": "True constant", "class": TrueConstant},
-  "false_constant_icon": {"name": "False constant", "class": FalseConstant},
-  "light_icon": {"name": "Light", "class": Light},
-  "four_bit_display_icon": {"name": "4 bit display", "class": FourBitDigit},
-  "eight_bit_display_icon": {"name": "8 bit display", "class": EightBitDigit},
-  "buffer_gate_icon": {"name": "Buffer gate", "class": BufferGate},
-  "not_gate_icon": {"name": "NOT gate", "class": NotGate},
-  "or_gate_icon": {"name": "OR gate", "class": OrGate},
-  "nor_gate_icon": {"name": "NOR gate", "class": NorGate},
-  "and_gate_icon": {"name": "AND gate", "class": AndGate},
-  "nand_gate_icon": {"name": "NAND gate", "class": NandGate},
-  "xor_gate_icon": {"name": "XOR gate", "class": XorGate},
-  "xnor_gate_icon": {"name": "XNOR gate", "class": XnorGate}
+  switch_icon: { name: "Switch", class: Switch },
+  button_icon: { name: "Button", class: Button },
+  clock_icon: { name: "Clock", class: Clock },
+  true_constant_icon: { name: "True constant", class: TrueConstant },
+  false_constant_icon: { name: "False constant", class: FalseConstant },
+  light_icon: { name: "Light", class: Light },
+  four_bit_display_icon: { name: "4 bit display", class: FourBitDigit },
+  eight_bit_display_icon: { name: "8 bit display", class: EightBitDigit },
+  buffer_gate_icon: { name: "Buffer gate", class: BufferGate },
+  not_gate_icon: { name: "NOT gate", class: NotGate },
+  or_gate_icon: { name: "OR gate", class: OrGate },
+  nor_gate_icon: { name: "NOR gate", class: NorGate },
+  and_gate_icon: { name: "AND gate", class: AndGate },
+  nand_gate_icon: { name: "NAND gate", class: NandGate },
+  xor_gate_icon: { name: "XOR gate", class: XorGate },
+  xnor_gate_icon: { name: "XNOR gate", class: XnorGate },
 };
-
 
 class Icons {
   static switch_icon;
@@ -52,7 +51,7 @@ function preload_icons() {
   }
   for (const name in icons) {
     const item = new icons[name]["class"](createVector());
-    const buf_width = item.size.x + (x_pad * 2);
+    const buf_width = item.size.x + x_pad * 2;
     const buf_height = item.size.y + top_pad + bottom_pad;
     // item.pos = createVector((buf_width / 2) - item.size.x, (buf_height / 2) - item.size.y);
     item.pos = createVector(buf_width, buf_height);

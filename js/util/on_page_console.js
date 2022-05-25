@@ -19,22 +19,29 @@ if (show_on_page_console) {
     <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#using_eval_in_content_scripts">here</a>.)
   `;
   const script_id = "script_in";
-  const text_area_style = "width: 100%; resize: vertical; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;";
-  
+  const text_area_style =
+    "width: 100%; resize: vertical; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;";
+
   function run_handler() {
-    console.log(`Result: ${eval(document.getElementById(script_id).value)}`)
+    console.log(`Result: ${eval(document.getElementById(script_id).value)}`);
   }
-  
+
   // https://stackoverflow.com/a/50773729/10291933
 
   function produce_text(name, args) {
     return args.reduce((output, arg) => {
-      return output + (typeof arg === "object" && (JSON || {}).stringify ? JSON.stringify(arg) : arg) + "\n";
+      return (
+        output +
+        (typeof arg === "object" && (JSON || {}).stringify
+          ? JSON.stringify(arg)
+          : arg) +
+        "\n"
+      );
     }, "");
   }
-  
+
   function rewire_logging_func(name) {
-    let console_output = document.getElementById(console_id)
+    let console_output = document.getElementById(console_id);
     console["old" + name] = console[name];
     console[name] = (...arguments) => {
       console_output.innerHTML += produce_text(name, arguments);
@@ -42,7 +49,7 @@ if (show_on_page_console) {
       console["old" + name].apply(undefined, arguments);
     };
   }
-  
+
   function rewire_logging() {
     rewire_logging_func("log");
     rewire_logging_func("debug");
@@ -50,18 +57,19 @@ if (show_on_page_console) {
     rewire_logging_func("error");
     rewire_logging_func("info");
   }
-  
+
   window.onerror = (error_msg, url, line_number, col_number, error) => {
     let error_output;
     if (error.stack == null) {
-      error_output = error_msg + "\n  URL: " + url + ":" + line_number + ":" + col_number;
+      error_output =
+        error_msg + "\n  URL: " + url + ":" + line_number + ":" + col_number;
     } else {
       error_output = error.stack;
     }
     console.error(error_output);
     return false;
   };
-  
+
   const console_html = `
     <br><br>
     <div style="border:1px outset black; padding: 5px;">
@@ -77,6 +85,6 @@ if (show_on_page_console) {
     </div>
   `;
   where_to_add.insertAdjacentHTML("beforeend", console_html);
-  
+
   rewire_logging();
 }

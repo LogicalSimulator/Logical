@@ -14,8 +14,11 @@ class Clock extends Component {
     this.size = createVector(clock_width, clock_height);
     this.last_cycle = millis();
     this.period = 1000;
-    this.output1 = new ConnectionOutPoint(this, createVector(clock_width / 2, clock_height / 2), 
-                                          createVector(component_width * 0.75, 0));
+    this.output1 = new ConnectionOutPoint(
+      this,
+      createVector(clock_width / 2, clock_height / 2),
+      createVector(component_width * 0.75, 0)
+    );
     this.connect_points = [this.output1];
     this._powered = false;
   }
@@ -28,7 +31,7 @@ class Clock extends Component {
     this._powered = state;
     this.output1.powered = state;
   }
-  
+
   update() {
     super.update();
 
@@ -40,15 +43,18 @@ class Clock extends Component {
 
   draw(graphics, outline) {
     super.draw(graphics, outline);
-    
+
     graphics.push();
 
-    graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
+    graphics.translate(
+      this.pos.x + this.size.x / 2,
+      this.pos.y + this.size.y / 2
+    );
     graphics.rotate(this.angle);
     const clock_x = -this.size.x / 2;
-    const clock_y = -this.size.y / 2
+    const clock_y = -this.size.y / 2;
     const clock_center = createVector(0, 0);
-    
+
     graphics.strokeWeight(clock_stroke_weight);
     graphics.stroke(outline == undefined ? clock_stroke : outline);
     graphics.fill(clock_fill);
@@ -59,17 +65,23 @@ class Clock extends Component {
     graphics.strokeWeight(clock_animation_stroke_weight);
     graphics.stroke(this.powered ? clock_powered_fill : clock_stroke);
     graphics.noFill();
-    
+
     graphics.beginShape();
-    graphics.vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.5));
-    graphics.vertex(clock_x + (clock_width * 0.25), clock_y + (clock_height * 0.25));
-    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.25));
-    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
-    graphics.vertex(clock_x + (clock_width * 0.5), clock_y + (clock_height * 0.75));
-    graphics.vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.75));
-    graphics.vertex(clock_x + (clock_width * 0.75), clock_y + (clock_height * 0.5));
+    graphics.vertex(clock_x + clock_width * 0.25, clock_y + clock_height * 0.5);
+    graphics.vertex(
+      clock_x + clock_width * 0.25,
+      clock_y + clock_height * 0.25
+    );
+    graphics.vertex(clock_x + clock_width * 0.5, clock_y + clock_height * 0.25);
+    graphics.vertex(clock_x + clock_width * 0.5, clock_y + clock_height * 0.75);
+    graphics.vertex(clock_x + clock_width * 0.5, clock_y + clock_height * 0.75);
+    graphics.vertex(
+      clock_x + clock_width * 0.75,
+      clock_y + clock_height * 0.75
+    );
+    graphics.vertex(clock_x + clock_width * 0.75, clock_y + clock_height * 0.5);
     graphics.endShape();
-    
+
     graphics.pop();
   }
 }

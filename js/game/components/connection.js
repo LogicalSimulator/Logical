@@ -45,7 +45,7 @@ class Connection {
     this.to_point = to_point;
     this.destroy_me = false;
     this._powered = false;
-    this.hovering = false
+    this.hovering = false;
   }
 
   get powered() {
@@ -58,38 +58,64 @@ class Connection {
   }
 
   mouse_overlapping() {
-    const from_point_offset = rotate_to_real(this.from_point.pos, this.from_point.offset, this.from_point.angle);
-    const to_point_offset = rotate_to_real(this.to_point.pos, this.to_point.offset, this.to_point.angle);
+    const from_point_offset = rotate_to_real(
+      this.from_point.pos,
+      this.from_point.offset,
+      this.from_point.angle
+    );
+    const to_point_offset = rotate_to_real(
+      this.to_point.pos,
+      this.to_point.offset,
+      this.to_point.angle
+    );
 
     let skip_perc = 1 / 4;
     let ler_perc = skip_perc;
     let line_verts = [];
     let mp = createVector(
-      (mouseX - camera.x) / zoom, 
+      (mouseX - camera.x) / zoom,
       (mouseY - camera.y) / zoom
     );
 
-    for (let i = 0; i < 1 ; i += skip_perc) {
-      let px = bezierPoint(this.from_point.pos.x, from_point_offset.x,
-                           to_point_offset.x, this.to_point.pos.x, ler_perc);
-      let py = bezierPoint(this.from_point.pos.y, from_point_offset.y,
-                           to_point_offset.y, this.to_point.pos.y, ler_perc);
-      let bx = bezierPoint(this.from_point.pos.x, from_point_offset.x,
-                           to_point_offset.x, this.to_point.pos.x, ler_perc-skip_perc)
-      let by = bezierPoint(this.from_point.pos.y, from_point_offset.y,
-                           to_point_offset.y, this.to_point.pos.y, ler_perc-skip_perc);
-      
-      line_verts.push(createVector(px,py));
-      if (collideLineCircle(bx, by,
-                            px, py,
-                            mp.x, mp.y, 10)) {
+    for (let i = 0; i < 1; i += skip_perc) {
+      let px = bezierPoint(
+        this.from_point.pos.x,
+        from_point_offset.x,
+        to_point_offset.x,
+        this.to_point.pos.x,
+        ler_perc
+      );
+      let py = bezierPoint(
+        this.from_point.pos.y,
+        from_point_offset.y,
+        to_point_offset.y,
+        this.to_point.pos.y,
+        ler_perc
+      );
+      let bx = bezierPoint(
+        this.from_point.pos.x,
+        from_point_offset.x,
+        to_point_offset.x,
+        this.to_point.pos.x,
+        ler_perc - skip_perc
+      );
+      let by = bezierPoint(
+        this.from_point.pos.y,
+        from_point_offset.y,
+        to_point_offset.y,
+        this.to_point.pos.y,
+        ler_perc - skip_perc
+      );
+
+      line_verts.push(createVector(px, py));
+      if (collideLineCircle(bx, by, px, py, mp.x, mp.y, 10)) {
         return true;
       }
       ler_perc += skip_perc;
     }
     return false;
   }
-  
+
   update() {
     if (this.mouse_overlapping()) {
       hovering.push(this);
@@ -102,23 +128,38 @@ class Connection {
     // const from_point_offset = p5.Vector.add(this.from_point.pos, this.from_point.offset);
     // const to_point_offset = p5.Vector.add(this.to_point.pos, this.to_point.offset);
 
-    const from_point_offset = rotate_to_real(this.from_point.pos, this.from_point.offset, this.from_point.angle);
-    const to_point_offset = rotate_to_real(this.to_point.pos, this.to_point.offset, this.to_point.angle);
-    
+    const from_point_offset = rotate_to_real(
+      this.from_point.pos,
+      this.from_point.offset,
+      this.from_point.angle
+    );
+    const to_point_offset = rotate_to_real(
+      this.to_point.pos,
+      this.to_point.offset,
+      this.to_point.angle
+    );
+
     graphics.strokeWeight(connection_stroke_weight);
     if (outline != undefined) {
       graphics.stroke(outline);
     } else {
-      graphics.stroke(this._powered ? connection_powered_stroke : connection_stroke);
+      graphics.stroke(
+        this._powered ? connection_powered_stroke : connection_stroke
+      );
     }
-    
+
     graphics.noFill();
 
     graphics.beginShape();
     graphics.vertex(this.from_point.pos.x, this.from_point.pos.y);
-    graphics.bezierVertex(from_point_offset.x, from_point_offset.y,
-                          to_point_offset.x, to_point_offset.y,
-                          this.to_point.pos.x, this.to_point.pos.y);
+    graphics.bezierVertex(
+      from_point_offset.x,
+      from_point_offset.y,
+      to_point_offset.x,
+      to_point_offset.y,
+      this.to_point.pos.x,
+      this.to_point.pos.y
+    );
     graphics.endShape();
 
     // graphics.push();
@@ -128,15 +169,13 @@ class Connection {
     // graphics.stroke(255, 255, 0);
     // graphics.point(to_point_offset.x, to_point_offset.y);
     // graphics.pop();
-    
-    
+
     //  graphics.bezier(this.from_point.pos.x, this.from_point.pos.y,
     //                  from_point_offset.x, from_point_offset.y,
     //                  to_point_offset.x, to_point_offset.y,
     //                  this.to_point.pos.x, this.to_point.pos.y);
-    
+
     graphics.pop();
-    
   }
 }
 
@@ -167,26 +206,22 @@ class ConnectionPoint {
   }
 
   mouse_overlapping() {
-    return collidePointCircle(mouseX, mouseY, 
-                              (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
-                              connection_point_radius * zoom);
+    return collidePointCircle(
+      mouseX,
+      mouseY,
+      this.pos.x * zoom + camera.x,
+      this.pos.y * zoom + camera.y,
+      connection_point_radius * zoom
+    );
   }
 
-  on_left_mouse_click() {
-    
-  }
+  on_left_mouse_click() {}
 
-  on_right_mouse_click() {
-    
-  }
+  on_right_mouse_click() {}
 
-  on_left_mouse_release() {
-    
-  }
+  on_left_mouse_release() {}
 
-  on_right_mouse_release() {
-    
-  }
+  on_right_mouse_release() {}
 
   handle_mouse() {
     if (this.mouse_overlapping() && !(this in hovering)) {
@@ -205,18 +240,18 @@ class ConnectionPoint {
       }
     } else {
       if (this.mouse_pressed) {
-          this.mouse_pressed = false;
-          if (mouseButton === LEFT) {
-            this.on_left_mouse_release();
-          } else if (mouseButton === RIGHT) {
-            this.on_right_mouse_release();
-          }
+        this.mouse_pressed = false;
+        if (mouseButton === LEFT) {
+          this.on_left_mouse_release();
+        } else if (mouseButton === RIGHT) {
+          this.on_right_mouse_release();
         }
+      }
     }
   }
-  
+
   update() {
-    this.angle = this.parent.angle
+    this.angle = this.parent.angle;
     this.handle_mouse();
   }
 
@@ -226,21 +261,27 @@ class ConnectionPoint {
     const parent_cen = this.parent.center_coord;
     // const from_vec = p5.Vector.add(this.parent.pos, this.from);
     let from_vec = p5.Vector.add(this.parent.pos, this.from);
-    from_vec = rotate_to_real(parent_cen, p5.Vector.sub(from_vec, parent_cen), this.angle);
+    from_vec = rotate_to_real(
+      parent_cen,
+      p5.Vector.sub(from_vec, parent_cen),
+      this.angle
+    );
     // from_vec = this.rotate_to_real(this.parent.pos, this.from, this.angle);
     // this.pos = p5.Vector.add(from_vec, this.offset);
-    
+
     //graphics.circle(this.parent.pos.x,this.parent.pos.y,30)
     // TODO: FIX THIS MAKES IT SQUISH INWARDS
     // I THINK YOU NEED TO ROTATE FROM_VEC BUT IDK HOW
     // from_vec = this.rotate_to_real(from_vec, this.offset, this.angle);
     this.pos = rotate_to_real(from_vec, this.offset, this.angle);
-    
+
     graphics.strokeWeight(connection_point_stroke_weight);
     graphics.stroke(connection_point_stroke);
     graphics.line(from_vec.x, from_vec.y, this.pos.x, this.pos.y);
     graphics.stroke(outline == undefined ? connection_point_stroke : outline);
-    graphics.fill(this._powered ? connection_point_powered_fill : connection_point_fill);
+    graphics.fill(
+      this._powered ? connection_point_powered_fill : connection_point_fill
+    );
     graphics.circle(this.pos.x, this.pos.y, connection_point_radius);
     graphics.fill(255, 0, 0);
     graphics.pop();
@@ -255,13 +296,13 @@ class ConnectionPoint {
   }
 }
 
-class ConnectionInPoint extends ConnectionPoint {  
+class ConnectionInPoint extends ConnectionPoint {
   constructor(parent, from, offset, set_name, assign_name) {
     super(parent, from, offset, assign_name);
     this.set_name = set_name;
     this.connection = undefined;
   }
-  
+
   set powered(state) {
     this._powered = state;
     this.parent[this.set_name] = state;

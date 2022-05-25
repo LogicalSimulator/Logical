@@ -4,41 +4,45 @@ const component_width = 50;
 const component_height = 50;
 
 const component_stroke_weight = 1;
-const component_stroke = 0;  // black 
-const component_fill = 255;  // white
-const component_powered_fill = [0, 255, 255];  // cyan
+const component_stroke = 0; // black
+const component_fill = 255; // white
+const component_powered_fill = [0, 255, 255]; // cyan
 
 function destroy_component(comp) {
   comp.destroy_me = true;
-  let execs = []
-  for (let conn of comp.connect_points){
-    if (conn instanceof ConnectionInPoint && conn.connection != undefined && conn.connection.from_point != undefined){
-      let connect = conn.connection.from_point
-      for (let nested of connect.connections){
-        if (nested.to_point != undefined && nested.to_point.parent === comp){
-          nested.destroy_me = true
-          execs.push(nested.from_point.parent)
+  let execs = [];
+  for (let conn of comp.connect_points) {
+    if (
+      conn instanceof ConnectionInPoint &&
+      conn.connection != undefined &&
+      conn.connection.from_point != undefined
+    ) {
+      let connect = conn.connection.from_point;
+      for (let nested of connect.connections) {
+        if (nested.to_point != undefined && nested.to_point.parent === comp) {
+          nested.destroy_me = true;
+          execs.push(nested.from_point.parent);
         }
       }
     }
   }
-  for (let ex of execs){
-    for (let conn of ex.connect_points){
-      if (conn instanceof ConnectionOutPoint){
-        for (let conne of conn.connections){
-          let connect = conne.to_point
+  for (let ex of execs) {
+    for (let conn of ex.connect_points) {
+      if (conn instanceof ConnectionOutPoint) {
+        for (let conne of conn.connections) {
+          let connect = conne.to_point;
           //console.log(conne)
-          if (conne.to_point != undefined && conne.to_point.parent === comp){
-            conne.destroy_me = true
-            console.log(conn)
-            conn.connections.splice(conn.connections.indexOf(conne),1)
+          if (conne.to_point != undefined && conne.to_point.parent === comp) {
+            conne.destroy_me = true;
+            console.log(conn);
+            conn.connections.splice(conn.connections.indexOf(conne), 1);
           }
         }
       }
     }
   }
-  
-  for (let i = 1; ; i ++) {
+
+  for (let i = 1; ; i++) {
     const maybe_out = comp["output" + i];
     if (maybe_out == undefined) {
       break;
@@ -48,7 +52,7 @@ function destroy_component(comp) {
       conn.destroy_me = true;
     }
   }
-  for (let i = 1; ; i ++) {
+  for (let i = 1; ; i++) {
     const maybe_in = comp["input" + i];
     if (maybe_in == undefined) {
       break;
@@ -72,7 +76,7 @@ class Component {
     this.connect_points = [];
     this.angle = 0;
   }
-  get_poly_verts(){
+  get_poly_verts() {
     const center = this.center_coord;
     const top_left_offset = p5.Vector.sub(this.pos, center);
     const top_right_offset = top_left_offset.copy();
@@ -86,18 +90,17 @@ class Component {
     // const mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     const top_left = rotate_to_real(center, top_left_offset, this.angle);
     const top_right = rotate_to_real(center, top_right_offset, this.angle);
-    const bottom_right = rotate_to_real(center, bottom_right_offset, this.angle);
+    const bottom_right = rotate_to_real(
+      center,
+      bottom_right_offset,
+      this.angle
+    );
     const bottom_left = rotate_to_real(center, bottom_left_offset, this.angle);
-    return [
-                              top_left, 
-                              top_right, 
-                              bottom_right, 
-                              bottom_left
-                            ]
+    return [top_left, top_right, bottom_right, bottom_left];
   }
   mouse_overlapping() {
-    // return collidePointRect(mouseX, mouseY, 
-    //                         (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y), 
+    // return collidePointRect(mouseX, mouseY,
+    //                         (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y),
     //                         this.size.x * zoom, this.size.y * zoom);
     const center = this.center_coord;
     const top_left_offset = p5.Vector.sub(this.pos, center);
@@ -112,7 +115,11 @@ class Component {
     // const mp = createVector((mouseX - camera.x) / zoom, (mouseY - camera.y) / zoom);
     const top_left = rotate_to_real(center, top_left_offset, this.angle);
     const top_right = rotate_to_real(center, top_right_offset, this.angle);
-    const bottom_right = rotate_to_real(center, bottom_right_offset, this.angle);
+    const bottom_right = rotate_to_real(
+      center,
+      bottom_right_offset,
+      this.angle
+    );
     const bottom_left = rotate_to_real(center, bottom_left_offset, this.angle);
     top_left.mult(zoom);
     top_left.add(camera);
@@ -122,13 +129,12 @@ class Component {
     bottom_right.add(camera);
     bottom_left.mult(zoom);
     bottom_left.add(camera);
-    return collidePointPoly(mouseX, mouseY, 
-                            [
-                              top_left, 
-                              top_right, 
-                              bottom_right, 
-                              bottom_left
-                            ],true);
+    return collidePointPoly(
+      mouseX,
+      mouseY,
+      [top_left, top_right, bottom_right, bottom_left],
+      true
+    );
   }
 
   get center_coord() {
@@ -137,29 +143,19 @@ class Component {
 
   set_pos_center(p) {
     this.pos = p;
-    this.pos.sub(this.mouse_select_pos_diff)
+    this.pos.sub(this.mouse_select_pos_diff);
     //this.pos.add(createVector(component_width / 2, components_height / 2));
   }
 
-  on_left_mouse_click() {
-    
-  }
+  on_left_mouse_click() {}
 
-  on_right_mouse_click() {
-    
-  }
+  on_right_mouse_click() {}
 
-  on_left_mouse_release() {
-    
-  }
+  on_left_mouse_release() {}
 
-  on_right_mouse_release() {
-    
-  }
+  on_right_mouse_release() {}
 
-  mouse_clicked() {
-    
-  }
+  mouse_clicked() {}
 
   handle_mouse() {
     if (this.mouse_overlapping() && !(this in hovering)) {
@@ -180,7 +176,10 @@ class Component {
         if (this.activated_check) {
           this.activated_check = false;
           if (this.mouse_overlapping()) {
-            let diff = p5.Vector.sub(createVector(mouseX, mouseY), this.old_pos_mouse);
+            let diff = p5.Vector.sub(
+              createVector(mouseX, mouseY),
+              this.old_pos_mouse
+            );
             if (diff.mag() < 1) {
               if (mouseButton === LEFT) {
                 this.on_left_mouse_click();
@@ -215,7 +214,7 @@ class Component {
       }
     }
   }
-  
+
   update() {
     this.handle_mouse();
     for (const point of this.connect_points) {
@@ -226,7 +225,10 @@ class Component {
   draw(graphics, outline) {
     graphics.push();
     for (const point of this.connect_points) {
-      point.draw(graphics, hovering.indexOf(point) != -1 ? hover_color : undefined);
+      point.draw(
+        graphics,
+        hovering.indexOf(point) != -1 ? hover_color : undefined
+      );
     }
     graphics.pop();
 
@@ -243,10 +245,22 @@ class Component {
       const bottom_left_offset = bottom_right_offset.copy();
       bottom_left_offset.x -= this.size.x;
       graphics.beginShape();
-      graphics.vertex(rotate_to_real(center, top_left_offset, this.angle).x, rotate_to_real(center, top_left_offset, this.angle).y);
-      graphics.vertex(rotate_to_real(center, top_right_offset, this.angle).x, rotate_to_real(center, top_right_offset, this.angle).y);
-      graphics.vertex(rotate_to_real(center, bottom_right_offset, this.angle).x, rotate_to_real(center, bottom_right_offset, this.angle).y);
-      graphics.vertex(rotate_to_real(center, bottom_left_offset, this.angle).x, rotate_to_real(center, bottom_left_offset, this.angle).y);
+      graphics.vertex(
+        rotate_to_real(center, top_left_offset, this.angle).x,
+        rotate_to_real(center, top_left_offset, this.angle).y
+      );
+      graphics.vertex(
+        rotate_to_real(center, top_right_offset, this.angle).x,
+        rotate_to_real(center, top_right_offset, this.angle).y
+      );
+      graphics.vertex(
+        rotate_to_real(center, bottom_right_offset, this.angle).x,
+        rotate_to_real(center, bottom_right_offset, this.angle).y
+      );
+      graphics.vertex(
+        rotate_to_real(center, bottom_left_offset, this.angle).x,
+        rotate_to_real(center, bottom_left_offset, this.angle).y
+      );
       graphics.endShape(CLOSE);
       graphics.pop();
     }

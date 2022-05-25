@@ -1,6 +1,6 @@
 /* https://www.w3schools.com/howto/howto_css_center-vertical.asp */
 
-.container { 
+.container {
   position: relative;
 }
 
@@ -15,9 +15,9 @@
 
 /* https://www.w3schools.com/howto/howto_css_loader.asp */
 .loader {
-  border: 5px solid #F3F3F3;
+  border: 5px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 5px solid #AFAFAF;
+  border-top: 5px solid #afafaf;
   width: 50px;
   height: 50px;
   -webkit-animation: spin 0.5s linear infinite; /* Safari */
@@ -26,25 +26,39 @@
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-p, a, label, button, input {
+p,
+a,
+label,
+button,
+input {
   font-family: sans-serif;
 }
 
-p, a, label {
+p,
+a,
+label {
   font-size: 0.8em;
 }
 
 .error {
-  color: #FF0000
+  color: #ff0000;
 }
 
 input {
@@ -60,7 +74,7 @@ dialog {
 
 button {
   transition-duration: 0.4s;
-  border-radius: 5px;  
+  border-radius: 5px;
 }
 
 button:hover {
@@ -88,7 +102,6 @@ button:hover {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
 
 /* /* The Close Button 
 .close {

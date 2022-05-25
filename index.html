@@ -1,166 +1,211 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Logical</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Logical</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <!-- What p5.js shows while running preload() -->
-  <div id="p5_loading" class="center">
-    <div class="loader"></div>
-    <!--
+  <body>
+    <!-- What p5.js shows while running preload() -->
+    <div id="p5_loading" class="center">
+      <div class="loader"></div>
+      <!--
       <div class="container">
         <p>Loading...</p>
       </div>
       -->
-  </div>
-  <main oncontextmenu="return false;">
-    <!-- Where p5.js will add the canvas -->
-  </main>
-  <!-- The menu dialog -->
-  <dialog id="dialog_menu">
-    <form method="dialog">
-      <!--       
+    </div>
+    <main oncontextmenu="return false;">
+      <!-- Where p5.js will add the canvas -->
+    </main>
+    <!-- The menu dialog -->
+    <dialog id="dialog_menu">
+      <form method="dialog">
+        <!--       
       <span><b>Main menu</b></span> 
       -->
-      <!--       
+        <!--       
       <span class="close">&times;</span> 
       <br>
       -->
-      <button value="examples" class="mainmenubutton">Examples</button>
-      <br>
-      <button value="import" class="mainmenubutton">Import</button>
-      <br>
-      <button value="export" class="mainmenubutton">Export</button>
-      <br>
-      <button value="cancel" class="mainmenubutton" id="close_menu">Close</button>
-      <br>
-      <input type="checkbox" id="cinematic_mode_checkbox" name="cinematic_mode" value="cinematic_mode">
-      <label for="cinematic_mode_checkbox"> Cinematic mode (no GUI)</label>
-    </form>
-  </dialog>
-  <!-- The example dialog -->
-  <dialog id="dialog_example">
-    <form method="dialog">
-      <p>Import an example here!</p>
-      <p class="error">
-        Make sure that you have saved your work, as importing an example will overwrite it!
-      </p>
-      <div id="example_div" class="quarterscreendiv">
-        
-      </div>
-      <button value="cancel" style="margin-top: 5px;">Close</button>
-    </form>
-  </dialog>
-  <!-- The import dialog -->
-  <dialog id="dialog_import">
-    <form method="dialog">
-      <label for="code">Import code:</label>
-      <br>
-      <textarea type="text" id="input_code" name="code" 
-                autocomplete="off" autocorrect="off" spellcheck="false"
-                class="quarterscreen"></textarea>
-      <br>
-      <p id="message_dialog_import_success_clipboard" hidden>Successfully read from clipboard!</p>
-      <p id="message_dialog_import_failed_clipboard" class="error" hidden>Failed to read from clipboard! Make sure you have given us permission to read the clipboard!</p>
-      <p id="message_dialog_import_failed_import" class="error" hidden>Failed to import! Make sure you pasted in the <i>entire</i> code without any extra characters!</p>
-      <button value="import">Import</button>
-      <button type="button" id="copy_import_button">Read from clipboard</button>
-      <button value="cancel">Cancel</button>
-    </form>
-  </dialog>
-  <!-- The export dialog -->
-  <dialog id="dialog_export">
-    <form method="dialog">
-      <label for="code">Export code:</label>
-      <a>(Don't forget to scroll to see the rest of the code!)</a>
-      <br>
-      <textarea type="text" id="output_code" name="code" 
-                autocomplete="off" autocorrect="off" spellcheck="false" 
-                readonly="true" class="quarterscreen"></textarea>
-      <br>
-      <p id="message_dialog_export_success_clipboard" hidden>Successfully copied to clipboard!</p>
-      <p id="message_dialog_export_failed_clipboard" class="error" hidden>Failed to copy to clipboard!</p>
-      <button type="button" id="copy_export_button">Copy all to clipboard</button>
-      <button value="cancel">Close</button>
-      
-    </form>
-  </dialog>
-  <!-- The clock period dialog -->
-  <dialog id="dialog_clock_period">
-    <form method="dialog">
-      <label for="code">Set clock period:</label>
-      <br>
-      <input type="number" id="clock_period_code" name="code" min=1 
-             autocomplete="off" autocorrect="off" spellcheck="false"></input>
-      <br>
-      <button value="submit">Submit</button>
-      <button value="cancel">Cancel</button>
-    </form>
-  </dialog>
-  <!-- The note dialog -->
-  <dialog id="dialog_note">
-    <form method="dialog">
-      <label for="code">Your note:</label>
-      <br>
-      <textarea type="text" id="note_code" name="code" 
-                autocomplete="on" autocorrect="on" spellcheck="true"
-                class="quarterscreen"></textarea>
-      <br>
-      <button value="submit">Submit</button>
-      <button value="cancel">Cancel</button>
-    </form>
-  </dialog>
-  <!-- Screw the enter key ->
+        <button value="examples" class="mainmenubutton">Examples</button>
+        <br />
+        <button value="import" class="mainmenubutton">Import</button>
+        <br />
+        <button value="export" class="mainmenubutton">Export</button>
+        <br />
+        <button value="cancel" class="mainmenubutton" id="close_menu">
+          Close
+        </button>
+        <br />
+        <input
+          type="checkbox"
+          id="cinematic_mode_checkbox"
+          name="cinematic_mode"
+          value="cinematic_mode"
+        />
+        <label for="cinematic_mode_checkbox"> Cinematic mode (no GUI)</label>
+      </form>
+    </dialog>
+    <!-- The example dialog -->
+    <dialog id="dialog_example">
+      <form method="dialog">
+        <p>Import an example here!</p>
+        <p class="error">
+          Make sure that you have saved your work, as importing an example will
+          overwrite it!
+        </p>
+        <div id="example_div" class="quarterscreendiv"></div>
+        <button value="cancel" style="margin-top: 5px">Close</button>
+      </form>
+    </dialog>
+    <!-- The import dialog -->
+    <dialog id="dialog_import">
+      <form method="dialog">
+        <label for="code">Import code:</label>
+        <br />
+        <textarea
+          type="text"
+          id="input_code"
+          name="code"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          class="quarterscreen"
+        ></textarea>
+        <br />
+        <p id="message_dialog_import_success_clipboard" hidden>
+          Successfully read from clipboard!
+        </p>
+        <p id="message_dialog_import_failed_clipboard" class="error" hidden>
+          Failed to read from clipboard! Make sure you have given us permission
+          to read the clipboard!
+        </p>
+        <p id="message_dialog_import_failed_import" class="error" hidden>
+          Failed to import! Make sure you pasted in the <i>entire</i> code
+          without any extra characters!
+        </p>
+        <button value="import">Import</button>
+        <button type="button" id="copy_import_button">
+          Read from clipboard
+        </button>
+        <button value="cancel">Cancel</button>
+      </form>
+    </dialog>
+    <!-- The export dialog -->
+    <dialog id="dialog_export">
+      <form method="dialog">
+        <label for="code">Export code:</label>
+        <a>(Don't forget to scroll to see the rest of the code!)</a>
+        <br />
+        <textarea
+          type="text"
+          id="output_code"
+          name="code"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          readonly="true"
+          class="quarterscreen"
+        ></textarea>
+        <br />
+        <p id="message_dialog_export_success_clipboard" hidden>
+          Successfully copied to clipboard!
+        </p>
+        <p id="message_dialog_export_failed_clipboard" class="error" hidden>
+          Failed to copy to clipboard!
+        </p>
+        <button type="button" id="copy_export_button">
+          Copy all to clipboard
+        </button>
+        <button value="cancel">Close</button>
+      </form>
+    </dialog>
+    <!-- The clock period dialog -->
+    <dialog id="dialog_clock_period">
+      <form method="dialog">
+        <label for="code">Set clock period:</label>
+        <br />
+        <input
+          type="number"
+          id="clock_period_code"
+          name="code"
+          min="1"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <br />
+        <button value="submit">Submit</button>
+        <button value="cancel">Cancel</button>
+      </form>
+    </dialog>
+    <!-- The note dialog -->
+    <dialog id="dialog_note">
+      <form method="dialog">
+        <label for="code">Your note:</label>
+        <br />
+        <textarea
+          type="text"
+          id="note_code"
+          name="code"
+          autocomplete="on"
+          autocorrect="on"
+          spellcheck="true"
+          class="quarterscreen"
+        ></textarea>
+        <br />
+        <button value="submit">Submit</button>
+        <button value="cancel">Cancel</button>
+      </form>
+    </dialog>
+    <!-- Screw the enter key ->
   <script>
   window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
   </script>
   -->
-  <!-- Libraries -->
-  
-  <script src="/js/libs/p5.min.js" defer></script>
-  <script src="/js/libs/p5.sound.min.js" defer></script>
-  <script src="/js/libs/p5.collide2d.min.js" defer></script>
-  <script src="/js/libs/p5.clickable.min.js" defer></script>
-  <!-- Utilities -->
-  <script src="/js/util/trig.js" defer></script>
-  <script src="/js/util/text_utils.js" defer></script>
-  <script src="/js/util/ui.js" defer></script>
-  <script src="/js/util/compress.js" defer></script>
-  <script src="/js/util/clipboard.js" defer></script>
-  <!-- Game files -->
-  <script src="/js/game/components/component.js" defer></script>
-  <script src="/js/game/components/connection.js" defer></script>
-  <script src="/js/game/components/io/switch.js" defer></script>
-  <script src="/js/game/components/io/button.js" defer></script>
-  <script src="/js/game/components/io/clock.js" defer></script>
-  <script src="/js/game/components/io/constant.js" defer></script>
-  <script src="/js/game/components/io/light.js" defer></script>
-  <script src="/js/game/components/io/note.js" defer></script>
-  <script src="/js/game/components/io/4bit_digit.js" defer></script>
-  <script src="/js/game/components/io/8bit_digit.js" defer></script>
-  <script src="/js/game/components/gates/gate.js" defer></script>
-  <script src="/js/game/components/gates/buffer_gate.js" defer></script>
-  <script src="/js/game/components/gates/not_gate.js" defer></script>
-  <script src="/js/game/components/gates/and_gate.js" defer></script>
-  <script src="/js/game/components/gates/nand_gate.js" defer></script>
-  <script src="/js/game/components/gates/or_gate.js" defer></script>
-  <script src="/js/game/components/gates/nor_gate.js" defer></script>
-  <script src="/js/game/components/gates/xor_gate.js" defer></script>
-  <script src="/js/game/components/gates/xnor_gate.js" defer></script>
-  <script src="/js/game/sounds.js" defer></script>
-  <script src="/js/game/icons.js" defer></script>
-  <script src="/js/game/export.js" defer></script>
-  <script src="/js/game/example_saves.js" defer></script>
-  <script src="/js/game/game.js" defer></script>
-  <!-- Main script -->
-  <script src="/js/main.js" defer></script>
-  <!-- Shows a console on the web page itself, for easier debugging on restricted computers -->
-  <script src="/js/util/on_page_console.js" defer></script>
-</body>
+    <!-- Libraries -->
 
+    <script src="/js/libs/p5.min.js" defer></script>
+    <script src="/js/libs/p5.sound.min.js" defer></script>
+    <script src="/js/libs/p5.collide2d.min.js" defer></script>
+    <script src="/js/libs/p5.clickable.min.js" defer></script>
+    <!-- Utilities -->
+    <script src="/js/util/trig.js" defer></script>
+    <script src="/js/util/text_utils.js" defer></script>
+    <script src="/js/util/ui.js" defer></script>
+    <script src="/js/util/compress.js" defer></script>
+    <script src="/js/util/clipboard.js" defer></script>
+    <!-- Game files -->
+    <script src="/js/game/components/component.js" defer></script>
+    <script src="/js/game/components/connection.js" defer></script>
+    <script src="/js/game/components/io/switch.js" defer></script>
+    <script src="/js/game/components/io/button.js" defer></script>
+    <script src="/js/game/components/io/clock.js" defer></script>
+    <script src="/js/game/components/io/constant.js" defer></script>
+    <script src="/js/game/components/io/light.js" defer></script>
+    <script src="/js/game/components/io/note.js" defer></script>
+    <script src="/js/game/components/io/4bit_digit.js" defer></script>
+    <script src="/js/game/components/io/8bit_digit.js" defer></script>
+    <script src="/js/game/components/gates/gate.js" defer></script>
+    <script src="/js/game/components/gates/buffer_gate.js" defer></script>
+    <script src="/js/game/components/gates/not_gate.js" defer></script>
+    <script src="/js/game/components/gates/and_gate.js" defer></script>
+    <script src="/js/game/components/gates/nand_gate.js" defer></script>
+    <script src="/js/game/components/gates/or_gate.js" defer></script>
+    <script src="/js/game/components/gates/nor_gate.js" defer></script>
+    <script src="/js/game/components/gates/xor_gate.js" defer></script>
+    <script src="/js/game/components/gates/xnor_gate.js" defer></script>
+    <script src="/js/game/sounds.js" defer></script>
+    <script src="/js/game/icons.js" defer></script>
+    <script src="/js/game/export.js" defer></script>
+    <script src="/js/game/example_saves.js" defer></script>
+    <script src="/js/game/game.js" defer></script>
+    <!-- Main script -->
+    <script src="/js/main.js" defer></script>
+    <!-- Shows a console on the web page itself, for easier debugging on restricted computers -->
+    <script src="/js/util/on_page_console.js" defer></script>
+  </body>
 </html>

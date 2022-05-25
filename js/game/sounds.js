@@ -1,8 +1,8 @@
 const sfx_volume = 0.1;
 
 const sfx = {
-  "tap_sound": "assets/audio/sfx/tap/tap"
-}
+  tap_sound: "assets/audio/sfx/tap/tap",
+};
 
 class Sounds {
   static tap_sound;
@@ -10,7 +10,7 @@ class Sounds {
   static play(sound) {
     sound.play();
   }
-  
+
   static play_tap() {
     Sounds.play(Sounds.tap_sound);
   }
