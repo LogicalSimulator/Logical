@@ -319,6 +319,8 @@ class Game {
   initalize_dom() {
     this.dialog_menu = document.getElementById("dialog_menu");
     this.dialog_menu.addEventListener("close", () => {this.hide_menu();});
+    this.dialog_example = document.getElementById("dialog_example");
+    this.dialog_example.addEventListener("close", () => {this.hide_example_menu();});    
     this.dialog_import = document.getElementById("dialog_import");
     this.dialog_import.addEventListener("close", () => {this.hide_import_menu();});
     this.dialog_export = document.getElementById("dialog_export");
@@ -382,13 +384,32 @@ class Game {
     this.dialog_menu.close();
     this.grey_out = false;
     // console.log(this.dialog_menu.returnValue);
-    if (this.dialog_menu.returnValue === "import") {
+    if (this.dialog_menu.returnValue === "examples") {
+      this.show_example_menu();
+    } else if (this.dialog_menu.returnValue === "import") {
       this.show_import_menu();
     } else if (this.dialog_menu.returnValue === "export") {
       this.show_export_menu();
     }
   }
 
+  show_example_menu() {
+    this.dialog_example.showModal();
+    this.grey_out = true;
+    this.show_message(undefined);
+  }
+
+  hide_example_menu() {
+    this.dialog_example.close();
+    this.grey_out = false;
+    if (this.dialog_example.returnValue === "cancel") {
+      
+    } else {
+      
+    }
+    this.show_menu();
+  }
+  
   show_import_menu() {
     this.input_code.value = "";
     this.dialog_import.showModal();
@@ -1223,14 +1244,21 @@ class Game {
     this.step_button.enabled = !this.play && this.update_cycles_left === 0;
     this.reset_button.enabled = this.can_reset;
     this.create_comment_button.enabled = this.selected_component == undefined;
+    let pls_align = false;
     if (this.selected_component instanceof Clock) {
       this.set_specific_button.invisible = false;
+      pls_align = true;
       this.set_specific_button.clickable.text = "Set clock period";
     } else if (this.selected_component instanceof Note) {
       this.set_specific_button.invisible = false;
       this.set_specific_button.clickable.text = "Set note text";
+      pls_align = true;
     } else {
       this.set_specific_button.invisible = true;
+    }
+    if (pls_align) {
+      this.set_specific_button.clickable.x = (this.selected_component.pos.x*zoom+camera.x) - this.set_specific_button.clickable.width;
+      this.set_specific_button.clickable.y = (this.selected_component.pos.y*zoom+camera.y) - this.set_specific_button.clickable.height;
     }
     for (const widget of this.gui) {
       widget.update();
