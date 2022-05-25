@@ -81,6 +81,7 @@ class Game {
     this.items = [this.connections, this.connect_points, this.components];
     
     this.dark_mode = false;
+    this.cinematic_mode = false;
     this.drag_component = undefined;
     this.selected_component = undefined;
     this.creating_new_component = false;
@@ -328,6 +329,7 @@ class Game {
     this.dialog_clock_period.addEventListener("close", () => {this.hide_clock_period_menu();});
     this.dialog_note = document.getElementById("dialog_note");
     this.dialog_note.addEventListener("close", () => {this.hide_note_menu();});
+    this.cinematic_mode_checkbox = document.getElementById("cinematic_mode_checkbox");
     this.example_div = document.getElementById("example_div");
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
@@ -836,7 +838,7 @@ class Game {
       }
       
     }
-    return false;
+    // return false;
   }
   
   on_mouse_drag() {
@@ -872,7 +874,7 @@ class Game {
         camera.add(createVector(movedX, movedY));
       }
     }
-    return false;
+    // return false;
   }
 
   on_mouse_release() {
@@ -939,7 +941,7 @@ class Game {
     this.creating_new_component = false;
     this.drag_component = undefined;
     this.mouse_mode = NONE_MODE;
-    return false;
+    // return false;
   }
   
   mouse_clicked() {
@@ -979,7 +981,7 @@ class Game {
       }
     }
     
-    return false;
+    // return false;
   }
 
   key_pressed(code) {
@@ -1275,6 +1277,7 @@ class Game {
       this.set_specific_button.clickable.x = Math.max(this.set_specific_button.clickable.x, 0);
       this.set_specific_button.clickable.y = Math.max(this.set_specific_button.clickable.y, 0);
     }
+    this.cinematic_mode = this.cinematic_mode_checkbox.checked;
     for (const widget of this.gui) {
       widget.update();
     }
