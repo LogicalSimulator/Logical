@@ -74,16 +74,6 @@ const dialog_message_names = [
   "message_dialog_export_failed_clipboard",
 ];
 
-/* TODO:
-- Buffer gate propagation delay
-- Add a home button that resets camera and zoom
-- try/catch in main and show dialog with export of current circuit on exception
-- Save the user's circuit to local storage
-- Save to and open from file
-- Format this code base with some tool
-- Website and move this to /editor path
-*/
-
 class Game {
   constructor() {
     this.graphics = createGraphics(width, height);
