@@ -124,6 +124,11 @@ class Game {
     if (open_in_tutorial) {
       this.import_game_state(example_saves[0]["save"]);
     }
+    for (let comp of this.items[2]){
+      if (comp instanceof Note){
+        comp.update_length(this.graphics)
+      }
+    }
   }
 
   make_gui() {
@@ -488,6 +493,7 @@ class Game {
     this.grey_out = false;
     if (this.dialog_note.returnValue === "submit") {
       this.selected_component.note_text = this.note_code.value;
+      this.selected_component.update_length(this.graphics)
     }
     this.selected_component = undefined;
     // console.log(this.dialog_note.returnValue);
@@ -636,6 +642,11 @@ class Game {
     } else {
       camera.x = 0;
       camera.y = this.side_group.height;
+    }
+    for (let comp of this.items[2]){
+      if (comp instanceof Note){
+        comp.update_length(this.graphics)
+      }
     }
   }
   
@@ -987,6 +998,7 @@ class Game {
   key_pressed(code) {
     // backspace or "d" key
     if (!this.grey_out) {
+      
       if (code === 8 || code === 68) {
         if (this.delete_button.enabled) {
           this.destroy_selected_component();
@@ -1232,6 +1244,7 @@ class Game {
             item.pos.y = round(item.pos.y / grid_size) * grid_size;
           }
         }
+        //Testing here
       }
       this.items[i] = group;
       // if (did_destroy) {
@@ -1266,14 +1279,14 @@ class Game {
       this.set_specific_button.clickable.text = "Set clock period";
     } else if (this.selected_component instanceof Note) {
       this.set_specific_button.invisible = false;
-      this.set_specific_button.clickable.text = "Set note text";
+      this.set_specific_button.clickable.text = "Edit note text";
       pls_align = true;
     } else {
       this.set_specific_button.invisible = true;
     }
     if (pls_align) {
-      this.set_specific_button.clickable.x = (this.selected_component.pos.x * zoom + camera.x) - (this.set_specific_button.clickable.width / 2);
-      this.set_specific_button.clickable.y = (this.selected_component.pos.y * zoom + camera.y) - (this.set_specific_button.clickable.height / 2);
+      this.set_specific_button.clickable.x = (this.selected_component.pos.x * zoom + camera.x) - (this.set_specific_button.clickable.width / 1.5);
+      this.set_specific_button.clickable.y = (this.selected_component.pos.y * zoom + camera.y) - (this.set_specific_button.clickable.height / 1.5);
       this.set_specific_button.clickable.x = Math.max(this.set_specific_button.clickable.x, 0);
       this.set_specific_button.clickable.y = Math.max(this.set_specific_button.clickable.y, 0);
     }
@@ -1372,41 +1385,43 @@ class Game {
         } else {
           item.draw(this.graphics);
         }
+
+        if (this.multi_select_origin != undefined && item instanceof Component){
+          this.graphics.push()
+          this.graphics.rectMode(CORNER);
+          this.graphics.fill(3, 227, 252, 30);
+          //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30);
+          let diff = p5.Vector.sub(m_pos,this.multi_select_origin);
+          this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
+                            diff.x,diff.y);
+          let rect_verts = [this.multi_select_origin,
+                           p5.Vector.add(this.multi_select_origin,createVector(diff.x,0)),
+                           p5.Vector.add(this.multi_select_origin,createVector(diff.x,diff.y)),
+                           p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))];
+          let verts = item.get_poly_verts();
+          if (collidePolyPoly(verts,rect_verts,true)) {
+            this.graphics.fill(0,255,255,100);
+            this.graphics.beginShape();
+            for (const { x, y } of verts) {
+              vertex(x, y)
+            }
+            this.graphics.endShape(CLOSE);
+          }
+          this.graphics.pop()
+          
+        }
         // if (item === this.drag_component) {
         //   console.log("look it's me " + item);
         // }
       }
     }
-    if (this.multi_select_origin != undefined) {
-      this.graphics.rectMode(CORNER);
-      this.graphics.fill(3, 227, 252, 30);
-      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30);
-      let diff = p5.Vector.sub(m_pos,this.multi_select_origin);
-      this.graphics.rect(this.multi_select_origin.x,this.multi_select_origin.y,
-                        diff.x,diff.y);
-      let rect_verts = [this.multi_select_origin,
-                       p5.Vector.add(this.multi_select_origin,createVector(diff.x,0)),
-                       p5.Vector.add(this.multi_select_origin,createVector(diff.x,diff.y)),
-                       p5.Vector.add(this.multi_select_origin,createVector(0,diff.y))];
-      for (let comp of this.items[2]) {
-        let verts = comp.get_poly_verts();
-        if (collidePolyPoly(verts,rect_verts,true)) {
-          this.graphics.fill(0,255,255,100);
-          this.graphics.beginShape();
-          for (const { x, y } of verts) {
-            vertex(x, y)
-          }
-          this.graphics.endShape(CLOSE);
-        }
-      }
-    }
-    for (let comp of this.multi_selections) {
-      let verts = comp.get_poly_verts();
-      this.graphics.fill(255,0,0,100)
-      this.graphics.beginShape();
-      //for (const { x, y } of verts)  vertex(x, y);
-      this.graphics.endShape(CLOSE);
-    }
+    // for (let comp of this.multi_selections) {
+    //   let verts = comp.get_poly_verts();
+    //   this.graphics.fill(255,0,0,100)
+    //   this.graphics.beginShape();
+    //   //for (const { x, y } of verts)  vertex(x, y);
+    //   this.graphics.endShape(CLOSE);
+    // }
     this.graphics.pop();
     
     

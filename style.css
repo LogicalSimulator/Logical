@@ -35,7 +35,7 @@
   100% { transform: rotate(360deg); }
 }
 
-p, a, label, button {
+p, a, label, button, input {
   font-family: sans-serif;
 }
 
@@ -55,10 +55,22 @@ dialog {
   border: 2px solid #000000;
   border-radius: 5px;
   padding: 5px;
+  z-index: 1; /* Sit on top */
+}
+
+button {
+  transition-duration: 0.4s;
+  border-radius: 5px;  
+}
+
+button:hover {
+  background-color: #828282;
+  color: #e0e0e0;
 }
 
 .mainmenubutton {
-  width: 25vw;
+  width: 45vw;
+  height: 2vw;
   margin: 1px;
 }
 

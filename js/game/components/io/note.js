@@ -22,18 +22,22 @@ class Note extends Component {
     });
     return longestWord[0]
   }
+
+  update_length(graphics) {
+    graphics.push();
+    graphics.textFont(note_font);
+    this.size.x = graphics.textWidth(this.findLongestWord(this.note_text)) * 1.3;
+    this.size.y = this.note_text.split(/\n/).length * graphics.textSize() * 1.3;
+    graphics.pop()
+  }
   
   draw(graphics, outline) {
     super.draw(graphics, outline);
 
     graphics.push();
 
-    graphics.textFont(note_font);
-
     let mild_mult = 0.7;
-    this.size.x = graphics.textWidth(this.findLongestWord(this.note_text)) * 1.3;
-    this.size.y = this.note_text.split(/\n/).length * graphics.textSize() * 1.3;
-    
+        
     graphics.translate(this.pos.x + this.size.x / 2, this.pos.y + this.size.y / 2);
     graphics.rotate(this.angle);
     const note_x = -this.size.x / 2;
@@ -44,7 +48,8 @@ class Note extends Component {
     graphics.stroke(0);
     graphics.strokeWeight(0);
     // graphics.textWrap(WORD);
-    graphics.textLeading(graphics.textSize())
+    graphics.textFont(note_font);
+    graphics.textLeading(graphics.textSize());
     graphics.text(this.note_text, 
                   -this.size.x / 2 * 0.9, -this.size.y / 2 * mild_mult, 
                   this.size.x*0.9, this.size.y);

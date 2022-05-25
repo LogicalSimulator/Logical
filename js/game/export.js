@@ -118,12 +118,14 @@ function export_game(conns, conn_pts, comps) {
     "product": product,
     "version": version,
     "state": {
-      "components": json_comps
+      "components": json_comps,
+      "camera_x":camera.x,
+      "camera_y":camera.y
     }
   };
 
   let full_json = JSON.stringify(json_state);
-  
+  console.log(json_state)
   if (pls_compress) {
     full_json = zip(full_json);
   }
