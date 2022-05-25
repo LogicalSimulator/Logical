@@ -43,6 +43,10 @@ p, a, label {
   font-size: 0.8em;
 }
 
+.big_a {
+  font_size: 2em;
+}
+
 .error {
   color: #FF0000
 }

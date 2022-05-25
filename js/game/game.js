@@ -67,6 +67,7 @@ const dialog_message_names = [
 - Save to and open from file
 - Format this code base with some tool
 - Website and move this to /editor path
+- ADD A "HOME" BUTTON THAT RESETS ZOOM AND CAMERA
 */
 
 class Game {
@@ -319,7 +320,9 @@ class Game {
   }
 
   initalize_dom() {
+    //let menu_x = document.getElementsByClassName("close")[0]
     this.dialog_menu = document.getElementById("dialog_menu");
+    //menu_x.onclick = () => {this.hide_menu();}
     this.dialog_menu.addEventListener("close", () => {this.hide_menu();});
     this.dialog_example = document.getElementById("dialog_example");
     this.dialog_example.addEventListener("close", () => {this.hide_example_menu();});    
@@ -511,6 +514,9 @@ class Game {
         (mouseY - camera.y) / zoom
       )
     );
+    if (this.drag_component instanceof Note){
+      this.drag_component.update_length(this.graphics)
+    }
     this.drag_component.pos.sub(p5.Vector.div(this.drag_component.size, 2));
     // mouse_mode = ITEM_MODE;
     this.items[2].push(this.drag_component);
@@ -726,12 +732,15 @@ class Game {
       this.items[2].push(new_comp);
       this.items[2][this.items[2].length - 1].angle = comp.angle;
       this.items[2][this.items[2].length - 1].note_text = comp.note_text;
+      if (comp instanceof Note){
+        this.items[2][this.items[2].length - 1].update_length(this.graphics)
+      }
       this.multi_selections.push(this.items[2][this.items[2].length - 1]);
     }
     for (const i in this.multi_selections) {
       const old_comp = this.copy_selected[i];
       const new_comp = this.multi_selections[i];
-
+      
       const conn_out_pt_names = get_component_output_connect_point_names(old_comp);
       for (const name of conn_out_pt_names) {
         for (const conn of old_comp[name].connections) {
@@ -948,6 +957,7 @@ class Game {
       }
     }
     
+    
     this.multi_select_origin = undefined
     this.drag_connection = undefined;
     this.creating_new_component = false;
@@ -1003,6 +1013,7 @@ class Game {
       if (code === 8 || code === 68) {
         if (this.delete_button.enabled) {
           this.destroy_selected_component();
+          this.multi_selections = []
         }
       }
       if (this.rotate_button.enabled) {
@@ -1283,6 +1294,10 @@ class Game {
       this.set_specific_button.clickable.text = "Edit note text";
       pls_align = true;
     } else {
+      this.set_specific_button.invisible = true;
+    }
+    if (this.multi_selections.length > 0){
+      pls_align = false
       this.set_specific_button.invisible = true;
     }
     if (pls_align) {
