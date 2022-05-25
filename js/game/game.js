@@ -62,7 +62,6 @@ const dialog_message_names = [
 ]
 
 /* TODO:
-- Cinematic checkbutton in main menu which only draws the menu button
 - try/catch in main and show dialog with export of current circuit on exception
 - Save the user's circuit to local storage
 - Save to and open from file
@@ -216,17 +215,15 @@ class Game {
     this.delete_button = create_button("Delete", 0, 0, 0, 0, () => {this.destroy_selected_component();});
     this.copy_button = create_button("Copy", 0, 0, 0, 0, () => {this.copy_selection();});
     this.paste_button = create_button("Paste", 0, 0, 0, 0, () => {this.paste_selection();});
+    this.menu_button = create_button("Menu", 0, 0, 0, 0, () => {this.show_menu();})
     // this.export_button = create_button("Export", 0, 0, 0, 0, () => {this.make_export_box()});
     // this.import_button = create_button("Import", 0, 0, 0, 0, () => {});
     this.menu_group = new sub_group(
       [
         // this.export_button,
         // this.import_button,
-        this.copy_button, 
-        this.paste_button,
-        this.rotate_button,
-        this.delete_button,
-        create_button("Menu", 0, 0, 0, 0, () => {this.show_menu();})
+        this.copy_button, this.paste_button, this.rotate_button,
+        this.delete_button, this.menu_button
       ]
     );
     
@@ -1431,7 +1428,13 @@ class Game {
     
     image(this.graphics, 0, 0);
 
-    if (!this.grey_out) {
+    if (this.grey_out) {
+      
+    } else if (this.cinematic_mode) {
+      push();
+      this.menu_button.draw();
+      pop();
+    } else {
       push();
       for (const widget of this.gui) {
         widget.draw();
