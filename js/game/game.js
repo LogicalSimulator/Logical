@@ -10,9 +10,10 @@ const right_click_color = [255, 127, 80];
 
 const grid_size = 20;
 
-const make_testing_objs = true;
-const test_export_import = true;
+const make_testing_objs = false;
+const test_export_import = false;
 const draw_component_bounds = false;
+const open_in_tutorial = true;
 
 const show_mouse_coords = true;
 const zoom_sensitivity = 0.1;
@@ -114,9 +115,14 @@ class Game {
     if (make_testing_objs) {
       this.make_testing_objects();  
     }
-
+    
     if (test_export_import) {
+      console.log("test export/import");
       this.import_game_state(this.export_game_state());
+    }
+
+    if (open_in_tutorial) {
+      this.import_game_state(example_saves[0]["save"]);
     }
   }
 
@@ -887,9 +893,13 @@ class Game {
       }
     }
     //console.log(this.multi_selections.length)
-    if (this.drag_component != undefined){
+    if (hovering_on_button()){
+      this.drag_component.destroy_me = true
+    }
+    else if (this.drag_component != undefined){
       this.selected_component = this.drag_component
     }
+    
     this.multi_select_origin = undefined
     this.drag_connection = undefined;
     this.creating_new_component = false;
@@ -1306,7 +1316,10 @@ class Game {
     
     for (const group of this.items) {
       for (const item of group) {
-        if (item === this.selected_component || this.multi_selections.includes(item)) {
+        if (hovering_on_button() && this.drag_component === item){
+          
+        }
+        else if (item === this.selected_component || this.multi_selections.includes(item)) {
           item.draw(this.graphics, right_click_color);
         } else if (hovering.indexOf(item) != -1) {
           item.draw(this.graphics, hover_color);

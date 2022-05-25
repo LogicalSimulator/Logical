@@ -24,11 +24,28 @@
   <!-- The menu dialog -->
   <dialog id="dialog_menu">
     <form method="dialog">
-      <button value="cancel" class="mainmenubutton">Close</button>
+      <button value="examples" class="mainmenubutton">Examples</button>
       <br>
       <button value="import" class="mainmenubutton">Import</button>
       <br>
       <button value="export" class="mainmenubutton">Export</button>
+      <br>
+      <button value="cancel" class="mainmenubutton">Close</button>
+    </form>
+  </dialog>
+  <!-- The example dialog -->
+  <dialog id="dialog_example">
+    <form method="dialog">
+      <p>Import an example here!</p>
+      <p class="error">
+        Make sure that you have saved your work, 
+        <br>
+        as importing an example will overwrite it!
+      </p>
+      <div>
+        
+      </div>
+      <button value="cancel">Close</button>
     </form>
   </dialog>
   <!-- The import dialog -->
