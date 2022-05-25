@@ -15,7 +15,7 @@ function destroy_component(comp) {
     if (conn instanceof ConnectionInPoint && conn.connection != undefined && conn.connection.from_point != undefined){
       let connect = conn.connection.from_point
       for (let nested of connect.connections){
-        if (nested.to_point.parent === comp){
+        if (nested.to_point != undefined && nested.to_point.parent === comp){
           nested.destroy_me = true
           execs.push(nested.from_point.parent)
         }
@@ -28,7 +28,7 @@ function destroy_component(comp) {
         for (let conne of conn.connections){
           let connect = conne.to_point
           //console.log(conne)
-          if (conne.to_point.parent === comp){
+          if (conne.to_point != undefined && conne.to_point.parent === comp){
             conne.destroy_me = true
             console.log(conn)
             conn.connections.splice(conn.connections.indexOf(conne),1)

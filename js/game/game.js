@@ -61,7 +61,7 @@ const dialog_message_names = [
   "message_dialog_export_failed_clipboard"
 ]
 
-/* TODO: afk
+/* TODO:
 - Buffer gate propagation delay
 - Add a home button that resets camera and zoom
 - try/catch in main and show dialog with export of current circuit on exception
