@@ -13,6 +13,10 @@
   transform: translate(-50%, -50%);
 }
 
+.centerdivtext {
+  text-align: center;
+}
+
 /* https://www.w3schools.com/howto/howto_css_loader.asp */
 .loader {
   border: 5px solid #f3f3f3;
