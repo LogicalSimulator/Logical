@@ -122,7 +122,7 @@ class Game {
 
     if (test_export_import) {
       console.log("test export/import");
-      this.import_game_state(this.export_game_state());
+      //this.import_game_state(this.export_game_state());
     }
 
     if (open_in_tutorial) {
@@ -133,6 +133,7 @@ class Game {
         comp.update_length(this.graphics);
       }
     }
+    console.log(this.items[2][0].connect_points[0].update);
   }
 
   make_gui() {
@@ -496,6 +497,8 @@ class Game {
     this.cinematic_mode_checkbox = document.getElementById(
       "cinematic_mode_checkbox"
     );
+    this.instant_prop_mode_checkbox =
+      document.getElementById("instant_prop_box");
     this.example_div = document.getElementById("example_div");
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
@@ -1598,6 +1601,7 @@ class Game {
       );
     }
     this.cinematic_mode = this.cinematic_mode_checkbox.checked;
+    instant_propagate = this.instant_prop_mode_checkbox.checked;
     for (const widget of this.gui) {
       widget.update();
     }
@@ -1715,12 +1719,12 @@ class Game {
           this.graphics.fill(3, 227, 252, 30);
           //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30);
           let diff = p5.Vector.sub(m_pos, this.multi_select_origin);
-          this.graphics.rect(
-            this.multi_select_origin.x,
-            this.multi_select_origin.y,
-            diff.x,
-            diff.y
-          );
+          // this.graphics.rect(
+          //   this.multi_select_origin.x,
+          //   this.multi_select_origin.y,
+          //   diff.x,
+          //   diff.y
+          // );
           let rect_verts = [
             this.multi_select_origin,
             p5.Vector.add(this.multi_select_origin, createVector(diff.x, 0)),
@@ -1745,6 +1749,20 @@ class Game {
         //   console.log("look it's me " + item);
         // }
       }
+    }
+    if (this.multi_select_origin != undefined) {
+      this.graphics.push();
+      this.graphics.rectMode(CORNER);
+      this.graphics.fill(3, 227, 252, 30);
+      //this.graphics.circle(this.multi_select_origin.x,this.multi_select_origin.y,30);
+      let diff = p5.Vector.sub(m_pos, this.multi_select_origin);
+      this.graphics.rect(
+        this.multi_select_origin.x,
+        this.multi_select_origin.y,
+        diff.x,
+        diff.y
+      );
+      this.graphics.pop();
     }
     // for (let comp of this.multi_selections) {
     //   let verts = comp.get_poly_verts();

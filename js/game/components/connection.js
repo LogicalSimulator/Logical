@@ -3,6 +3,7 @@
 const connection_stroke_weight = component_stroke_weight * 2;
 const connection_stroke = component_stroke;
 const connection_powered_stroke = component_powered_fill;
+let instant_propagate = true;
 
 function make_connection(from_point, to_point) {
   if (to_point.connection != undefined) {
@@ -46,6 +47,8 @@ class Connection {
     this.destroy_me = false;
     this._powered = false;
     this.hovering = false;
+    this.buffer1 = false;
+    this.buffer2 = false;
   }
 
   get powered() {
@@ -54,7 +57,11 @@ class Connection {
 
   set powered(state) {
     this._powered = state;
-    this.to_point.powered = state;
+    if (instant_propagate) {
+      this.to_point.powered = state;
+    } else {
+      this.buffer1 = state;
+    }
   }
 
   mouse_overlapping() {
@@ -119,6 +126,13 @@ class Connection {
   update() {
     if (this.mouse_overlapping()) {
       hovering.push(this);
+    }
+    if (!instant_propagate) {
+      if (this.buffer1 == this.buffer2) {
+        this.to_point.powered = this.buffer2;
+      }
+      this.buffer2 = this.buffer1;
+      this.buffer1 = this.powered;
     }
   }
 

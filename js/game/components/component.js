@@ -75,6 +75,7 @@ class Component {
     this.mouse_select_pos_diff = createVector();
     this.connect_points = [];
     this.angle = 0;
+    this.buffer_on = false;
   }
   get_poly_verts() {
     const center = this.center_coord;
