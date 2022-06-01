@@ -108,6 +108,7 @@ function export_game(conns, conn_pts, comps) {
       pos: vector_to_json(comp.pos),
       angle: comp.angle,
       period: comp.period,
+      delay: comp.delay,
       note_text: comp.note_text,
       out_connect_points: json_conn_pts,
     };
@@ -165,6 +166,7 @@ function import_game(s) {
     new_comp.id = json_comp["id"];
     new_comp.angle = json_comp["angle"];
     new_comp.period = json_comp["period"];
+    new_comp.delay = json_comp["delay"];
     new_comp.note_text = json_comp["note_text"];
     components.push(new_comp);
   }

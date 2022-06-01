@@ -12,6 +12,10 @@ class BufferGate extends Gate {
   constructor(pos) {
     super(pos);
     this.size = createVector(buffer_width, buffer_height);
+    this._delay = 0;
+    this._last_state_insert = false;
+    this.change_queue = [];
+    this._powered = false;
     this.input1_state = false;
     this.input1 = new ConnectionInPoint(
       this,
@@ -26,6 +30,48 @@ class BufferGate extends Gate {
     );
     this.connect_points = [this.input1, this.output1];
     this.powered = false;
+  }
+
+  get delay() {
+    return this._delay;
+  }
+
+  set delay(d) {
+    this._delay = Math.max(d, 0);
+    this.change_queue.length = 0;
+    if (this.delay > 0) {
+      this._powered = false;
+      this.powered = false;
+      this._last_state_insert = false;
+    }
+  }
+
+  get powered() {
+    if (this.delay > 0) {
+      const next_change = this.change_queue[0];
+      if (next_change != undefined) {
+        if (next_change["at"] < millis()) {
+          this._powered = next_change["state"];
+          this.change_queue.splice(0, 1);
+        }
+      }
+    }
+    return this._powered;
+  }
+
+  set powered(state) {
+    if (this.delay > 0) {
+      if (this._last_state_insert != state) {
+        this.change_queue.push({
+          at: millis() + this.delay,
+          state: state,
+        });
+        this._last_state_insert = state;
+      }
+    } else {
+      this._powered = state;
+    }
+    // this.output1.powered = state;
   }
 
   update() {

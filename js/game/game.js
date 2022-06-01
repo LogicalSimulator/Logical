@@ -17,8 +17,8 @@ const open_in_tutorial = true;
 
 const show_mouse_coords = true;
 const zoom_sensitivity = 0.1;
-let zoom_min = 0.1;
-let zoom_max = 5;
+let zoom_min = -0.99;
+let zoom_max = 8;
 
 const hovering = [];
 
@@ -1601,7 +1601,7 @@ class Game {
       );
     }
     this.cinematic_mode = this.cinematic_mode_checkbox.checked;
-    instant_propagate = this.instant_prop_mode_checkbox.checked;
+    //instant_propagate = this.instant_prop_mode_checkbox.checked;
     for (const widget of this.gui) {
       widget.update();
     }

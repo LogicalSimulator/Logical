@@ -77,6 +77,7 @@ class Component {
     this.angle = 0;
     this.buffer_on = false;
   }
+
   get_poly_verts() {
     const center = this.center_coord;
     const top_left_offset = p5.Vector.sub(this.pos, center);
@@ -99,6 +100,7 @@ class Component {
     const bottom_left = rotate_to_real(center, bottom_left_offset, this.angle);
     return [top_left, top_right, bottom_right, bottom_left];
   }
+
   mouse_overlapping() {
     // return collidePointRect(mouseX, mouseY,
     //                         (this.pos.x * zoom + camera.x), (this.pos.y * zoom + camera.y),
