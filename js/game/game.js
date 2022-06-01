@@ -1600,7 +1600,7 @@ class Game {
       this.set_specific_button.clickable.text = "Set clock period";
     } else if (this.selected_component instanceof Note) {
       this.set_specific_button.invisible = false;
-      this.set_specific_button.clicka1ble.text = "Edit note text";
+      this.set_specific_button.clickable.text = "Edit note text";
       pls_align = true;
     } else if (this.selected_component instanceof BufferGate) {
       this.set_specific_button.invisible = false;
