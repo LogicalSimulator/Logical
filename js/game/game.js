@@ -377,6 +377,8 @@ class Game {
         this.set_period_of_selected_component();
       } else if (this.selected_component instanceof Note) {
         this.set_note_value();
+      } else if (this.selected_component instanceof BufferGate) {
+        this.set_delay_of_selected_component();
       }
     });
     this.create_comment_button = create_button("Make note", 0, 0, 0, 0, () => {
@@ -490,6 +492,10 @@ class Game {
     this.dialog_clock_period.addEventListener("close", () => {
       this.hide_clock_period_menu();
     });
+    this.dialog_buffer_delay = document.getElementById("dialog_buffer_delay");
+    this.dialog_buffer_delay.addEventListener("close", () => {
+      this.hide_buffer_delay_menu();
+    });
     this.dialog_note = document.getElementById("dialog_note");
     this.dialog_note.addEventListener("close", () => {
       this.hide_note_menu();
@@ -503,6 +509,7 @@ class Game {
     this.input_code = document.getElementById("input_code");
     this.output_code = document.getElementById("output_code");
     this.clock_period_code = document.getElementById("clock_period_code");
+    this.buffer_delay_code = document.getElementById("buffer_delay_code");
     this.note_code = document.getElementById("note_code");
     let i = 0;
     for (save of example_saves) {
@@ -654,6 +661,22 @@ class Game {
     // console.log(this.dialog_note.returnValue);
   }
 
+  show_buffer_delay_menu() {
+    this.buffer_delay_code.value = this.selected_component.delay;
+    this.dialog_buffer_delay.showModal();
+    this.grey_out = true;
+  }
+
+  hide_buffer_delay_menu() {
+    this.dialog_buffer_delay.close();
+    this.grey_out = false;
+    if (this.dialog_buffer_delay.returnValue === "submit") {
+      this.selected_component.delay = this.buffer_delay_code.value;
+    }
+    this.selected_component = undefined;
+    // console.log(this.dialog_note.returnValue);
+  }
+
   show_note_menu() {
     this.note_code.value = this.selected_component.note_text;
     this.dialog_note.showModal();
@@ -745,6 +768,10 @@ class Game {
     //   }
     // }
     // this.selected_component = undefined;
+  }
+
+  set_delay_of_selected_component() {
+    this.show_buffer_delay_menu();
   }
 
   set_note_value() {
@@ -1573,7 +1600,11 @@ class Game {
       this.set_specific_button.clickable.text = "Set clock period";
     } else if (this.selected_component instanceof Note) {
       this.set_specific_button.invisible = false;
-      this.set_specific_button.clickable.text = "Edit note text";
+      this.set_specific_button.clicka1ble.text = "Edit note text";
+      pls_align = true;
+    } else if (this.selected_component instanceof BufferGate) {
+      this.set_specific_button.invisible = false;
+      this.set_specific_button.clickable.text = "Edit buffer delay";
       pls_align = true;
     } else {
       this.set_specific_button.invisible = true;
