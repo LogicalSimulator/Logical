@@ -44,6 +44,7 @@ const menu_outside_pad = 10;
 const menu_button_width = 100;
 const menu_button_height = 30;
 
+let actually_snap = false;
 let snap_to_grid = false;
 
 const components = [
@@ -502,6 +503,9 @@ class Game {
     });
     this.cinematic_mode_checkbox = document.getElementById(
       "cinematic_mode_checkbox"
+    );
+    this.snap_to_grid_checkbox = document.getElementById(
+      "snap_to_grid_checkbox"
     );
     this.instant_prop_mode_checkbox =
       document.getElementById("instant_prop_box");
@@ -978,6 +982,9 @@ class Game {
     if (this.grey_out) {
       return;
     }
+    if (actually_snap) {
+      snap_to_grid = false;
+    }
     let mp = createVector(
       (mouseX - camera.x) / zoom,
       (mouseY - camera.y) / zoom
@@ -1112,6 +1119,9 @@ class Game {
   on_mouse_release() {
     if (this.grey_out) {
       return;
+    }
+    if (actually_snap) {
+      snap_to_grid = true;
     }
     if (
       camera.x != this.panned_prev.x ||
@@ -1632,6 +1642,7 @@ class Game {
       );
     }
     this.cinematic_mode = this.cinematic_mode_checkbox.checked;
+    actually_snap = this.snap_to_grid_checkbox.checked;
     //instant_propagate = this.instant_prop_mode_checkbox.checked;
     for (const widget of this.gui) {
       widget.update();
